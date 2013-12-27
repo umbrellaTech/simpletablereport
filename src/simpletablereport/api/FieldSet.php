@@ -16,15 +16,18 @@
  * limitations under the License.
  */
 
-namespace simre;
-
 /**
  *
  * @author kelsoncm
  */
-interface ITemplate {
-    public function setFields(FieldSet $fieldSet);
-    public function getFields();
-    public function setParams($params);
-    public function getParams();
+class FieldSet extends ArrayIterator {
+    function __construct() {
+        parent::__construct(array());
+    }
+    
+    public function addField($fieldName, $fieldCaption, $fieldType='STRING', $fieldSize=null, $fieldWidth=null) {
+        $fieldDefinition = new FieldDefinition($fieldName, $fieldCaption, $fieldType, $fieldSize, $fieldWidth);
+        parent::append($fieldDefinition);
+    }
+    
 }

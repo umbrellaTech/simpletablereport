@@ -16,12 +16,13 @@
  * limitations under the License.
  */
 
-namespace simre;
-
 /**
  *
  * @author kelsoncm
  */
-interface IRenderer {
-    public function render(IDatasourceIterator $datasource, ITemplate $template);
+interface ITemplate {
+    public function setFields(FieldSet $fieldSet);
+    public function getFields();
+    public function setParams($params);
+    public function getParams();
 }

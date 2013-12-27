@@ -16,26 +16,30 @@
  * limitations under the License.
  */
 
-namespace simre;
-
 /**
  * Description of CSVRenderer
  *
  * @author kelsocm
  */
-class CSVRenderer implements \simre\IRenderer{
+class CSVRenderer implements IRenderer {
+    
     public function render(IDatasourceIterator $datasource, ITemplate $template) {
+        $this->iterateRows($datasource, $template);
+    }
+    
+    protected function iterateRows(IDatasourceIterator $datasource, ITemplate $template) {
         $datasource->rewind();
         while ($datasource->valid()) {
-            $key = $datasource->key();
-            $row = $datasource->current();
-            foreach ($row as $fieldName => $fieldValue) {
-                if ($datasource->isField($fieldName)) {
-                    echo $datasource->getFieldValue($fieldName) . ',';
-                }
-            }
-            echo "\n";
+            $this->iterateFields($datasource, $template);
             $datasource->next();
         }
+    }
+    
+    protected function iterateFields(IDatasourceIterator $datasource, ITemplate $template) {
+        $row = array();
+        foreach ($template->getFields() as $fieldDescription) {
+            $row[] = $datasource->getFieldValue($fieldDescription);
+        }
+        echo implode(',', $row) . "\n";
     }
 }

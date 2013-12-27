@@ -16,19 +16,17 @@
  * limitations under the License.
  */
 
-namespace simre;
-
 /**
  * Description of SimpleTemplate
  *
  * @author kelsocm
  */
-class SimpleTemplate implements \simre\ITemplate {
+class BaseTemplate implements ITemplate {
 
     private $fields;
     private $params;
     
-    function __construct(\simre\FieldSet $fieldSet=null, $params=null) {
+    function __construct(FieldSet $fieldSet=null, $params=null) {
         $this->fields = $fieldSet;
         $this->params = $params;
     }
@@ -47,6 +45,10 @@ class SimpleTemplate implements \simre\ITemplate {
 
     public function setParams($params) {
         $this->params = $params;
+    }
+    
+    public function fieldExists($fieldName) {
+        return $this->fieldSet->fieldExists($fieldName);
     }
 
 }

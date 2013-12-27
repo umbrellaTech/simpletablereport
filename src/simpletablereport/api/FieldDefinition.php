@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-namespace simre;
-
 /**
  *
  * @author kelsoncm

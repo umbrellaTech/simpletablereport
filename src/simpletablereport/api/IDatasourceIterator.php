@@ -16,23 +16,10 @@
  * limitations under the License.
  */
 
-namespace simre;
-
 /**
- * Description of AbstractDatasourceIterator
- * 
+ *
  * @author kelsoncm
  */
-abstract class AbstractDatasourceIterator implements \simre\IDatasourceIterator {
-    
-    private $fieldSet;
-    
-    function __construct(FieldSet $fieldSet) {
-        $this->fieldSet = $fieldSet;
-    }
-    
-    public function getFieldSet() {
-        return $this->fieldSet;
-    }
-
+interface IDatasourceIterator extends Iterator {
+    public function getFieldValue(FieldDefinition $fieldDefinition);
 }

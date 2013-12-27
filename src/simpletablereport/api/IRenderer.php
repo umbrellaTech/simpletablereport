@@ -16,13 +16,10 @@
  * limitations under the License.
  */
 
-namespace simre;
-
 /**
  *
  * @author kelsoncm
  */
-interface IDatasourceIterator extends \Iterator {
-    public function fieldExists($fieldName);
-    public function getFieldValue($fieldName);
+interface IRenderer {
+    public function render(IDatasourceIterator $datasource, ITemplate $template);
 }

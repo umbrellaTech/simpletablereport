@@ -16,20 +16,7 @@
  * limitations under the License.
  */
 
-namespace simre;
-
 /**
- *
  * @author kelsoncm
  */
-class FieldSet {
-    
-    private $fields = [];
-    
-    public function addField($fieldName, $fieldCaption, $fieldType='STRING', $fieldSize=null, $fieldWidth=null) {
-        $fieldDefinition = new FieldDefinition($fieldName, $fieldCaption, $fieldType, $fieldSize, $fieldWidth);
-        $this->fields[] = $fieldDefinition;
-        $fieldDefinition->setFieldOrder(count($this->fields));
-    }
-    
-}
+

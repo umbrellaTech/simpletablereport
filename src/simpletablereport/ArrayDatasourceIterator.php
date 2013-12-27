@@ -15,33 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace simre;
 
 /**
  * Description of AbstractDatasourceIterator
  *
  * @author kelsoncm
  */
-class SimpleArrayDatasourceIterator extends \ArrayIterator implements \simre\IDatasourceIterator {
-    
-    private $fieldSet;
-    
-    function __construct(FieldSet $fieldSet, $rows) {
-        parent::__construct($rows);
-        $this->fieldSet = $fieldSet;
-    }
-    
-    public function getFieldValue($fieldName) {
+class ArrayDatasourceIterator extends ArrayIterator implements IDatasourceIterator {
+
+    public function getFieldValue(FieldDefinition $fieldDefinition) {
         if (!$this->valid()) {
             throw new OutOfBoundsException();
         }
-        if (!$this->fieldExists($fieldName)) {
-            return false;
-        }
         $current = $this->current();
-        return isset($current[$fieldName]) ? $current[$fieldName] : '';
+        return isset($current[$fieldDefinition->getFieldName()]) ? $current[$fieldDefinition->getFieldName()] : '';
     }
-    public function fieldExists($fieldName) {
-        return $this->fieldSet->fieldExists($fieldName);
-    }
+    
 }
