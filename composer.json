@@ -1,0 +1,14 @@
+{
+    "name": "umbrella/simpletablereport",
+    "description": "PHP Simple Table Report. Export data as tables to PDF, CSV, Excel, etc...",
+    "license": "APL",
+    "authors": [
+        {
+            "name": "kelsoncm",
+            "email": "kelsoncm@gmail.com"
+        }
+    ],
+    "require": {
+
+    }
+}
