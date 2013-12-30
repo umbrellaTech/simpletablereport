@@ -27,8 +27,8 @@ class FieldDefinition {
     private $fieldWidth;
     private $fieldOrder;
     private $fieldCaption;
-    
-    function __construct($fieldName, $fieldCaption, $fieldType='STRING', $fieldSize=null, $fieldWidth=null) {
+            
+    function __construct($fieldName, $fieldCaption, $fieldType=FieldType::STRING, $fieldSize=null, $fieldWidth=null) {
         $this->fieldName = $fieldName;
         $this->fieldType = $fieldType;
         $this->fieldSize = $fieldSize;

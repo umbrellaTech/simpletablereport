@@ -23,19 +23,17 @@
  */
 class CSVRendererTest extends PHPUnit_Framework_TestCase {
     
+    /**
+     * 
+     */
     public function testTest() {
-        $model = array(
-                    array('id'=>1,'nome'=>'Kelson'),
-                    array('id'=>2,'nome'=>'KelsonCM'),
-                    array('id'=>3,'nome'=>''),
-                    array('id'=>4,'nome'=>null),
-                    array('id'=>5,'nome'=>'null', 'nome2'=>'#error'),
-                    array('id'=>6,'nome2'=>'#error'),
-                 );
+        $model = array(array('id'=>1,'nome'=>'Kelson'), array('id'=>2,'nome'=>'KelsonCM'),
+                       array('id'=>3,'nome'=>''),array('id'=>4,'nome'=>null),
+                       array('id'=>5,'nome'=>'null', 'nome2'=>'#error'),array('id'=>6,'nome2'=>'#error'),);
+        $this->expectOutputString("1,Kelson\n2,KelsonCM\n3,\n4,\n5,null\n6,\n");
 
         $fieldSet = new FieldSet();
-        $fieldSet->addField('id','#');
-        $fieldSet->addField('nome','Nome');
+        $fieldSet->addField('id','#')->addField('nome','Nome');
 
         $datasource = new ArrayDatasourceIterator($model);
 

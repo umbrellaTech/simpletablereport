@@ -21,25 +21,14 @@
  *
  * @author kelsocm
  */
-class CSVRenderer implements IRenderer {
-    
-    public function render(IDatasourceIterator $datasource, ITemplate $template) {
-        $this->iterateRows($datasource, $template);
-    }
-    
-    protected function iterateRows(IDatasourceIterator $datasource, ITemplate $template) {
-        $datasource->rewind();
-        while ($datasource->valid()) {
-            $this->iterateFields($datasource, $template);
-            $datasource->next();
-        }
-    }
+class CSVRenderer extends BaseRenderer {
     
     protected function iterateFields(IDatasourceIterator $datasource, ITemplate $template) {
         $row = array();
         foreach ($template->getFields() as $fieldDescription) {
-            $row[] = $datasource->getFieldValue($fieldDescription);
+            $row[] = $this->getValue($datasource, $fieldDescription, 'CSV');
         }
         echo implode(',', $row) . "\n";
     }
+
 }
