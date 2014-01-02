@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2013 kelsocm.
+ * Copyright 2013 kelsoncm.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 /**
  * Description of CSVRenderer
  *
- * @author kelsocm
+ * @author kelsoncm
  */
 class CSVRenderer extends BaseRenderer {
     

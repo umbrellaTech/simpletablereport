@@ -30,6 +30,10 @@ abstract class BaseRenderer implements IRenderer {
         $this->configuration = $configurationLoader->getConfiguration();
         $this->iterateRows($datasource, $template);
     }
+    
+    public function getOption($optionName) {
+        return $this->configuration->getOption("simpletablereport.{$optionName}");
+    }
 
     protected function iterateRows(IDatasourceIterator $datasource, ITemplate $template) {
         $datasource->rewind();

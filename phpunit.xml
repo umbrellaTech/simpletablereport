@@ -15,11 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-<!-- see http://www.phpunit.de/wiki/Documentation -->
-<!--phpunit bootstrap="/path/to/bootstrap.php"
-         >
-</phpunit-->
-
 <phpunit 
     colors="true" 
     bootstrap="vendor/autoload.php"
