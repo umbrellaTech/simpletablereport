@@ -24,23 +24,18 @@
 abstract class BaseRenderer implements IRenderer {
 
     protected $configuration;
+    protected $datasource;
+    protected $template;
     
-    public function render(IDatasourceIterator $datasource, ITemplate $template) {
+    function __construct($datasource, $template) {
+        $this->datasource = $datasource;
+        $this->template = $template;
         $configurationLoader = ConfigurationLoader::getInstance();
         $this->configuration = $configurationLoader->getConfiguration();
-        $this->iterateRows($datasource, $template);
     }
     
     public function getOption($optionName) {
         return $this->configuration->getOption("simpletablereport.{$optionName}");
-    }
-
-    protected function iterateRows(IDatasourceIterator $datasource, ITemplate $template) {
-        $datasource->rewind();
-        while ($datasource->valid()) {
-            $this->iterateFields($datasource, $template);
-            $datasource->next();
-        }
     }
     
     protected function getValue(IDatasourceIterator $datasource, FieldDefinition $fieldDescription, $rendererPrefix) {
@@ -49,7 +44,5 @@ abstract class BaseRenderer implements IRenderer {
         $unformattedFieldValue = $datasource->getFieldValue($fieldDescription);
         return $fieldTypeInstance->render($unformattedFieldValue);
     }
-
-    abstract protected function iterateFields(IDatasourceIterator $datasource, ITemplate $template);
 
 }

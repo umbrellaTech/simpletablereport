@@ -53,7 +53,7 @@ class SimpleTest extends PHPUnit_Framework_TestCase {
         $fieldSet = $this->getFieldset();
         $datasource = new ArrayDatasourceIterator($this->getData());
         $template = new BaseTemplate($fieldSet);
-        $renderer = new CSVRenderer();
+        $renderer = new CSVRenderer($datasource, $template);
         
         $renderer->render($datasource, $template);
     }
@@ -67,9 +67,9 @@ class SimpleTest extends PHPUnit_Framework_TestCase {
         $fieldSet = $this->getFieldset();
         $datasource = new ArrayDatasourceIterator($this->getData());
         $template = new BaseTemplate($fieldSet);
-        $renderer = new HTMLRenderer();
+        $renderer = new HTMLRenderer($datasource, $template);
         
-        $renderer->render($datasource, $template);
+        $renderer->render();
     }
     
 }

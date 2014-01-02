@@ -26,43 +26,67 @@ class HTMLRenderer extends BaseRenderer {
     public function getOption($optionName) {
         return parent::getOption("htmlrenderer.{$optionName}");
     }
-
-    protected function iterateRows(IDatasourceIterator $datasource, ITemplate $template) {
-        echo $this->getOption('documentbody.start');
-        echo $this->getOption('table.start');
-        $this->renderTable($datasource, $template);
-        echo $this->getOption('table.end');
-        echo $this->getOption('documentbody.end');
+    
+    public function render() {
+        $this->renderDocumentStart();
+        $this->renderTable();
+        $this->renderDocumentEnd();
     }
     
-    protected function renderTable(IDatasourceIterator $datasource, ITemplate $template) {
-        $this->renderHeader($datasource, $template);
-        $datasource->rewind();
-        while ($datasource->valid()) {
-            $this->iterateFields($datasource, $template);
-            $datasource->next();
-        }
-        $this->renderFooter($datasource, $template);
+    protected function renderTable() {
+        $this->renderTableStart();
+        $this->renderTableHeader();
+        $this->renderTableBody();
+        $this->renderTableFooter();
+        $this->renderTableEnd();
     }
     
-    protected function renderHeader(IDatasourceIterator $datasource, ITemplate $template) {
-        echo "{$this->getOption('table.head.start')}{$this->getOption('table.head.row.start')}";
-        foreach ($template->getFields() as $value) {
-            echo $this->getOption('table.head.data.start');
+    protected function renderTableHeader() {
+        $this->renderTableHeaderStart();
+        $this->renderTableHeaderRowStart();
+        foreach ($this->template->getFields() as $value) {
+            $this->renderTableHeaderDataStart();
             echo $value->getFieldCaption();
-            echo $this->getOption('table.head.data.end');
+            $this->renderTableHeaderDataEnd();
         }
-        echo "{$this->getOption('table.head.row.end')}{$this->getOption('table.head.end')}";
+        $this->renderTableHeaderRowEnd();
+        $this->renderTableHeaderEnd();
     }
     
-    protected function renderFooter(IDatasourceIterator $datasource, ITemplate $template) {
-        echo "{$this->getOption('table.footer.start')}{$this->getOption('table.footer.row.start')}";
-        foreach ($template as $value) {
-            echo $this->getOption('table.footer.data.start');
-            echo '';
-            echo $this->getOption('table.footer.data.end');
+    protected function renderTableBody() {
+        $this->renderTableBodyStart();
+        $this->renderTableBodyRows();
+        $this->renderTableBodyEnd();
+    }
+    
+    protected function renderTableBodyRows() {
+        $this->datasource->rewind();
+        while ($this->datasource->valid()) {
+            $this->renderTableBodyRowStart();
+            $this->renderTableBodyFields();
+            $this->renderTableBodyRowEnd();
+            $this->datasource->next();
         }
-        echo "{$this->getOption('table.footer.row.end')}{$this->getOption('table.footer.end')}";
+    }
+    
+    protected function renderTableBodyFields() {
+        foreach ($this->template->getFields() as $value) {
+            $this->renderTableBodyDataStart();
+            echo $value->getFieldCaption();
+            $this->renderTableBodyDataEnd();
+        }
+    }
+    
+    protected function renderTableFooter() {
+        $this->renderTableFooterStart();
+        $this->renderTableFooterRowStart();
+        foreach ($this->template->getFields() as $value) {
+            $this->renderTableFooterDataStart();
+            echo '&nbsp;';
+            $this->renderTableFooterDataEnd();
+        }
+        $this->renderTableFooterRowEnd();
+        $this->renderTableFooterEnd();
     }
         
     protected function iterateFields(IDatasourceIterator $datasource, ITemplate $template) {
@@ -75,6 +99,94 @@ class HTMLRenderer extends BaseRenderer {
             echo $this->getOption("table.body.{$data}.end");
         }
         echo "{$this->getOption('table.body.row.end')}{$this->getOption('table.body.end')}";
+    }
+
+    protected function renderDocumentStart() {
+        echo $this->getOption('documentbody.start');
+    }
+    
+    protected function renderTableStart() {
+        echo $this->getOption('table.start');
+    }
+    
+    protected function renderTableHeaderStart() {
+        echo $this->getOption('table.head.start');
+    }
+    
+    protected function renderTableHeaderRowStart() {
+        echo $this->getOption('table.head.row.start');
+    }
+    
+    protected function renderTableHeaderDataStart() {
+        echo $this->getOption('table.head.data.start');
+    }
+    
+    protected function renderTableHeaderDataEnd() {
+        echo $this->getOption('table.head.data.end');
+    }
+    
+    protected function renderTableHeaderRowEnd() {
+        echo $this->getOption('table.head.row.end');
+    }
+    
+    protected function renderTableHeaderEnd() {
+        echo $this->getOption('table.head.end');
+    }
+    
+    protected function renderTableBodyStart() {
+        echo $this->getOption('table.body.start');
+    }
+    
+    protected function renderTableBodyRowStart() {
+        echo $this->getOption('table.body.row.start');
+    }
+    
+    protected function renderTableBodyDataStart() {
+        echo $this->getOption('table.body.data.start');
+    }
+    
+    protected function renderTableBodyDataEnd() {
+        echo $this->getOption('table.body.data.end');
+    }
+    
+    protected function renderTableBodyRowEnd() {
+        echo $this->getOption('table.body.row.end');
+    }
+    
+    protected function renderTableBodyEnd() {
+        echo $this->getOption('table.body.end');
+    }
+    
+    protected function renderTableFooterStart() {
+        echo $this->getOption('table.footer.start');
+    }
+    
+    protected function renderTableFooterRowStart() {
+        echo $this->getOption('table.footer.row.start');
+    }
+    
+    protected function renderTableFooterDataStart() {
+        echo $this->getOption('table.footer.data.start');
+    }
+    
+    protected function renderTableFooterDataEnd() {
+        echo $this->getOption('table.footer.data.end');
+    }
+    
+    protected function renderTableFooterRowEnd() {
+        echo $this->getOption('table.footer.row.end');
+    }
+    
+    protected function renderTableFooterEnd() {
+        echo $this->getOption('table.footer.end');
+    }
+    
+    protected function renderTableEnd() {
+        echo $this->getOption('table.end');
+    }
+    
+    protected function renderDocumentEnd() {
+        echo $this->getOption('documentbody.end');
     }
 
 }

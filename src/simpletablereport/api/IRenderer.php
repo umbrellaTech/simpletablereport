@@ -21,5 +21,5 @@
  * @author kelsoncm
  */
 interface IRenderer {
-    public function render(IDatasourceIterator $datasource, ITemplate $template);
+    public function render();
 }
