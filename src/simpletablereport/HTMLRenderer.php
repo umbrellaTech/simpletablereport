@@ -28,164 +28,153 @@ class HTMLRenderer extends BaseRenderer {
     }
     
     public function render() {
-        $this->renderDocumentStart();
+        $this->doWriteDocumentStart();
         $this->renderTable();
-        $this->renderDocumentEnd();
+        $this->doWriteDocumentEnd();
     }
     
     protected function renderTable() {
-        $this->renderTableStart();
+        $this->doWriteTableStart();
         $this->renderTableHeader();
         $this->renderTableBody();
         $this->renderTableFooter();
-        $this->renderTableEnd();
+        $this->doWriteTableEnd();
     }
     
     protected function renderTableHeader() {
-        $this->renderTableHeaderStart();
-        $this->renderTableHeaderRowStart();
+        $this->doWriteTableHeaderStart();
+        $this->doWriteTableHeaderRowStart();
         foreach ($this->template->getFields() as $value) {
-            $this->renderTableHeaderDataStart();
+            $this->doWriteTableHeaderDataStart();
             echo $value->getFieldCaption();
-            $this->renderTableHeaderDataEnd();
+            $this->doWriteTableHeaderDataEnd();
         }
-        $this->renderTableHeaderRowEnd();
-        $this->renderTableHeaderEnd();
+        $this->doWriteTableHeaderRowEnd();
+        $this->doWriteTableHeaderEnd();
     }
     
     protected function renderTableBody() {
-        $this->renderTableBodyStart();
+        $this->doWriteTableBodyStart();
         $this->renderTableBodyRows();
-        $this->renderTableBodyEnd();
+        $this->doWriteTableBodyEnd();
     }
     
     protected function renderTableBodyRows() {
         $this->datasource->rewind();
         while ($this->datasource->valid()) {
-            $this->renderTableBodyRowStart();
+            $this->doWriteTableBodyRowStart();
             $this->renderTableBodyFields();
-            $this->renderTableBodyRowEnd();
+            $this->doWriteTableBodyRowEnd();
             $this->datasource->next();
         }
     }
     
     protected function renderTableBodyFields() {
-        foreach ($this->template->getFields() as $value) {
-            $this->renderTableBodyDataStart();
-            echo $value->getFieldCaption();
-            $this->renderTableBodyDataEnd();
+        foreach ($this->template->getFields() as $fieldDescription) {
+            $this->doWriteTableBodyDataStart();
+            echo $this->getValue($this->datasource, $fieldDescription, 'HTML');
+            $this->doWriteTableBodyDataEnd();
         }
     }
     
     protected function renderTableFooter() {
-        $this->renderTableFooterStart();
-        $this->renderTableFooterRowStart();
-        foreach ($this->template->getFields() as $value) {
-            $this->renderTableFooterDataStart();
+        $this->doWriteTableFooterStart();
+        $this->doWriteTableFooterRowStart();
+        $ds = $this->datasource;
+        for ($ds->rewind(); $ds->valid(); $ds->next()) {
+            $this->doWriteTableFooterDataStart();
             echo '&nbsp;';
-            $this->renderTableFooterDataEnd();
+            $this->doWriteTableFooterDataEnd();
         }
-        $this->renderTableFooterRowEnd();
-        $this->renderTableFooterEnd();
-    }
-        
-    protected function iterateFields(IDatasourceIterator $datasource, ITemplate $template) {
-        echo "{$this->getOption('table.body.start')}{$this->getOption('table.body.row.start')}";
-        $i = 0;
-        foreach ($template->getFields() as $fieldDescription) {
-            $data = 'data' . (++$i % 2 ? '1' : '2'); 
-            echo $this->getOption("table.body.{$data}.start");
-            echo $this->getValue($datasource, $fieldDescription, 'HTML');
-            echo $this->getOption("table.body.{$data}.end");
-        }
-        echo "{$this->getOption('table.body.row.end')}{$this->getOption('table.body.end')}";
+        $this->doWriteTableFooterRowEnd();
+        $this->doWriteTableFooterEnd();
     }
 
-    protected function renderDocumentStart() {
+    protected function doWriteDocumentStart() {
         echo $this->getOption('documentbody.start');
     }
     
-    protected function renderTableStart() {
+    protected function doWriteTableStart() {
         echo $this->getOption('table.start');
     }
     
-    protected function renderTableHeaderStart() {
+    protected function doWriteTableHeaderStart() {
         echo $this->getOption('table.head.start');
     }
     
-    protected function renderTableHeaderRowStart() {
+    protected function doWriteTableHeaderRowStart() {
         echo $this->getOption('table.head.row.start');
     }
     
-    protected function renderTableHeaderDataStart() {
+    protected function doWriteTableHeaderDataStart() {
         echo $this->getOption('table.head.data.start');
     }
     
-    protected function renderTableHeaderDataEnd() {
+    protected function doWriteTableHeaderDataEnd() {
         echo $this->getOption('table.head.data.end');
     }
     
-    protected function renderTableHeaderRowEnd() {
+    protected function doWriteTableHeaderRowEnd() {
         echo $this->getOption('table.head.row.end');
     }
     
-    protected function renderTableHeaderEnd() {
+    protected function doWriteTableHeaderEnd() {
         echo $this->getOption('table.head.end');
     }
     
-    protected function renderTableBodyStart() {
+    protected function doWriteTableBodyStart() {
         echo $this->getOption('table.body.start');
     }
     
-    protected function renderTableBodyRowStart() {
+    protected function doWriteTableBodyRowStart() {
         echo $this->getOption('table.body.row.start');
     }
     
-    protected function renderTableBodyDataStart() {
+    protected function doWriteTableBodyDataStart() {
         echo $this->getOption('table.body.data.start');
     }
     
-    protected function renderTableBodyDataEnd() {
+    protected function doWriteTableBodyDataEnd() {
         echo $this->getOption('table.body.data.end');
     }
     
-    protected function renderTableBodyRowEnd() {
+    protected function doWriteTableBodyRowEnd() {
         echo $this->getOption('table.body.row.end');
     }
     
-    protected function renderTableBodyEnd() {
+    protected function doWriteTableBodyEnd() {
         echo $this->getOption('table.body.end');
     }
     
-    protected function renderTableFooterStart() {
+    protected function doWriteTableFooterStart() {
         echo $this->getOption('table.footer.start');
     }
     
-    protected function renderTableFooterRowStart() {
+    protected function doWriteTableFooterRowStart() {
         echo $this->getOption('table.footer.row.start');
     }
     
-    protected function renderTableFooterDataStart() {
+    protected function doWriteTableFooterDataStart() {
         echo $this->getOption('table.footer.data.start');
     }
     
-    protected function renderTableFooterDataEnd() {
+    protected function doWriteTableFooterDataEnd() {
         echo $this->getOption('table.footer.data.end');
     }
     
-    protected function renderTableFooterRowEnd() {
+    protected function doWriteTableFooterRowEnd() {
         echo $this->getOption('table.footer.row.end');
     }
     
-    protected function renderTableFooterEnd() {
+    protected function doWriteTableFooterEnd() {
         echo $this->getOption('table.footer.end');
     }
     
-    protected function renderTableEnd() {
+    protected function doWriteTableEnd() {
         echo $this->getOption('table.end');
     }
     
-    protected function renderDocumentEnd() {
+    protected function doWriteDocumentEnd() {
         echo $this->getOption('documentbody.end');
     }
 

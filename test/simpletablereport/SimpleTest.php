@@ -62,7 +62,7 @@ class SimpleTest extends PHPUnit_Framework_TestCase {
      * 
      */
     public function testHTMLRenderer_render() {
-        $this->expectOutputString("<!DOCTYPE html><html><head><title></title><meta charset=\"UTF-8\"></head><body><table><thead><tr><th>#</th><th>Nome</th></tr></thead><tbody><tr><td>1</td><td>Kelson</td></tr></tbody><tbody><tr><td>2</td><td>KelsonCM</td></tr></tbody><tbody><tr><td>3</td><td></td></tr></tbody><tbody><tr><td>4</td><td></td></tr></tbody><tbody><tr><td>5</td><td>null</td></tr></tbody><tbody><tr><td>6</td><td></td></tr></tbody><tfoot><tr></tr></tfoot></table></body></html>");
+        $this->expectOutputString("<!DOCTYPE html><html><head><title></title><meta charset=\"UTF-8\"></head><body><table><thead><tr><th>#</th><th>Nome</th></tr></thead><tbody><tr><td>1</td><td>Kelson</td></tr><tr><td>2</td><td>KelsonCM</td></tr><tr><td>3</td><td></td></tr><tr><td>4</td><td></td></tr><tr><td>5</td><td>null</td></tr><tr><td>6</td><td></td></tr></tbody><tfoot><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tfoot></table></body></html>");
 
         $fieldSet = $this->getFieldset();
         $datasource = new ArrayDatasourceIterator($this->getData());
