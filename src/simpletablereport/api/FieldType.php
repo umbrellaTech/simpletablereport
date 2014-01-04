@@ -24,14 +24,18 @@
 abstract class FieldType {
     
     const STRING = 'STRING';
+    
     const DATE = 'DATE';
     const TIME = 'TIME';
-    const DATETIME = 'DATETIME';
+    const TIMESTAMP = 'TIMESTAMP';
+    
     const INTEGER = 'INTEGER';
     const FLOAT = 'FLOAT';
     const DECIMAL = 'DECIMAL';
+    const MONEY = 'MONEY';
     
     protected $options;
+    protected $typeprefix;
     
     function __construct($options) {
         $this->options = $options;
@@ -42,7 +46,13 @@ abstract class FieldType {
     }
     
     public function getOption($optionName) {
-        return isset($this->options["simpletablereport.$optionName"]) ? $this->options["simpletablereport.$optionName"] : null;
+        if (isset($this->options["simpletablereport.{$this->typeprefix}.{$optionName}"])) {
+            return $this->options["simpletablereport.{$this->typeprefix}.{$optionName}"];
+        } elseif ($this->options["simpletablereport.{$optionName}"]) {
+            return $this->options["simpletablereport.{$optionName}"];
+        } else {
+            null;
+        }
     }
 
     public abstract function format($value);

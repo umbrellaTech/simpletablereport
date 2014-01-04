@@ -21,25 +21,20 @@
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class DecimalType extends FieldType {
+class DecimalType extends FloatType {
     
-    public function format($value) {
-        return sprintf("%01.00f", $value);
+    protected $typeprefix='decimaltype';
+    protected $precision;
+    protected $separator;
+    
+    function __construct($options) {
+        parent::__construct($options);
+        $this->precision = intval($this->getOption("precision")) ?: 2;
+        $this->separator = $this->getOption("separator") ?: '.';
     }
 
-    public function toPrimitiveType($value) {
-        if (is_string($value) && is_numeric($value)) {
-            $value = floatval($value);
-        }
-        if (is_integer($value) || is_long($value) || is_double($value) || is_float($value) || is_real($value)) {
-            $value = (float)$value;
-            $value = ($value * 100);
-            $value = (int)$value;
-            $value = $value / 100;
-            return $value;
-        }
-        
-        throw new Exception('Invalid decimal.');
+    public function format($value) {
+        return is_null($value) ? '' : str_replace('.', $this->separator, sprintf("%.{$this->precision}F", $value));
     }
-    
+  
 }

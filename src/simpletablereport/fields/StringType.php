@@ -24,7 +24,7 @@
 class StringType extends FieldType {
     
     public function format($value) {
-        return $value;
+        return str_replace("\n", ' ', str_replace("\r", ' ', trim("$value")));
     }
 
     public function toPrimitiveType($value) {

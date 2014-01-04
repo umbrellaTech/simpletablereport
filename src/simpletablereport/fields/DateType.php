@@ -21,20 +21,17 @@
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class DateType extends FieldType {
+class DateType extends DateTimeType {
     
-    public function format($value) {
-        return $value->format($this->getOption('datetype.toformat'));
-    }
+    protected $typeprefix = 'datetype';
 
-    protected function toPrimitiveType($value) {
+    public function toPrimitiveType($value) {
         if ($value instanceof DateTime) {
             return $value;
         } else if (is_string($value)) {
-            return DateTime::createFromFormat($this->getOption('datetype.fromformat'), $value, $this->getOption('timezone'));
+            return DateTime::createFromFormat($this->getOption('fromformat'), $value, $this->getDateTimeZone());
         } else if ( is_array($value) ) {
-            $date = new DateTime();
-            return $date->setDate($value['year'], $value['mon'], $value['mday']);
+            return DateTime::createFromFormat("Y-m-d", "{$value['year']}-{$value['mon']}-{$value['mday']}", $this->getDateTimeZone());
         } else if ( is_int($value) ) {
             $date = new DateTime();
             return $date->setTimestamp($value);

@@ -21,20 +21,16 @@
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class IntegerType extends FieldType {
+class IntegerType extends NumericType {
     
+    protected $typeprefix = 'integertype';
+
     public function format($value) {
-        return sprintf("%d", $value);
+        return is_null($value) ? '' : "$value";
     }
 
-    public function toPrimitiveType($value) {
-        if (is_string($value) && is_numeric($value)) {
-            $value = 0 + $value;
-        }
-        if (is_integer($value) || is_long($value) || is_double($value) || is_float($value) || is_real($value)) {
-            return (int)$value;
-        }
-        throw new Exception('Invalid integer.');
+    public function toNumeric($value) {
+        return intval($value);
     }
 
 }

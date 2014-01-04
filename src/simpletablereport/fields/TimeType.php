@@ -21,24 +21,20 @@
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class TimeType extends FieldType {
+class TimeType extends DateTimeType {
     
-    public function format($value) {
-        return $value->format($this->getOption('timetype.toformat'));
-    }
+    protected $typeprefix = 'timetype';
 
     public function toPrimitiveType($value) {
         if ($value instanceof DateTime) {
             return $value;
         } else if (is_string($value)) {
             if (substr_count($value, $this->getOption('timeseparator')) == 1) {
-                return DateTime::createFromFormat($this->getOption('timetype.fromformat'), $value, $this->getOption('timezone'));
-            } else {
-                return DateTime::createFromFormat($this->getOption('timetype.fromlongformat'), $value, $this->getOption('timezone'));
+                $value .= $this->getOption('timeseparator') . '00';
             }
+            return DateTime::createFromFormat($this->getOption('fromlongformat'), $value, $this->getDateTimeZone());
         } else if ( is_array($value) ) {
-            $time = new DateTime();
-            return $time->setTime ( $value['hours'], $value['minutes'], $value['seconds'] );
+            return DateTime::createFromFormat($this->getOption('fromlongformat'), sprintf('%d:%02d:%02d', $value['hours'], $value['minutes'], $value['seconds']), $this->getDateTimeZone());
         } else if ( is_int($value) ) {
             $time = new DateTime();
             return $time->setTimestamp($value);

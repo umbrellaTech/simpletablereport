@@ -21,6 +21,26 @@
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class XLSXRenderer {
+class XLSXRenderer extends BaseRenderer {
     
+    protected $tableString = '';
+    protected $sheetString = '';
+    protected $temporaryFileName = '';
+    
+    public function getTableString() {
+        return $this->tableString;
+    }
+
+    public function getSheetString() {
+        return $this->sheetString;
+    }
+
+    public function getTemporaryFileName() {
+        return $this->temporaryFileName;
+    }
+    
+    public function render() {
+        
+    }
+
 }

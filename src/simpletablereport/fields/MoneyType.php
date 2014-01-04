@@ -17,13 +17,25 @@
  */
 
 /**
+ * Description of MoneyType
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-interface IConfiguration {
-    public function getFieldTypeOptions($fieldTypeName, $rendererPrefix);
-    public function getFieldTypeInstance($fieldTypeName, $rendererPrefix);
-    public function getOption($name);
-    public function getOptions();
+class MoneyType extends DecimalType {
+    
+    protected $typeprefix='moneytype';
+    protected $prefix;
+    protected $sufix;
+    
+    function __construct($options) {
+        parent::__construct($options);
+        $this->prefix = $this->getOption("prefix") ?: '$';
+        $this->sufix = $this->getOption("sufix") ?: '';
+    }
+
+    public function format($value) {
+        $result = parent::format($value);
+        return $result == '' ? '' : "{$this->prefix}{$result}{$this->sufix}";
+    }
 
 }

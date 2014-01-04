@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2013 kelsoncm <falecom@kelsoncm.com>.
+ * Copyright 2014 kelsoncm <falecom@kelsoncm.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,24 @@
  */
 
 /**
+ * Description of DateTimeType
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-interface IConfiguration {
-    public function getFieldTypeOptions($fieldTypeName, $rendererPrefix);
-    public function getFieldTypeInstance($fieldTypeName, $rendererPrefix);
-    public function getOption($name);
-    public function getOptions();
+abstract class DateTimeType extends FieldType {
+    
+    protected static $timezones = array();
 
+    public function format($value) {
+        return $value ? $value->format($this->getOption('toformat')) : '';
+    }
+    
+    protected function getDateTimeZone() {
+        $timezoneName = $this->getOption('timezone');
+        if (!isset(DateType::$timezones[$timezoneName])) {
+            DateType::$timezones[$timezoneName] = new DateTimeZone($this->getOption('timezone'));
+        }
+        return DateType::$timezones[$timezoneName];
+    }
+    
 }

@@ -27,6 +27,10 @@ class ConfigurationLoader {
     
     private $configuration;
     
+    /**
+     * 
+     * @return ConfigurationLoader
+     */
     public static function getInstance() {
         if (!ConfigurationLoader::$instance) {
             ConfigurationLoader::$instance = new ConfigurationLoader();
@@ -35,13 +39,20 @@ class ConfigurationLoader {
         return ConfigurationLoader::$instance;
     }
     
+    /**
+     * 
+     * @return IConfiguration
+     */
     public function getConfiguration() {
         return $this->configuration;
     }
     
+    public function getRootDir() {
+        return filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') ?: getcwd();
+    }
+    
     protected function load() {
-        $rootDir = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') ?: getcwd();
-        $configFile = "$rootDir/config.ini";
+        $configFile = "{$this->getRootDir()}/config.ini";
         $ini_array = parse_ini_file($configFile);
         $configurationClassName = $ini_array['simpletablereport.configurationClassName'];
         $this->configuration = new $configurationClassName($ini_array);
