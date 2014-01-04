@@ -254,21 +254,7 @@ class SimpleTest extends PHPUnit_Framework_TestCase {
         
         $renderer->render($datasource, $template);
     }
-    
-    /**
-     *  @expectedException InvalidArgumentException
-     *  @expectedExceptionMessage Passed variable is not an array or object, using empty array instead
-     */
-    public function testXLSXRenderer_render_null() {
-        $this->expectOutputString("");
         
-        $datasource = new ArrayDatasourceIterator(null);
-        $template = new BaseTemplate(new FieldSet());
-        $renderer = new XLSXRenderer($datasource, $template);
-        
-        $renderer->render($datasource, $template);
-    }
-    
     /*
     public function testExcel() {
         $loader = ConfigurationLoader::getInstance();
