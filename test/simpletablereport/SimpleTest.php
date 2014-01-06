@@ -199,7 +199,7 @@ class SimpleTest extends PHPUnit_Framework_TestCase {
     /**
      * 
      */
-    public function testCSVRenderer_render_StringType() {
+    public function testRenderCSV_DSArray_TypeString() {
         $this->expectOutputString("umbrella\nsimpletablereport\n\n\n\nkelsoncm\nline1 line2\n");
         
         $fieldSet = new FieldSet();
@@ -217,7 +217,7 @@ class SimpleTest extends PHPUnit_Framework_TestCase {
     /**
      * 
      */
-    public function testCSVRenderer_render_emptyArray() {
+    public function testRenderCSV_DSArray_emptyArray() {
         $this->expectOutputString("");
         
         $datasource = new ArrayDatasourceIterator(array());
@@ -231,7 +231,7 @@ class SimpleTest extends PHPUnit_Framework_TestCase {
      *  @expectedException InvalidArgumentException
      *  @expectedExceptionMessage Passed variable is not an array or object, using empty array instead
      */
-    public function testCSVRenderer_render_null() {
+    public function testRenderCSV_DSArray_null() {
         $this->expectOutputString("");
         
         $datasource = new ArrayDatasourceIterator(null);
@@ -245,16 +245,64 @@ class SimpleTest extends PHPUnit_Framework_TestCase {
      *  @expectedException InvalidArgumentException
      *  @expectedExceptionMessage Passed variable is not an array or object, using empty array instead
      */
-    public function testXLSXRenderer_render_null() {
-        $this->expectOutputString("");
-        
+    public function testRenderXLSX_DSArray_null() {
         $datasource = new ArrayDatasourceIterator(null);
         $template = new BaseTemplate(new FieldSet());
         $renderer = new XLSXRenderer($datasource, $template);
         
         $renderer->render($datasource, $template);
     }
+    
+    /**
+     *  
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage Empty FieldSet not allowed
+     */
+    public function testRenderXLSX_DSArray_emptyFieldSet() {
+        $datasource = new ArrayDatasourceIterator(array());
+        $template = new BaseTemplate(new FieldSet());
+        $renderer = new XLSXRenderer($datasource, $template);
         
+        $renderer->render($datasource, $template);
+    }
+    
+    /**
+     *  
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage Empty DataSource not allowed
+     */
+    public function testRenderXLSX_DSArray_emptyArray() {
+        
+        $fieldSet = new FieldSet();
+        $fieldSet->addField('i', '#', FieldType::STRING);
+                
+        $datasource = new ArrayDatasourceIterator(array());
+        $template = new BaseTemplate($fieldSet);
+        $renderer = new XLSXRenderer($datasource, $template);
+        
+        $renderer->render($datasource, $template);
+    }
+    
+    /**
+     *  
+     */
+    public function testRenderXLSX_DSArray_TypeString() {
+        $fieldSet = new FieldSet();
+        $fieldSet->addField('i', 'H1-String', FieldType::STRING);
+        
+        $model = $this->arrayArray('i', array('B1-String1', null, '', ' ', 'B3-String3', 'B4-Caçar', 'B5-\'"!@#$%¨&*()_+=-{`[´}^]~:><;.,|\ºª',));
+        
+        $datasource = new ArrayDatasourceIterator($model);
+        $template = new BaseTemplate($fieldSet);
+        $renderer = new XLSXRenderer($datasource, $template);
+        
+        $renderer->render($datasource, $template);
+        
+        $this->assertEquals(
+                "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><table xmlns='http://schemas.openxmlformats.org/spreadsheetml/2006/main' id='1' name='Tabela1' displayName='Tabela1' ref='A1:A6' totalsRowShown='0'><autoFilter ref='A1:A6'/><tableColumns count='1'><tableColumn id='1' name='H1-String'/></tableColumns><tableStyleInfo name='TableStyleLight1' showFirstColumn='0' showLastColumn='0' showRowStripes='1' showColumnStripes='0'/></table>"
+                , $renderer->getTableString());
+    }
+
     /*
     public function testExcel() {
         $loader = ConfigurationLoader::getInstance();

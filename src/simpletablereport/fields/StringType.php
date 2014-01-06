@@ -24,11 +24,11 @@
 class StringType extends FieldType {
     
     public function format($value) {
-        return str_replace("\n", ' ', str_replace("\r", ' ', trim("$value")));
+        return str_replace("\n", ' ', str_replace("\r", ' ', trim($value)));
     }
 
     public function toPrimitiveType($value) {
-        return $value;
+        return "$value";
     }
 
 }

@@ -25,7 +25,7 @@ class FieldSet extends ArrayIterator {
         parent::__construct(array());
     }
     
-    public function addField($fieldName, $fieldCaption, $fieldType='STRING', $fieldSize=null, $fieldWidth=null) {
+    public function addField($fieldName, $fieldCaption, $fieldType, $fieldSize=null, $fieldWidth=null) {
         $fieldDefinition = new FieldDefinition($fieldName, $fieldCaption, $fieldType, $fieldSize, $fieldWidth);
         parent::append($fieldDefinition);
         return $this;

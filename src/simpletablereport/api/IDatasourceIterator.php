@@ -22,4 +22,5 @@
  */
 interface IDatasourceIterator extends Iterator {
     public function getFieldValue(FieldDefinition $fieldDefinition);
+    public function getRowCount();
 }

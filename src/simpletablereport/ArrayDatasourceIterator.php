@@ -30,5 +30,9 @@ class ArrayDatasourceIterator extends ArrayIterator implements IDatasourceIterat
         $current = $this->current();
         return isset($current[$fieldDefinition->getFieldName()]) ? $current[$fieldDefinition->getFieldName()] : '';
     }
-    
+
+    public function getRowCount() {
+        return $this->count();
+    }
+
 }

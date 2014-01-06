@@ -25,7 +25,7 @@ class XLSXRenderer extends BaseRenderer {
     
     protected $tableString = '';
     protected $sheetString = '';
-    protected $temporaryFileName = '';
+    protected $outputFileName = '';
     
     public function getTableString() {
         return $this->tableString;
@@ -35,11 +35,74 @@ class XLSXRenderer extends BaseRenderer {
         return $this->sheetString;
     }
 
-    public function getTemporaryFileName() {
-        return $this->temporaryFileName;
+    public function getOutputFileName() {
+        return $this->outputFileName;
+    }
+    
+    /**
+     * 
+     * @param int $columnIndex - Zero indexed
+     * @return string - Column letters
+     */
+    protected function getColumnLetters($columnIndex) {
+        //A=65, Z=90
+
+        // First Letter, if exists
+        $rest = ((int)(($columnIndex)/26.0));
+        $result = ($rest>0) ? chr(65+$rest-1) : ''; 
+        
+        // Second Letter
+        $rest = ($columnIndex-($rest*26));
+        $result .= chr(65+$rest);
+        
+        return $result;
     }
     
     public function render() {
+        $this->validate();
+        $this->renderTable();
+        $this->renderSheet();
+    }
+    
+    protected function validate() {
+        $fields = $this->template->getFields();
+        if (empty($fields) || (!empty($fields) && $fields->count() == 0)) {
+            throw new RuntimeException("Empty FieldSet not allowed.");
+        }
+        
+        if ($this->datasource->getRowCount()==0) {
+            throw new RuntimeException("Empty DataSource not allowed.");
+        }
+    }
+
+    protected function renderTable() {
+        $this->doWriteTableBegin();
+        $this->doWriteTableColumn();
+        $this->doWriteTableEnd();
+    }
+    
+    protected function doWriteTableBegin() {
+        $colCount = $this->template->getFields()->count();
+        $colLetter = $this->getColumnLetters($colCount-1);
+        $rowCount = "6";
+        $tableRange ="A1:{$colLetter}{$rowCount}";
+        $this->tableString = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>";
+        $this->tableString .= "<table xmlns='http://schemas.openxmlformats.org/spreadsheetml/2006/main' id='1' name='Tabela1' displayName='Tabela1' ref='{$tableRange}' totalsRowShown='0'><autoFilter ref='{$tableRange}'/><tableColumns count='{$colCount}'>";
+    }
+
+    protected function doWriteTableColumn() {
+        $id = 1;
+        foreach ($this->template->getFields() as $field) {
+            $this->tableString .= "<tableColumn id='{$id}' name='{$field->getFieldCaption()}'/>";
+            $id++;
+        }
+    }
+    
+    protected function doWriteTableEnd() {
+        $this->tableString .= "</tableColumns><tableStyleInfo name='TableStyleLight1' showFirstColumn='0' showLastColumn='0' showRowStripes='1' showColumnStripes='0'/></table>";
+    }
+
+    protected function renderSheet() {
         
     }
 
