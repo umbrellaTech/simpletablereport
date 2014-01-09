@@ -21,12 +21,16 @@
  * @author kelsoncm
  */
 class FieldSet extends ArrayIterator {
+    
+    protected $fieldcount = 0;
+            
     function __construct() {
         parent::__construct(array());
     }
     
     public function addField($fieldName, $fieldCaption, $fieldType, $fieldSize=null, $fieldWidth=null) {
         $fieldDefinition = new FieldDefinition($fieldName, $fieldCaption, $fieldType, $fieldSize, $fieldWidth);
+        $fieldDefinition->setFieldOrder($this->count());
         parent::append($fieldDefinition);
         return $this;
     }

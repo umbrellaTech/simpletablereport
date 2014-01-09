@@ -17,10 +17,22 @@
  */
 
 /**
+ * Description of AbstractDatasource
  *
  * @author kelsoncm
  */
-interface IDatasourceIterator extends Iterator {
-    public function getFieldValue(FieldDefinition $fieldDefinition);
-    public function getRowCount();
+class ArrayDatasource extends ArrayIterator implements IDatasource {
+
+    public function getFieldValue(FieldDefinition $fieldDefinition) {
+        if (!$this->valid()) {
+            throw new OutOfBoundsException();
+        }
+        $current = $this->current();
+        return isset($current[$fieldDefinition->getFieldName()]) ? $current[$fieldDefinition->getFieldName()] : '';
+    }
+
+    public function getRowCount() {
+        return $this->count();
+    }
+
 }

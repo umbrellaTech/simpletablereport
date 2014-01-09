@@ -17,22 +17,24 @@
  */
 
 /**
- * Description of AbstractDatasourceIterator
+ * Description of CSVRenderer
  *
  * @author kelsoncm
  */
-class ArrayDatasourceIterator extends ArrayIterator implements IDatasourceIterator {
-
-    public function getFieldValue(FieldDefinition $fieldDefinition) {
-        if (!$this->valid()) {
-            throw new OutOfBoundsException();
+class CsvRenderer extends BaseRenderer {
+    
+    public function render() {
+        for ($this->datasource->rewind(); $this->datasource->valid(); $this->datasource->next()) {
+            $this->renderRow();
         }
-        $current = $this->current();
-        return isset($current[$fieldDefinition->getFieldName()]) ? $current[$fieldDefinition->getFieldName()] : '';
     }
-
-    public function getRowCount() {
-        return $this->count();
+    
+    protected function renderRow() {
+        $row = array();
+        foreach ($this->template->getFields() as $fieldDescription) {
+            $row[] = $this->getValue($this->datasource, $fieldDescription, 'CSV');
+        }
+        echo implode(',', $row) . "\n";
     }
 
 }

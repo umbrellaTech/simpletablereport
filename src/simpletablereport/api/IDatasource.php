@@ -17,26 +17,10 @@
  */
 
 /**
- * Description of CSVRenderer
  *
  * @author kelsoncm
  */
-class CSVRenderer extends BaseRenderer {
-    
-    public function render() {
-        $this->datasource->rewind();
-        while ($this->datasource->valid()) {
-            $this->renderRow();
-            $this->datasource->next();
-        }
-    }
-    
-    protected function renderRow() {
-        $row = array();
-        foreach ($this->template->getFields() as $fieldDescription) {
-            $row[] = $this->getValue($this->datasource, $fieldDescription, 'CSV');
-        }
-        echo implode(',', $row) . "\n";
-    }
-
+interface IDatasource extends Iterator {
+    public function getFieldValue(FieldDefinition $fieldDefinition);
+    public function getRowCount();
 }

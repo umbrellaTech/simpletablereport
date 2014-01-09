@@ -21,7 +21,7 @@
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class HTMLRenderer extends BaseRenderer {
+class HtmlRenderer extends BaseRenderer {
     
     public function getOption($optionName) {
         return parent::getOption("htmlrenderer.{$optionName}");
@@ -60,12 +60,10 @@ class HTMLRenderer extends BaseRenderer {
     }
     
     protected function renderTableBodyRows() {
-        $this->datasource->rewind();
-        while ($this->datasource->valid()) {
+        for ($this->datasource->rewind(); $this->datasource->valid(); $this->datasource->next()) {
             $this->doWriteTableBodyRowStart();
             $this->renderTableBodyFields();
             $this->doWriteTableBodyRowEnd();
-            $this->datasource->next();
         }
     }
     
@@ -80,8 +78,7 @@ class HTMLRenderer extends BaseRenderer {
     protected function renderTableFooter() {
         $this->doWriteTableFooterStart();
         $this->doWriteTableFooterRowStart();
-        $ds = $this->datasource;
-        for ($ds->rewind(); $ds->valid(); $ds->next()) {
+        for ($this->datasource->rewind(); $this->datasource->valid(); $this->datasource->next()) {
             $this->doWriteTableFooterDataStart();
             echo '&nbsp;';
             $this->doWriteTableFooterDataEnd();
