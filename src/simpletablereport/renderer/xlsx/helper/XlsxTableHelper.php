@@ -43,7 +43,8 @@ class XlsxTableHelper extends XlsxBaseHelper {
         $id = 1;
         $result = '';
         foreach ($this->template->getFields() as $field) {
-            $result .= "<tableColumn id=\"{$id}\" name=\"{$field->getFieldCaption()}\"/>";
+            $value = $field->getFieldCaption();
+            $result .= "<tableColumn id=\"{$id}\" name=\"{$value}\"/>";
             $id++;
         }
         return $result;

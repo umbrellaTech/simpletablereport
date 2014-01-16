@@ -26,7 +26,7 @@ class XlsxBaseHelper {
     protected $datasource;
     protected $template;
     
-    function __construct($datasource, $template) {
+    function __construct(IDatasource $datasource, ITemplate $template) {
         $this->datasource = $datasource;
         $this->template = $template;
     }
@@ -53,7 +53,7 @@ class XlsxBaseHelper {
     protected function getTableRange() {
         $colCount = $this->template->getFields()->count();
         $colLetter = $this->getColumnLetters($colCount-1);
-        $rowCount = $this->datasource->getRowCount();
+        $rowCount = $this->datasource->getRowCount()+1;
         return "A1:{$colLetter}{$rowCount}";
     }
     

@@ -21,21 +21,5 @@
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class DateType extends DateTimeType {
-    
-    protected $typeprefix = 'datetype';
-
-    public function toPrimitiveType($value) {
-        $value2 = parent::toPrimitiveType($value);
-        if (is_null($value2) || $value2 instanceof DateTime) {
-            return $value2;
-        }
-        if (is_string($value2)) {
-            return DateTime::createFromFormat($this->getOption('fromformat'), $value2, $this->getDateTimeZone());
-        } else if ( is_array($value2) ) {
-            return DateTime::createFromFormat("Y-m-d", "{$value['year']}-{$value['mon']}-{$value['mday']}", $this->getDateTimeZone());
-        }
-        throw new Exception("Invalid date.");
-    }
-
+class XlsxDateType extends DateType {
 }

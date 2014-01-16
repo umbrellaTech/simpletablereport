@@ -28,7 +28,7 @@ class ArrayDatasource extends ArrayIterator implements IDatasource {
             throw new OutOfBoundsException();
         }
         $current = $this->current();
-        return isset($current[$fieldDefinition->getFieldName()]) ? $current[$fieldDefinition->getFieldName()] : '';
+        return isset($current[$fieldDefinition->getFieldName()]) ? $current[$fieldDefinition->getFieldName()] : null;
     }
 
     public function getRowCount() {

@@ -36,5 +36,19 @@ abstract class DateTimeType extends FieldType {
         }
         return DateType::$timezones[$timezoneName];
     }
+
+    public function toPrimitiveType($value) {
+        if (is_string($value)) {
+            $value = trim("$value");
+        }
+        if (empty($value)) {
+            return null;
+        } else if ($value instanceof DateTime) {
+            return $value;
+        } else if ( is_int($value) ) {
+            $date = new DateTime();
+            return $date->setTimestamp($value);
+        }
+    }
     
 }
