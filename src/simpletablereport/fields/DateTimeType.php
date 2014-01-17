@@ -26,7 +26,7 @@ abstract class DateTimeType extends FieldType {
     protected static $timezones = array();
 
     public function format($value) {
-        return $value ? $value->format($this->getOption('toformat')) : '';
+        return is_null($value) ? '' : $value->format($this->getOption('toformat'));
     }
     
     protected function getDateTimeZone() {
@@ -49,6 +49,7 @@ abstract class DateTimeType extends FieldType {
             $date = new DateTime();
             return $date->setTimestamp($value);
         }
+        return $value;
     }
     
 }

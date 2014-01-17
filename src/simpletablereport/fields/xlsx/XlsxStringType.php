@@ -22,9 +22,8 @@
  * @author kelsoncm <falecom@kelsoncm.com>
  */
 class XlsxStringType extends StringType {
-    
     public function format($value) {
-        return XlsxSharedStringsHelper::putIfNotExists($value);
+        $value = XlsxSharedStringsHelper::putIfNotExists(parent::format($value));
+        return empty($value) ? null : "<c r=\"cellAddress\" t=\"s\"><v>{$value}</v></c>";
     }
-    
 }

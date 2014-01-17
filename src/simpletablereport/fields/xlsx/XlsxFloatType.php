@@ -22,4 +22,8 @@
  * @author kelsoncm <falecom@kelsoncm.com>
  */
 class XlsxFloatType extends FloatType {
+    public function format($value) {
+        $value = parent::format($value);
+        return empty($value) ? null : "<c r=\"cellAddress\"><v>{$value}</v></c>";
+    }
 }

@@ -69,11 +69,11 @@ class XlsxSheetHelper extends XlsxBaseHelper {
     }
     
     protected function doWriteSheetDataHeader() {$this->currentRow++;
-        $this->sheetString .= "<row r='{$this->currentRow}' spans='1:1' x14ac:dyDescent='0.25'>";
+        $this->sheetString .= "<row r=\"{$this->currentRow}\" spans=\"1:1\" x14ac:dyDescent=\"0.25\">";
         foreach ($this->template->getFields() as $key => $fieldDescription) {
             $stringId = XlsxSharedStringsHelper::putIfNotExists($fieldDescription->getFieldCaption());
             $colLetter = $this->getColumnLetters($key);
-            $this->sheetString .= "<c r='{$colLetter}{$this->currentRow}' t='s'><v>{$stringId}</v></c>";
+            $this->sheetString .= "<c r=\"{$colLetter}{$this->currentRow}\" t=\"s\"><v>{$stringId}</v></c>";
         }
         $this->sheetString .= "</row>";
     }
@@ -97,9 +97,8 @@ class XlsxSheetHelper extends XlsxBaseHelper {
             $value = $fieldTypeInstance->render($this->datasource->getFieldValue($fieldDescription));
             $colLetter = $this->getColumnLetters($key);
             $cellAddress = $colLetter . $this->currentRow;
-            $stringSharing = ($fieldDescription->getFieldType() == FieldType::STRING) ? " t=\"s\"" : '';
             if (!empty($value)) {
-                $return .= "<c r=\"$cellAddress\"{$stringSharing}><v>{$value}</v></c>";
+                $return .= str_replace(' r="cellAddress"', " r=\"{$cellAddress}\"", $value);
             }
         }
         return $return;

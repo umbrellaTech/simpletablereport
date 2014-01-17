@@ -104,7 +104,7 @@ class SimpleCsvTest extends SimpleTest {
         $today = new DateTime();
         $today->setTimestamp(time());
 
-        //$this->expectOutputString($today->format('d/m/Y') . "\n" . $today->format('d/m/Y') . "\n13/12/2011\n15/12/2013\n\n\n");
+        $this->expectOutputString($today->format('d/m/Y') . "\n" . $today->format('d/m/Y') . "\n13/12/2011\n15/12/2013\n\n\n");
         
         $fieldSet = new FieldSet();
         $fieldSet->addField('i', '#', FieldType::DATE);
@@ -125,7 +125,7 @@ class SimpleCsvTest extends SimpleTest {
         $today = new DateTime();
         $today->setTimestamp(time());
 
-        //$this->expectOutputString($today->format('H:i:s') . "\n" . $today->format('H:i:s') . "\n23:59:00\n22:00:00\n\n\n23:59:35\n");
+        $this->expectOutputString($today->format('H:i:s') . "\n" . $today->format('H:i:s') . "\n23:59:00\n22:00:00\n\n\n23:59:35\n");
         
         $fieldSet = new FieldSet();
         $fieldSet->addField('i', '#', FieldType::TIME);
@@ -146,7 +146,7 @@ class SimpleCsvTest extends SimpleTest {
         $today = new DateTime();
         $today->setTimestamp(time());
 
-        //$this->expectOutputString($today->format('d/m/Y H:i:s') . "\n" . $today->format('d/m/Y H:i:s') . "\n15/12/2013 23:59:00\n20/11/2011 22:00:00\n\n\n01/01/1991 23:59:35\n");
+        $this->expectOutputString($today->format('d/m/Y H:i:s') . "\n" . $today->format('d/m/Y H:i:s') . "\n15/12/2013 23:59:00\n20/11/2011 22:00:00\n\n\n01/01/1991 23:59:35\n");
         
         $fieldSet = new FieldSet();
         $fieldSet->addField('i', '#', FieldType::TIMESTAMP);

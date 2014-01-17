@@ -21,5 +21,9 @@
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class XlsxMoneyType extends MoneyType {
+class XlsxMoneyType extends DecimalType {
+    public function format($value) {
+        $value = parent::format($value);
+        return empty($value) ? null : "<c r=\"cellAddress\" s=\"2\"><v>{$value}</v></c>";
+    }
 }
