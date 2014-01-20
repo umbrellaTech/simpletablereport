@@ -18,6 +18,9 @@
 
 namespace Umbrella\SimpleReport\Fields\Xlsx;
 
+use Umbrella\SimpleReport\Fields\StringType;
+use Umbrella\SimpleReport\Renderer\Xlsx\Helper\XlsxSharedStringsHelper;
+
 /**
  * Description of MoneyType
  *

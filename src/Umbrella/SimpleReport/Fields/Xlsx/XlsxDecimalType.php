@@ -18,6 +18,8 @@
 
 namespace Umbrella\SimpleReport\Fields\Xlsx;
 
+use Umbrella\SimpleReport\Fields\DecimalType;
+
 /**
  * Description of DecimalType
  *

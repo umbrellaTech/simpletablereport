@@ -18,6 +18,7 @@
 
 namespace Umbrella\SimpleReport\Fields;
 
+use DateTime;
 use DateTimeZone;
 use Umbrella\SimpleReport\Api\FieldType;
 
@@ -31,7 +32,8 @@ abstract class DateTimeType extends FieldType
 
     protected static $timezones = array();
 
-    public function format($value) {
+    public function format($value)
+    {
         return is_null($value) ? '' : $value->format($this->getOption('toformat'));
     }
 
@@ -44,7 +46,8 @@ abstract class DateTimeType extends FieldType
         return DateType::$timezones[$timezoneName];
     }
 
-    public function toPrimitiveType($value) {
+    public function toPrimitiveType($value)
+    {
         if (is_string($value)) {
             $value = trim("$value");
         }
@@ -52,11 +55,11 @@ abstract class DateTimeType extends FieldType
             return null;
         } else if ($value instanceof DateTime) {
             return $value;
-        } else if ( is_int($value) ) {
+        } else if (is_int($value)) {
             $date = new DateTime();
             return $date->setTimestamp($value);
         }
         return $value;
     }
-    
+
 }

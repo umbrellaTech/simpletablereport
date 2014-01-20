@@ -18,6 +18,8 @@
 
 namespace Umbrella\SimpleReport\Fields\Xlsx;
 
+use Umbrella\SimpleReport\Fields\DateType;
+
 /**
  * Description of DateType
  *
