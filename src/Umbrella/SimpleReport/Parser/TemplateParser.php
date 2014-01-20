@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace Umbrella\SimpleReport\Renderer;
+namespace Umbrella\SimpleReport\Parser;
 
 use Exception;
 
@@ -38,27 +38,23 @@ class TemplateParser
 
     public function findTemplate()
     {
-        try {
-            if ($this->tlp) {
-                if (!file_exists($this->tlp)) {
-                    throw new Exception('Arquivo de template não encontrado');
-                }
-
-                $arquivo = fopen($this->tlp, "r");
-                $html = "";
-
-                while (!feof($arquivo)) {
-                    $html .= fgets($arquivo);
-                }
-
-                fclose($arquivo);
-
-                return $html;
-            } else {
-                throw new Exception('Arquivo de template não foi setado');
+        if ($this->tlp) {
+            if (!file_exists($this->tlp)) {
+                throw new Exception('Arquivo de template não encontrado');
             }
-        } catch (Exception $e) {
-            exit($e->getMessage());
+
+            $arquivo = fopen($this->tlp, "r");
+            $html = "";
+
+            while (!feof($arquivo)) {
+                $html .= fgets($arquivo);
+            }
+
+            fclose($arquivo);
+
+            return $html;
+        } else {
+            throw new Exception('Arquivo de template não foi setado');
         }
     }
 

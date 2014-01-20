@@ -18,6 +18,8 @@
 
 namespace Umbrella\SimpleReport\Api;
 
+use Exception;
+
 /**
  *
  * @author kelsoncm

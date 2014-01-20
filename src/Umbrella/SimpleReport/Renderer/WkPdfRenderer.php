@@ -21,6 +21,7 @@ namespace Umbrella\SimpleReport\Renderer;
 use Umbrella\SimpleReport\Api\IDatasource;
 use Umbrella\SimpleReport\Api\ITemplate;
 use Umbrella\SimpleReport\BaseRenderer;
+use Umbrella\SimpleReport\Parser\TemplateParser;
 
 /**
  * Description of HTMLRenderer
