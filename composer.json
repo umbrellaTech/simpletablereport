@@ -6,12 +6,17 @@
         {
             "name": "kelsoncm",
             "email": "kelsoncm@gmail.com"
+        },
+        {
+            "name": "Ítalo Lelis",
+            "email": "italolelis@gmail.com"
         }
     ],
     "require": {
-
     },
     "autoload": {
-    	"classmap": ["./src"]
+        "psr-0": {
+            "Umbrella\\SimpleReport": "src/"
+        }
     }
 }

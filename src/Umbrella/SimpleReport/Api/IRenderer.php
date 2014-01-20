@@ -16,19 +16,14 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Api;
+
 /**
- * Description of SimpleTest
  *
  * @author kelsoncm
  */
-class SimpleTest extends PHPUnit_Framework_TestCase {
-    
-    protected function arrayArray($name, $elems) {
-        $result = array();
-        foreach ($elems as $value) {
-            $result[] = array($name=>$value);
-        }
-        return $result;
-    }
-    
+interface IRenderer
+{
+
+    public function render();
 }
