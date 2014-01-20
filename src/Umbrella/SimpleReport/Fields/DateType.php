@@ -31,19 +31,17 @@ class DateType extends DateTimeType
 
     protected $typeprefix = 'datetype';
 
-    public function toPrimitiveType($value)
-    {
-        if ($value instanceof DateTime) {
-            return $value;
-        } else if (is_string($value)) {
+    public function toPrimitiveType($value) {
+        $value2 = parent::toPrimitiveType($value);
+        if (is_null($value2) || $value2 instanceof DateTime) {
+            return $value2;
+        }
+        if (is_string($value)) {
             return DateTime::createFromFormat($this->getOption('fromformat'), $value, $this->getDateTimeZone());
         } else if (is_array($value)) {
             return DateTime::createFromFormat("Y-m-d", "{$value['year']}-{$value['mon']}-{$value['mday']}", $this->getDateTimeZone());
-        } else if (is_int($value)) {
-            $date = new DateTime();
-            return $date->setTimestamp($value);
         }
-        throw new Exception('Invalid date.');
+        throw new Exception("Invalid date.");
     }
 
 }

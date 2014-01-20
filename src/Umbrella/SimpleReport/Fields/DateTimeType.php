@@ -31,9 +31,8 @@ abstract class DateTimeType extends FieldType
 
     protected static $timezones = array();
 
-    public function format($value)
-    {
-        return $value ? $value->format($this->getOption('toformat')) : '';
+    public function format($value) {
+        return is_null($value) ? '' : $value->format($this->getOption('toformat'));
     }
 
     protected function getDateTimeZone()
@@ -45,4 +44,19 @@ abstract class DateTimeType extends FieldType
         return DateType::$timezones[$timezoneName];
     }
 
+    public function toPrimitiveType($value) {
+        if (is_string($value)) {
+            $value = trim("$value");
+        }
+        if (empty($value)) {
+            return null;
+        } else if ($value instanceof DateTime) {
+            return $value;
+        } else if ( is_int($value) ) {
+            $date = new DateTime();
+            return $date->setTimestamp($value);
+        }
+        return $value;
+    }
+    
 }

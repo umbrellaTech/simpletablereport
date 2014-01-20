@@ -22,9 +22,10 @@ namespace Umbrella\SimpleReport\Api;
  *
  * @author kelsoncm
  */
-class FieldDefinition
-{
+class FieldDefinition {
 
+    private static $loadedFieldsTypes = array();
+    
     private $fieldName;
     private $fieldType;
     private $fieldSize;
@@ -51,8 +52,15 @@ class FieldDefinition
         return $this->fieldType;
     }
 
-    public function getFieldSize()
-    {
+    public function getFieldTypeInstance($strategy = '') {
+        $key = "{$this->fieldType}, {$strategy}";
+        if (!isset(FieldDefinition::$loadedFieldsTypes[$key])) {
+            FieldDefinition::$loadedFieldsTypes[$key] = $this->createFieldType($this->fieldType, $strategy);
+        }
+        return FieldDefinition::$loadedFieldsTypes[$key];
+    }
+
+    public function getFieldSize() {
         return $this->fieldSize;
     }
 
@@ -99,6 +107,18 @@ class FieldDefinition
     public function setFieldCaption($fieldCaption)
     {
         $this->fieldCaption = $fieldCaption;
+    }
+
+    protected function createFieldType($fieldTypeName, $strategy) {
+        $classnameBase = ucfirst(strtolower($fieldTypeName)) . 'Type';
+        $classnameConcrete = ucfirst(strtolower($strategy)) . $classnameBase;
+        if (class_exists($classnameConcrete,true)) {
+            return new $classnameConcrete(array());
+        } elseif(class_exists($classnameBase,true)) {
+            return new $classnameBase(array());
+        } else {
+            throw new Exception("Field class don't exists for field type '{$fieldTypeName}'.");
+        }
     }
 
 }

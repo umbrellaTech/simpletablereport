@@ -37,6 +37,7 @@ class XlsxRenderer extends BaseRenderer
     protected $tableString = '';
     protected $sheetString = '';
     protected $sharedStringsString = '';
+    protected $stylesString = '';
     protected $outputFileName = '';
     protected $currentRow;
 
@@ -72,6 +73,9 @@ class XlsxRenderer extends BaseRenderer
 
         $xlsxSharedStringsHelper = new XlsxSharedStringsHelper($this->datasource, $this->template);
         $this->sharedStringsString = $xlsxSharedStringsHelper->renderSharedStrings();
+        
+        $xlsxStyleHelper = new XlsxStyleHelper($this->datasource, $this->template);
+        $this->styleString = $xlsxStyleHelper->renderStyle();
 
         $this->output();
     }
@@ -87,39 +91,42 @@ class XlsxRenderer extends BaseRenderer
             throw new RuntimeException("Empty DataSource not allowed.");
         }
     }
-
-    protected function output()
-    {
+    
+    protected function output() {
+        $this->buildOutputFileName();
         $this->copySampleFile();
         $this->zipContent();
     }
-
-    protected function copySampleFile()
-    {
+    
+    protected function buildOutputFileName() {
+        if ($this->outputFileName) {
+            return;
+        } 
         $rootDir = ConfigurationLoader::getInstance()->getRootDir();
-        $output = "{$rootDir}/test/out.xlsx";
-
+        $concat = $this->tableString . $this->sheetString . $this->sharedStringsString;
+        $this->outputFileName = "{$rootDir}/test/" . md5($concat) .  ".xlsx";
+    }
+    
+    protected function copySampleFile() {
+        $rootDir = ConfigurationLoader::getInstance()->getRootDir();
         $sampleTmp = ConfigurationLoader::getInstance()->getConfiguration()->getOption('simpletablereport.xlsxrenderer.sample');
         $sample = "{$rootDir}/{$sampleTmp}";
-        if (!copy($sample, $output)) {
-            throw new RuntimeException("failed to copy $sample...");
+        if (!copy($sample, $this->outputFileName)) {
+            throw new RuntimeException("Failed to copy '{$sample}'.");
         }
     }
-
-    protected function zipContent()
-    {
-        $rootDir = ConfigurationLoader::getInstance()->getRootDir();
-        $output = "{$rootDir}/test/out.xlsx";
-
+    
+    protected function zipContent() {
         $zip = new ZipArchive();
-        if ($zip->open($output, ZipArchive::CREATE) !== TRUE) {
-            throw new RuntimeException("cannot open <$output>");
+        if ($zip->open($this->outputFileName, ZipArchive::CREATE)!==TRUE) {
+            throw new RuntimeException("Cannot open [{$this->outputFileName}].");
         }
 
         $zip->addFromString("xl/tables/table1.xml", $this->tableString);
         $zip->addFromString("xl/worksheets/sheet1.xml", $this->sheetString);
         $zip->addFromString("xl/sharedStrings.xml", $this->sharedStringsString);
-        $zip->close();
+        $zip->addFromString("xl/styles.xml", $this->styleString);
+        $zip->close();        
     }
 
 }

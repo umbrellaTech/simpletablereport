@@ -28,8 +28,16 @@ class XlsxSheetHelper extends XlsxBaseHelper
 
     protected $sheetString = '';
 
-    public function renderSheet()
-    {
+    protected $sheetString='';
+    
+    protected function getRenderedValue(FieldDefinition $fieldDescription) {
+        $fieldTypeName = $fieldDescription->getFieldType();
+        $fieldTypeInstance = $this->configuration->getFieldTypeInstance($fieldTypeName, 'Xlsx');
+        $unformattedFieldValue = $this->datasource->getFieldValue($fieldDescription);
+        return $fieldTypeInstance->render($unformattedFieldValue);
+    }
+    
+    public function renderSheet() {
         $this->currentRow = 0;
         $this->doWriteSheetBegin();
         $this->doWriteSheetColumns();
@@ -56,7 +64,7 @@ class XlsxSheetHelper extends XlsxBaseHelper
     protected function doWriteSheetColumns()
     {
         $this->sheetString .= "<cols>";
-        $this->sheetString .= "<col min=\"1\" max=\"1\" width=\"11.42578125\" bestFit=\"1\" customWidth=\"1\"/>";
+        $this->sheetString .= "<col min=\"1\" max=\"1\" width=\"11.42578125\"/>";
         $this->sheetString .= "</cols>";
     }
 
@@ -67,15 +75,13 @@ class XlsxSheetHelper extends XlsxBaseHelper
         $this->doWriteSheetDataBody();
         $this->sheetString .= "</sheetData>";
     }
-
-    protected function doWriteSheetDataHeader()
-    {
-        $this->currentRow++;
-        $this->sheetString .= "<row r='{$this->currentRow}' spans='1:1' x14ac:dyDescent='0.25'>";
+    
+    protected function doWriteSheetDataHeader() {$this->currentRow++;
+        $this->sheetString .= "<row r=\"{$this->currentRow}\" spans=\"1:1\" x14ac:dyDescent=\"0.25\">";
         foreach ($this->template->getFields() as $key => $fieldDescription) {
             $stringId = XlsxSharedStringsHelper::putIfNotExists($fieldDescription->getFieldCaption());
             $colLetter = $this->getColumnLetters($key);
-            $this->sheetString .= "<c r='{$colLetter}{$this->currentRow}' t='s'><v>{$stringId}</v></c>";
+            $this->sheetString .= "<c r=\"{$colLetter}{$this->currentRow}\" t=\"s\"><v>{$stringId}</v></c>";
         }
         $this->sheetString .= "</row>";
     }
@@ -97,12 +103,12 @@ class XlsxSheetHelper extends XlsxBaseHelper
     {
         $return = "";
         foreach ($this->template->getFields() as $key => $fieldDescription) {
-            $value = $this->datasource->getFieldValue($fieldDescription);
+            $fieldTypeInstance = $fieldDescription->getFieldTypeInstance('Xlsx');
+            $value = $fieldTypeInstance->render($this->datasource->getFieldValue($fieldDescription));
+            $colLetter = $this->getColumnLetters($key);
+            $cellAddress = $colLetter . $this->currentRow;
             if (!empty($value)) {
-                $stringId = XlsxSharedStringsHelper::putIfNotExists($value);
-                $colLetter = $this->getColumnLetters($key);
-                $cellAddress = $colLetter . $this->currentRow;
-                $return .= "<c r=\"$cellAddress\" t=\"s\"><v>{$stringId}</v></c>";
+                $return .= str_replace(' r="cellAddress"', " r=\"{$cellAddress}\"", $value);
             }
         }
         return $return;
@@ -111,13 +117,12 @@ class XlsxSheetHelper extends XlsxBaseHelper
     protected function doWriteSheetPageMargins()
     {
         $this->sheetString .= "<pageMargins left=\"0.511811024\" right=\"0.511811024\" top=\"0.78740157499999996\" bottom=\"0.78740157499999996\" header=\"0.31496062000000002\" footer=\"0.31496062000000002\"/>";
-        //$this->sheetString .= "<pageSetup paperSize=\"9\" orientation=\"portrait\" horizontalDpi=\"0\" verticalDpi=\"0\" r:id=\"rId1\"/>";
     }
 
     protected function doWriteSheetEnd()
     {
         $this->sheetString .= "<tableParts count=\"1\">";
-        $this->sheetString .= "<tablePart r:id=\"rId2\"/>";
+        $this->sheetString .= "<tablePart r:id=\"rId1\"/>";
         $this->sheetString .= "</tableParts>";
         $this->sheetString .= "</worksheet>";
     }

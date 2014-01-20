@@ -31,20 +31,18 @@ class TimestampType extends DateTimeType
 
     protected $typeprefix = 'timestamptype';
 
-    public function toPrimitiveType($value)
-    {
-        if ($value instanceof DateTime) {
+    public function toPrimitiveType($value) {
+        $value = parent::toPrimitiveType($value);
+        if (is_null($value) || $value instanceof DateTime) {
             return $value;
-        } else if (is_string($value)) {
+        }
+        if (is_string($value)) {
             if (substr_count($value, $this->getOption('timeseparator')) == 1) {
                 $value .= $this->getOption('timeseparator') . '00';
             }
             return DateTime::createFromFormat($this->getOption('fromlongformat'), $value, $this->getDateTimeZone());
         } else if (is_array($value)) {
             return DateTime::createFromFormat('Y-m-d H:i:s', sprintf('%d-%02d-%02d %02d:%02d:%02d', $value['year'], $value['mon'], $value['mday'], $value['hours'], $value['minutes'], $value['seconds']), $this->getDateTimeZone());
-        } else if (is_int($value)) {
-            $time = new DateTime();
-            return $time->setTimestamp($value);
         }
         throw new Exception('Invalid timestamp.');
     }

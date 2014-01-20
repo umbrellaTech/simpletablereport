@@ -34,15 +34,14 @@ class XlsxSharedStringsHelper extends XlsxBaseHelper
     public static function putIfNotExists($value)
     {
         $trimString = trim("$value");
-        if (empty($trimString)) {
+        if (empty($trimString) || is_null($value)) {
             return null;
         }
-        if (isset(XlsxSharedStringsHelper::$strings[$value])) {
-            return XlsxSharedStringsHelper::$strings[$value];
+        if (!isset(XlsxSharedStringsHelper::$strings[$value])) {
+            XlsxSharedStringsHelper::$strings[$value] = XlsxSharedStringsHelper::$lastId;
+            XlsxSharedStringsHelper::$lastId = XlsxSharedStringsHelper::$lastId + 1;
         }
-        XlsxSharedStringsHelper::$strings[$value] = XlsxSharedStringsHelper::$lastId;
-        XlsxSharedStringsHelper::$lastId = XlsxSharedStringsHelper::$lastId + 1;
-        return XlsxSharedStringsHelper::$lastId;
+        return XlsxSharedStringsHelper::$strings[$value];
     }
 
     public static function getIterator()
@@ -54,6 +53,11 @@ class XlsxSharedStringsHelper extends XlsxBaseHelper
     {
         return XlsxSharedStringsHelper::$lastId - 1;
     }
+    
+    public static function reset() {
+        XlsxSharedStringsHelper::$strings = array();
+        XlsxSharedStringsHelper::$lastId = 0;
+    }
 
     public function renderSharedStrings()
     {
@@ -64,6 +68,7 @@ class XlsxSharedStringsHelper extends XlsxBaseHelper
             $result .= "<si><t>{$value}</t></si>";
         }
         $result .= "</sst>";
+        XlsxSharedStringsHelper::reset();
         return $result;
     }
 

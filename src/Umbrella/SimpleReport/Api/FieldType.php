@@ -52,7 +52,7 @@ abstract class FieldType
     {
         if (isset($this->options["simpletablereport.{$this->typeprefix}.{$optionName}"])) {
             return $this->options["simpletablereport.{$this->typeprefix}.{$optionName}"];
-        } elseif ($this->options["simpletablereport.{$optionName}"]) {
+        } elseif (isset($this->options["simpletablereport.{$optionName}"])) {
             return $this->options["simpletablereport.{$optionName}"];
         } else {
             null;
