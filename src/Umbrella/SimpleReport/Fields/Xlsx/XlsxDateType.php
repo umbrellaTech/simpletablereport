@@ -16,10 +16,14 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Fields\Xlsx;
+
 /**
  * Description of DateType
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class XlsxDateType extends DateType {
+class XlsxDateType extends DateType
+{
+    
 }

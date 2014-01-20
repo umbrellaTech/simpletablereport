@@ -16,10 +16,14 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Fields\Xlsx;
+
 /**
  * Description of TimestampType
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class XlsxTimestampType extends TimestampType {
+class XlsxTimestampType extends TimestampType
+{
+    
 }

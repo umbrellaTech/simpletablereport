@@ -16,10 +16,14 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Fields\Xlsx;
+
 /**
  * Description of TimeType
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class XlsxTimeType extends TimeType {
+class XlsxTimeType extends TimeType
+{
+    
 }

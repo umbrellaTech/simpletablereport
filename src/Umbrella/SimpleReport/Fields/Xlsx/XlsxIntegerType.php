@@ -16,14 +16,20 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Fields\Xlsx;
+
 /**
  * Description of IntegerType
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class XlsxIntegerType extends IntegerType {
-    public function format($value) {
+class XlsxIntegerType extends IntegerType
+{
+
+    public function format($value)
+    {
         $value = parent::format($value);
         return empty($value) ? null : "<c r=\"cellAddress\"><v>{$value}</v></c>";
     }
+
 }

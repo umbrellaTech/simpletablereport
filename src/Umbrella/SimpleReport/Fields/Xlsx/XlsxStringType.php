@@ -16,14 +16,20 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Fields\Xlsx;
+
 /**
  * Description of MoneyType
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class XlsxStringType extends StringType {
-    public function format($value) {
+class XlsxStringType extends StringType
+{
+
+    public function format($value)
+    {
         $value = XlsxSharedStringsHelper::putIfNotExists(parent::format($value));
         return empty($value) ? null : "<c r=\"cellAddress\" t=\"s\"><v>{$value}</v></c>";
     }
+
 }

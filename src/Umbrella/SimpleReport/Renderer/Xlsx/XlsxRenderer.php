@@ -73,7 +73,7 @@ class XlsxRenderer extends BaseRenderer
 
         $xlsxSharedStringsHelper = new XlsxSharedStringsHelper($this->datasource, $this->template);
         $this->sharedStringsString = $xlsxSharedStringsHelper->renderSharedStrings();
-        
+
         $xlsxStyleHelper = new XlsxStyleHelper($this->datasource, $this->template);
         $this->styleString = $xlsxStyleHelper->renderStyle();
 
@@ -91,23 +91,26 @@ class XlsxRenderer extends BaseRenderer
             throw new RuntimeException("Empty DataSource not allowed.");
         }
     }
-    
-    protected function output() {
+
+    protected function output()
+    {
         $this->buildOutputFileName();
         $this->copySampleFile();
         $this->zipContent();
     }
-    
-    protected function buildOutputFileName() {
+
+    protected function buildOutputFileName()
+    {
         if ($this->outputFileName) {
             return;
-        } 
+        }
         $rootDir = ConfigurationLoader::getInstance()->getRootDir();
         $concat = $this->tableString . $this->sheetString . $this->sharedStringsString;
-        $this->outputFileName = "{$rootDir}/test/" . md5($concat) .  ".xlsx";
+        $this->outputFileName = "{$rootDir}/test/" . md5($concat) . ".xlsx";
     }
-    
-    protected function copySampleFile() {
+
+    protected function copySampleFile()
+    {
         $rootDir = ConfigurationLoader::getInstance()->getRootDir();
         $sampleTmp = ConfigurationLoader::getInstance()->getConfiguration()->getOption('simpletablereport.xlsxrenderer.sample');
         $sample = "{$rootDir}/{$sampleTmp}";
@@ -115,10 +118,11 @@ class XlsxRenderer extends BaseRenderer
             throw new RuntimeException("Failed to copy '{$sample}'.");
         }
     }
-    
-    protected function zipContent() {
+
+    protected function zipContent()
+    {
         $zip = new ZipArchive();
-        if ($zip->open($this->outputFileName, ZipArchive::CREATE)!==TRUE) {
+        if ($zip->open($this->outputFileName, ZipArchive::CREATE) !== TRUE) {
             throw new RuntimeException("Cannot open [{$this->outputFileName}].");
         }
 
@@ -126,7 +130,7 @@ class XlsxRenderer extends BaseRenderer
         $zip->addFromString("xl/worksheets/sheet1.xml", $this->sheetString);
         $zip->addFromString("xl/sharedStrings.xml", $this->sharedStringsString);
         $zip->addFromString("xl/styles.xml", $this->styleString);
-        $zip->close();        
+        $zip->close();
     }
 
 }
