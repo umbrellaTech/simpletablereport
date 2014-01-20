@@ -23,6 +23,7 @@ use Umbrella\SimpleReport\BaseRenderer;
 use Umbrella\SimpleReport\ConfigurationLoader;
 use Umbrella\SimpleReport\Renderer\Xlsx\Helper\XlsxSharedStringsHelper;
 use Umbrella\SimpleReport\Renderer\Xlsx\Helper\XlsxSheetHelper;
+use Umbrella\SimpleReport\Renderer\Xlsx\Helper\XlsxStyleHelper;
 use Umbrella\SimpleReport\Renderer\Xlsx\Helper\XlsxTableHelper;
 use ZipArchive;
 
