@@ -18,6 +18,8 @@
 
 namespace Umbrella\SimpleReport\Renderer\Xlsx\Helper;
 
+use Umbrella\SimpleReport\Api\FieldDefinition;
+
 /**
  * Description of XLSXSheetHelper
  *
