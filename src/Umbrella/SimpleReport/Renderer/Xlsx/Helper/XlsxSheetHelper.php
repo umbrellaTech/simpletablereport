@@ -29,8 +29,6 @@ class XlsxSheetHelper extends XlsxBaseHelper
 {
 
     protected $sheetString = '';
-
-    protected $sheetString='';
     
     protected function getRenderedValue(FieldDefinition $fieldDescription) {
         $fieldTypeName = $fieldDescription->getFieldType();
