@@ -16,19 +16,32 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Renderer;
+
+use Umbrella\SimpleReport\BaseRenderer;
+
 /**
- * Description of SimpleTest
+ * Description of CSVRenderer
  *
  * @author kelsoncm
  */
-class SimpleTest extends PHPUnit_Framework_TestCase {
-    
-    protected function arrayArray($name, $elems) {
-        $result = array();
-        foreach ($elems as $value) {
-            $result[] = array($name=>$value);
+class CsvRenderer extends BaseRenderer
+{
+
+    public function render()
+    {
+        for ($this->datasource->rewind(); $this->datasource->valid(); $this->datasource->next()) {
+            $this->renderRow();
         }
-        return $result;
     }
-    
+
+    protected function renderRow()
+    {
+        $row = array();
+        foreach ($this->template->getFields() as $fieldDescription) {
+            $row[] = $this->getValue($this->datasource, $fieldDescription, 'CSV');
+        }
+        echo implode(',', $row) . "\n";
+    }
+
 }

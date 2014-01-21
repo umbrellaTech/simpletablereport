@@ -1,5 +1,11 @@
 <?php
 
+use Umbrella\SimpleReport\Api\FieldSet;
+use Umbrella\SimpleReport\Api\FieldType;
+use Umbrella\SimpleReport\ArrayDatasource;
+use Umbrella\SimpleReport\BaseTemplate;
+use Umbrella\SimpleReport\Renderer\Xlsx\XlsxRenderer;
+
 /*
  * Copyright 2013 kelsoncm.
  *
@@ -60,41 +66,44 @@ class SimpleXlsxTest extends SimpleTest {
      *  @expectedException InvalidArgumentException
      *  @expectedExceptionMessage Passed variable is not an array or object, using empty array instead
      */
-    public function testArrayDatasource_null() {
+    public function testArrayDatasource_null()
+    {
         $datasource = new ArrayDatasource(null);
         $template = new BaseTemplate(new FieldSet());
         $renderer = new XlsxRenderer($datasource, $template);
-        
+
         $renderer->render($datasource, $template);
     }
-    
+
     /**
      *  
      * @expectedException RuntimeException
      * @expectedExceptionMessage Empty FieldSet not allowed
      */
-    public function testArrayDatasource_emptyFieldSet() {
+    public function testArrayDatasource_emptyFieldSet()
+    {
         $datasource = new ArrayDatasource(array());
         $template = new BaseTemplate(new FieldSet());
         $renderer = new XlsxRenderer($datasource, $template);
-        
+
         $renderer->render($datasource, $template);
     }
-    
+
     /**
      *  
      * @expectedException RuntimeException
      * @expectedExceptionMessage Empty DataSource not allowed
      */
-    public function testArrayDatasource_emptyArray() {
-        
+    public function testArrayDatasource_emptyArray()
+    {
+
         $fieldSet = new FieldSet();
         $fieldSet->addField('i', '#', FieldType::STRING);
-                
+
         $datasource = new ArrayDatasource(array());
         $template = new BaseTemplate($fieldSet);
         $renderer = new XlsxRenderer($datasource, $template);
-        
+
         $renderer->render($datasource, $template);
     }
     
@@ -108,7 +117,7 @@ class SimpleXlsxTest extends SimpleTest {
         $datasource = new ArrayDatasource($model);
         $template = new BaseTemplate($fieldSet);
         $renderer = new XlsxRenderer($datasource, $template);
-        
+
         $renderer->render($datasource, $template);
 
         $this->assertEquals($this->getTableXML_1Col($title), $renderer->getTableString());
@@ -195,4 +204,5 @@ class SimpleXlsxTest extends SimpleTest {
                 , $renderer->getSheetString());
         $this->assertEquals($this->getSharedXML_1Col($title, 0), $renderer->getSharedStringsString());
     }
+
 }

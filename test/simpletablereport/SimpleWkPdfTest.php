@@ -4,7 +4,7 @@ use Umbrella\SimpleReport\Api\FieldSet;
 use Umbrella\SimpleReport\Api\FieldType;
 use Umbrella\SimpleReport\ArrayDatasource;
 use Umbrella\SimpleReport\BaseTemplate;
-use Umbrella\SimpleReport\Renderer\HtmlRenderer;
+use Umbrella\SimpleReport\Renderer\WkPdfRenderer;
 
 /*
  * Copyright 2013 kelsoncm.
@@ -25,11 +25,11 @@ use Umbrella\SimpleReport\Renderer\HtmlRenderer;
 /**
  * Description of SimpleTest
  *
- * @author kelsoncm
+ * @author Ítalo Lelis <italo@voxtecnologia.com.br>
  */
 require_once 'SimpleTest.php';
 
-class SimpleHtmlTest extends SimpleTest
+class SimpleWkPdfTest extends SimpleTest
 {
 
     /**
@@ -45,7 +45,7 @@ class SimpleHtmlTest extends SimpleTest
             array('id' => 3, 'nome' => ''),
             array('id' => 4, 'nome' => null),
             array('id' => 5, 'nome' => 'null', 'nome2' => '#error'),
-            array('id' => 6, 'nome2' => '#error'),
+            array('id' => 6, 'nome2' => '#error')
         );
     }
 
@@ -65,15 +65,17 @@ class SimpleHtmlTest extends SimpleTest
     /**
      * 
      */
-    public function testArrayDatasource_Initial()
+    public function testArrayDatasourceInitial()
     {
-        //$this->expectOutputString('<!DOCTYPE html><html><head><title></title><meta charset="UTF-8"></head><body><table><thead><tr><th>#</th><th>Nome</th><th>Razao</th><th>Salario</th><th>Nascimento</th><th>Almoco</th><th>Casamento</th></tr></thead><tbody><tr><td>1</td><td>Kelson</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>2</td><td>KelsonCM</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>5</td><td>null</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody><tfoot><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tfoot></table></body></html>');
-
         $fieldSet = $this->getFieldset();
         $datasource = new ArrayDatasource($this->getData());
-        $template = new BaseTemplate($fieldSet);
-        $renderer = new HtmlRenderer($datasource, $template);
 
+        $template = new BaseTemplate($fieldSet);
+        $template->addParam('out', '/tmp/pdf/teste.pdf');
+        $template->addParam('imageQuality', 100);
+        $template->addParam('template', '/var/www/pdf/teste.html');
+
+        $renderer = new WkPdfRenderer($datasource, $template);
         $renderer->render();
     }
 
