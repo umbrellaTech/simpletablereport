@@ -25,12 +25,15 @@ use Umbrella\SimpleReport\Api\ITemplate;
  * Description of SimpleTemplate
  *
  * @author kelsocm
+ * @author Ítalo Lelis <italo@voxtecnologia.com.br>
  */
 class BaseTemplate implements ITemplate
 {
 
     private $fields;
     private $params;
+    private $tags;
+    private $path;
 
     public function __construct(FieldSet $fieldSet = null, array $params = array())
     {
@@ -71,6 +74,28 @@ class BaseTemplate implements ITemplate
     public function getParam($param)
     {
         return $this->params[$param];
+    }
+
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    public function setTags(array $tags)
+    {
+        $this->tags = $tags;
+        return $this;
+    }
+
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    public function setPath($path)
+    {
+        $this->path = $path;
+        return $this;
     }
 
 }

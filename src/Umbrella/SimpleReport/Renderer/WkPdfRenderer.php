@@ -32,7 +32,6 @@ class WkPdfRenderer extends BaseRenderer
 {
 
     private $output;
-    private $imageQuality;
     private $htmlRenderer;
     private $parser;
 
@@ -40,20 +39,25 @@ class WkPdfRenderer extends BaseRenderer
     {
         parent::__construct($datasource, $template);
         $this->htmlRenderer = new HtmlRenderer($datasource, $template);
-        $this->parser = new TemplateParser();
+        $this->parser = new TemplateParser($template);
     }
 
-    protected function initParams()
+    public function getOutput()
     {
-        $this->output = $this->template->getParam('out');
-        $this->imageQuality = $this->template->getParam('imageQuality');
+        return $this->output;
+    }
+
+    public function setOutput($output)
+    {
+        $this->output = $output;
+        return $this;
     }
 
     public function render()
     {
-        $this->initParams();
         $htmlFile = $this->getHtmlPageContent();
         $this->renderPdf($htmlFile);
+        return $this;
     }
 
     protected function getHtmlPageContent()
@@ -61,28 +65,70 @@ class WkPdfRenderer extends BaseRenderer
         ob_start();
         $this->htmlRenderer->render();
         $page = ob_get_contents();
-        $filename = '/tmp/pdf/' . md5($page) . '.html';
+        $filename = '/tmp/' . microtime() . '.html';
 
-        $this->parser->setTemplate($this->template->getParam('template'));
-        $this->parser->setTags("content", $page);
+        $this->parser->setTags(array_merge(array(
+            "content" => $page,
+            "date" => $this->createDate(),
+                        ), $this->template->getTags())
+        );
         $content = $this->parser->parse();
 
         file_put_contents($filename, $content);
         ob_end_clean();
 
-        return 'file://' . $filename;
+        return $filename;
     }
 
-    protected function renderPdf($htmlContent)
+    protected function createDate()
+    {
+        $date = new \DateTime();
+        return $date->format('d/m/Y');
+    }
+
+    protected function renderPdf($htmlFile)
     {
         \wkhtmltox_convert('pdf', array(
             'out' => $this->output,
-            'imageQuality' => $this->imageQuality
+            'imageQuality' => '75'
                 ), array(
             array(
-                'page' => $htmlContent
+                'page' => 'file://' . $htmlFile
             ))
         );
+
+        $this->setPermissions($htmlFile, $this->output);
+        $this->unlinkFile($htmlFile);
+    }
+
+    /**
+     * Seta as permissões nos arquivos de html e pdf
+     * @param string $htmlFile
+     * @param string $pdfFile
+     */
+    protected function setPermissions($htmlFile, $pdfFile)
+    {
+        chmod($htmlFile, 0777);
+        chmod($pdfFile, 0777);
+    }
+
+    public function unlinkFile($file)
+    {
+        unlink($file);
+    }
+
+    /**
+     * Envia os headersde pdf para o browser
+     * @param boolean $attachment Se o pdf será exibido no browser ou baixado pelo usuário
+     */
+    public function send($attachment = true)
+    {
+        $type = $attachment ? 'attachment' : 'inline';
+        header('Content-type: application/pdf');
+        header('Content-Disposition: ' . $type . '; filename="' . md5($this->output) . '.pdf"');
+        readfile($this->output);
+
+        $this->unlinkFile($this->output);
     }
 
 }

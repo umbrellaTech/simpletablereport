@@ -85,7 +85,7 @@ class HtmlRenderer extends BaseRenderer
     {
         foreach ($this->template->getFields() as $fieldDescription) {
             $this->doWriteTableBodyDataStart();
-            echo $this->getValue($this->datasource, $fieldDescription, 'HTML');
+            echo $this->getValue($this->datasource, $fieldDescription, '');
             $this->doWriteTableBodyDataEnd();
         }
     }

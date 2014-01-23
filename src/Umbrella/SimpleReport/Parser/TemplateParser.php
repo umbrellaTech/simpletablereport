@@ -20,64 +20,66 @@ class TemplateParser
 {
 
     protected $tags = array();
-    protected $tlp = null;
+    protected $template = null;
 
-    public function getTemplate($key = null)
+    public function __construct(\Umbrella\SimpleReport\Api\ITemplate $template)
     {
-        if ($key) {
-            return $this->tlp[$key];
-        } else {
-            return $this->tlp;
+        $this->template = $template;
+    }
+
+    public function setTemplate(\Umbrella\SimpleReport\Api\ITemplate $template)
+    {
+        $this->template = $template;
+        return $this;
+    }
+
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    public function setTags($values)
+    {
+        foreach ($values as $key => $value) {
+            $this->addTag($key, $value);
         }
+        return $this;
     }
 
-    public function setTemplate($arquivo)
-    {
-        $this->tlp = $arquivo;
-    }
-
-    public function findTemplate()
-    {
-        if ($this->tlp) {
-            if (!file_exists($this->tlp)) {
-                throw new Exception('Arquivo de template não encontrado');
-            }
-
-            $arquivo = fopen($this->tlp, "r");
-            $html = "";
-
-            while (!feof($arquivo)) {
-                $html .= fgets($arquivo);
-            }
-
-            fclose($arquivo);
-
-            return $html;
-        } else {
-            throw new Exception('Arquivo de template não foi setado');
-        }
-    }
-
-    public function getTags($key = null)
-    {
-        if ($key) {
-            return $this->tags[$key];
-        } else {
-            return $this->tags;
-        }
-    }
-
-    public function setTags($key, $value)
+    public function addTag($key, $value)
     {
         $this->tags[$key] = $value;
+        return $this;
+    }
+
+    public function removeTag($key)
+    {
+        if (!isset($key)) {
+            return null;
+        }
+        unset($this->tags[$key]);
+    }
+
+    protected function findTemplate()
+    {
+        $file = $this->template->getPath();
+        if (!file_exists($file)) {
+            throw new Exception('Arquivo de template não encontrado');
+        }
+        return file_get_contents($file);
     }
 
     public function parse()
     {
         $html = $this->findTemplate();
 
-        foreach ($this->getTags() as $_tag => $value) {
-            $html = str_replace("{{" . $_tag . "}}", $value, $html);
+        foreach ($this->tags as $tag => $value) {
+            $html = str_replace("{{" . $tag . "}}", $value, $html);
         }
 
         return $html;
