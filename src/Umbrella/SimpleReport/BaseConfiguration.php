@@ -57,8 +57,8 @@ class BaseConfiguration
 
     protected function createFieldTypeInstance($fieldTypeName, $rendererPrefix)
     {
-        $classnameBase = "Umbrella\SimpleReport\Fields\\" . ucfirst(strtolower($fieldTypeName)) . 'Type';
-        $classnameConcrete = ucfirst(strtolower($rendererPrefix)) . $classnameBase;
+        $classnameBase = ucfirst(strtolower($fieldTypeName)) . 'Type';
+        $classnameConcrete = "Umbrella\SimpleReport\Fields\\" . ucfirst(strtolower($rendererPrefix)) . $classnameBase;
         if (class_exists($classnameConcrete)) {
             return new $classnameConcrete($this->option);
         } elseif (class_exists($classnameBase)) {

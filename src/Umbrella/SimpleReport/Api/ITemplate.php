@@ -36,4 +36,12 @@ interface ITemplate
     public function addParam($param, $value);
 
     public function getParam($param);
+
+    public function getTags();
+
+    public function setTags(array $tags);
+
+    public function getPath();
+
+    public function setPath($path);
 }
