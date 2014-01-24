@@ -24,17 +24,32 @@ use Umbrella\SimpleReport\BaseRenderer;
 use Umbrella\SimpleReport\Parser\TemplateParser;
 
 /**
- * Description of HTMLRenderer
- *
+ * Classe utilizada para gerar relatórios em PDF com o wkhtmltopdf
  * @author Ítalo Lelis <italo@voxtecnologia.com.br>
  */
 class WkPdfRenderer extends BaseRenderer
 {
 
+    /**
+     * @var string 
+     */
     private $output;
+
+    /**
+     * @var HtmlRenderer
+     */
     private $htmlRenderer;
+
+    /**
+     * @var TemplateParser 
+     */
     private $parser;
 
+    /**
+     * Inicializa uma nova instancia da classe WkPdfRenderer
+     * @param \Umbrella\SimpleReport\Api\IDatasource $datasource Uma instância de IDatasource
+     * @param \Umbrella\SimpleReport\Api\ITemplate $template Uma instância de ITemplate
+     */
     public function __construct(IDatasource $datasource, ITemplate $template)
     {
         parent::__construct($datasource, $template);
@@ -42,6 +57,10 @@ class WkPdfRenderer extends BaseRenderer
         $this->parser = new TemplateParser($template);
     }
 
+    /**
+     * Retorna o 
+     * @return string
+     */
     public function getOutput()
     {
         return $this->output;
