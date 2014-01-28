@@ -19,8 +19,9 @@
 namespace Umbrella\SimpleReport\Api;
 
 /**
- *
- * @author kelsoncm
+ * Defines the basics templates methods.
+ * @author kelsoncm <falecom@kelsoncm.com>
+ * @author Ítalo Lelis de Vietro <italo@voxtecnologia.com.br>
  */
 interface ITemplate
 {

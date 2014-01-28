@@ -19,8 +19,9 @@
 namespace Umbrella\SimpleReport\Api;
 
 /**
- *
+ * Defines a configuration type to use with the report. 
  * @author kelsoncm <falecom@kelsoncm.com>
+ * @author Ítalo Lelis de Vietro <italo@voxtecnologia.com.br>
  */
 interface IConfiguration
 {

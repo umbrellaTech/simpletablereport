@@ -19,8 +19,9 @@
 namespace Umbrella\SimpleReport\Api;
 
 /**
- *
- * @author kelsoncm
+ * Defines a datasource to use with the report. 
+ * @author kelsoncm <falecom@kelsoncm.com>
+ * @author Ítalo Lelis de Vietro <italo@voxtecnologia.com.br>
  */
 interface IDatasource extends \Iterator
 {
