@@ -18,11 +18,13 @@
 
 namespace Umbrella\SimpleReport\Renderer;
 
+use DateTime;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Umbrella\SimpleReport\Api\IDatasource;
 use Umbrella\SimpleReport\Api\ITemplate;
 use Umbrella\SimpleReport\BaseRenderer;
 use Umbrella\SimpleReport\Parser\TemplateParser;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Classe utilizada para gerar relatórios em PDF com o wkhtmltopdf
@@ -47,9 +49,19 @@ class WkPdfRenderer extends BaseRenderer
     private $parser;
 
     /**
+     * @var boolean 
+     */
+    private $isStreaming = false;
+
+    /**
+     * @var int 
+     */
+    private $length = 0;
+
+    /**
      * Inicializa uma nova instancia da classe WkPdfRenderer
-     * @param \Umbrella\SimpleReport\Api\IDatasource $datasource Uma instância de IDatasource
-     * @param \Umbrella\SimpleReport\Api\ITemplate $template Uma instância de ITemplate
+     * @param IDatasource $datasource Uma instância de IDatasource
+     * @param ITemplate $template Uma instância de ITemplate
      */
     public function __construct(IDatasource $datasource, ITemplate $template)
     {
@@ -73,16 +85,45 @@ class WkPdfRenderer extends BaseRenderer
         return $this;
     }
 
+    public function isStreaming()
+    {
+        return $this->isStreaming;
+    }
+
+    public function setStreaming($isStreaming)
+    {
+        $this->isStreaming = $isStreaming;
+        return $this;
+    }
+
     public function render()
     {
         $htmlFile = $this->getHtmlPageContent();
-        $response = new StreamedResponse();
-        $response->setCallback(function () use($htmlFile) {
+        if ($this->isStreaming()) {
+            $response = new StreamedResponse();
+
+            ob_start();
+            $self = $this;
+
+            $response->setCallback(function () use($htmlFile, $self, &$lenght) {
+                $self->renderPdf($htmlFile);
+                ob_flush();
+                flush();
+            });
+        } else {
+            $response = new \Symfony\Component\HttpFoundation\Response();
             $this->renderPdf($htmlFile);
-            ob_flush();
-            flush();
-        });
+        }
+
+        $d = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, md5($this->output));
+        $response->headers->set('Content-Disposition', $d);
+        $response->headers->set('Content-type', 'application/pdf');
+        $response->headers->set('Cache-Control', 'max-age=0, must-revalidate');
+        $response->headers->set('Pragma', 'public');
+        ini_set('zlib.output_compression', '0');
+
         $response->send();
+
         return $this;
     }
 
@@ -99,7 +140,6 @@ class WkPdfRenderer extends BaseRenderer
                         ), $this->template->getTags())
         );
         $content = $this->parser->parse();
-
         file_put_contents($filename, $content);
         ob_end_clean();
 
@@ -108,11 +148,11 @@ class WkPdfRenderer extends BaseRenderer
 
     protected function createDate()
     {
-        $date = new \DateTime();
+        $date = new DateTime();
         return $date->format('d/m/Y');
     }
 
-    protected function renderPdf($htmlFile)
+    public function renderPdf($htmlFile)
     {
         \wkhtmltox_convert('pdf', array(
             'out' => $this->output,
@@ -125,6 +165,7 @@ class WkPdfRenderer extends BaseRenderer
 
         $this->setPermissions($htmlFile, $this->output);
         $this->unlinkFile($htmlFile);
+        $this->length = readfile($this->output);
     }
 
     /**
@@ -141,20 +182,6 @@ class WkPdfRenderer extends BaseRenderer
     public function unlinkFile($file)
     {
         unlink($file);
-    }
-
-    /**
-     * Envia os headersde pdf para o browser
-     * @param boolean $attachment Se o pdf será exibido no browser ou baixado pelo usuário
-     */
-    public function send($attachment = true)
-    {
-        $type = $attachment ? 'attachment' : 'inline';
-        header('Content-type: application/pdf');
-        header('Content-Disposition: ' . $type . '; filename="' . md5($this->output) . '.pdf"');
-        readfile($this->output);
-
-        $this->unlinkFile($this->output);
     }
 
 }
