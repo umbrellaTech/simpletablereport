@@ -13,6 +13,7 @@
         }
     ],
     "require": {
+        "symfony/http-foundation": "v2.4.1"
     },
     "autoload": {
         "psr-0": {

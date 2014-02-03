@@ -22,6 +22,7 @@ use Umbrella\SimpleReport\Api\IDatasource;
 use Umbrella\SimpleReport\Api\ITemplate;
 use Umbrella\SimpleReport\BaseRenderer;
 use Umbrella\SimpleReport\Parser\TemplateParser;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Classe utilizada para gerar relatórios em PDF com o wkhtmltopdf
@@ -75,7 +76,13 @@ class WkPdfRenderer extends BaseRenderer
     public function render()
     {
         $htmlFile = $this->getHtmlPageContent();
-        $this->renderPdf($htmlFile);
+        $response = new StreamedResponse();
+        $response->setCallback(function () use($htmlFile) {
+            $this->renderPdf($htmlFile);
+            ob_flush();
+            flush();
+        });
+        $response->send();
         return $this;
     }
 
