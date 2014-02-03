@@ -54,6 +54,11 @@ class WkPdfRenderer extends BaseRenderer
     private $isStreaming = false;
 
     /**
+     * @var int 
+     */
+    private $length = 0;
+
+    /**
      * Inicializa uma nova instancia da classe WkPdfRenderer
      * @param IDatasource $datasource Uma instância de IDatasource
      * @param ITemplate $template Uma instância de ITemplate
@@ -94,14 +99,13 @@ class WkPdfRenderer extends BaseRenderer
     public function render()
     {
         $htmlFile = $this->getHtmlPageContent();
-
         if ($this->isStreaming()) {
             $response = new StreamedResponse();
 
             ob_start();
             $self = $this;
-            $response->setCallback(function () use($htmlFile, $self) {
-                dump('lol');
+
+            $response->setCallback(function () use($htmlFile, $self, &$lenght) {
                 $self->renderPdf($htmlFile);
                 ob_flush();
                 flush();
@@ -114,6 +118,10 @@ class WkPdfRenderer extends BaseRenderer
         $d = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, md5($this->output));
         $response->headers->set('Content-Disposition', $d);
         $response->headers->set('Content-type', 'application/pdf');
+        $response->headers->set('Cache-Control', 'max-age=0, must-revalidate');
+        $response->headers->set('Pragma', 'public');
+        ini_set('zlib.output_compression', '0');
+
         $response->send();
 
         return $this;
@@ -157,7 +165,7 @@ class WkPdfRenderer extends BaseRenderer
 
         $this->setPermissions($htmlFile, $this->output);
         $this->unlinkFile($htmlFile);
-        readfile($this->output);
+        $this->length = readfile($this->output);
     }
 
     /**
