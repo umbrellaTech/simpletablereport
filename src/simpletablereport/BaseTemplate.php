@@ -16,39 +16,108 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport;
+
+use Umbrella\SimpleReport\Api\FieldSet;
+use Umbrella\SimpleReport\Api\ITemplate;
+
 /**
  * Description of SimpleTemplate
  *
  * @author kelsocm
+ * @author Ítalo Lelis <italo@voxtecnologia.com.br>
  */
-class BaseTemplate implements ITemplate {
-
+class BaseTemplate implements ITemplate, ISum
+{
     private $fields;
     private $params;
-    
-    function __construct(FieldSet $fieldSet=null, $params=null) {
+    private $tags;
+    private $path;
+    private $colunmFieldCounts;
+    private $enableColunmCount;
+
+    public function __construct(FieldSet $fieldSet = null, array $params = array())
+    {
         $this->fields = $fieldSet;
         $this->params = $params;
     }
-    
-    public function getFields() {
+
+    public function getFields()
+    {
         return $this->fields;
     }
 
-    public function setFields(FieldSet $fieldSet) {
+    public function setFields(FieldSet $fieldSet)
+    {
         $this->fields = $fieldSet;
     }
 
-    public function getParams() {
+    public function getParams()
+    {
         return $this->params;
     }
 
-    public function setParams($params) {
+    public function setParams(array $params)
+    {
         $this->params = $params;
     }
-    
-    public function fieldExists($fieldName) {
-        return $this->fieldSet->fieldExists($fieldName);
+
+    public function fieldExists($fieldName)
+    {
+        return $this->fields->fieldExists($fieldName);
     }
 
+    public function addParam($param, $value)
+    {
+        $this->params[$param] = $value;
+    }
+
+    public function getParam($param)
+    {
+        return $this->params[$param];
+    }
+
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    public function setTags(array $tags)
+    {
+        $this->tags = $tags;
+        return $this;
+    }
+
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    public function setPath($path)
+    {
+        $this->path = $path;
+        return $this;
+    }
+
+    public function getColumnFieldCounts()
+    {
+        return $this->colunmFieldCounts;
+    }
+
+    public function setColumnFieldCounts($fieldsCounts)
+    {
+        $this->colunmFieldCounts = $fieldsCounts;
+        return $this;
+    }
+
+    public function enableColumnCount($enable)
+    {
+        $this->enableColunmCount = (is_array($enable))? true : false;
+        return $this;
+    }
+
+    public function getEnabledColumnCount()
+    {
+        return $this->enableColunmCount;
+    }
 }
