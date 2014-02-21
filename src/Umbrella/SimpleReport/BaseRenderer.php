@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2013 kelsoncm <falecom@kelsoncm.com>.
+ * Copyright 2013-2014 kelsoncm <falecom@kelsoncm.com>, ayrtonricardo <ayrton_jampa15@hotmail.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ use Umbrella\SimpleReport\Api\ITemplate;
  * Description of BaseRenderer
  *
  * @author kelsoncm <falecom@kelsoncm.com>
+ * @author ayrtonricardo <ayrton_jampa15@hotmail.com>
  */
 abstract class BaseRenderer implements IRenderer
 {
@@ -64,4 +65,16 @@ abstract class BaseRenderer implements IRenderer
         return $fieldTypeInstance->render($unformattedFieldValue);
     }
 
+    protected function getColumnCountTotal ($field)
+    {
+        $countAll = 0;
+        foreach ($this->datasource as $key => $fieldData) {
+            if (!is_array($field) && isset($this->datasource[$key][$field])) {
+                $countAll += $this->datasource[$key][$field];
+            } elseif (is_array($field)) {
+                $countAll = $field[0];
+            }
+        }
+        return $countAll;
+    }
 }
