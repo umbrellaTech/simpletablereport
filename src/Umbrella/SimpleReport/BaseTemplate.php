@@ -114,7 +114,7 @@ class BaseTemplate implements ITemplate, ISum
 
     public function enableColumnCount($enable)
     {
-        $this->enableColunmCount = is_array($enable)? true : false;
+        $this->enableColunmCount = $enable;
         return $this;
     }
 
