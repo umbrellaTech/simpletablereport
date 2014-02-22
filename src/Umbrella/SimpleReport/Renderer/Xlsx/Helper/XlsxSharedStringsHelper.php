@@ -16,23 +16,17 @@
  * limitations under the License.
  */
 
-namespace Umbrella\SimpleReport\Renderer\Xlsx\Helper;
-
-use ArrayIterator;
-
 /**
  * Description of XLSXSharedStringsHelper
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class XlsxSharedStringsHelper extends XlsxBaseHelper
-{
-
+class XlsxSharedStringsHelper extends XlsxBaseHelper {
+    
     private static $strings = array();
     private static $lastId = 0;
-
-    public static function putIfNotExists($value)
-    {
+    
+    public static function putIfNotExists($value) {
         $trimString = trim("$value");
         if (empty($trimString) || is_null($value)) {
             return null;
@@ -43,15 +37,13 @@ class XlsxSharedStringsHelper extends XlsxBaseHelper
         }
         return XlsxSharedStringsHelper::$strings[$value];
     }
-
-    public static function getIterator()
-    {
+    
+    public static function getIterator() {
         return new ArrayIterator(array_keys(XlsxSharedStringsHelper::$strings));
     }
-
-    public static function count()
-    {
-        return XlsxSharedStringsHelper::$lastId - 1;
+    
+    public static function count() {
+        return XlsxSharedStringsHelper::$lastId-1;
     }
     
     public static function reset() {
@@ -59,8 +51,7 @@ class XlsxSharedStringsHelper extends XlsxBaseHelper
         XlsxSharedStringsHelper::$lastId = 0;
     }
 
-    public function renderSharedStrings()
-    {
+    public function renderSharedStrings() {
         $count = XlsxSharedStringsHelper::count();
         $result = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n";
         $result .= "<sst xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" count=\"{$count}\" uniqueCount=\"{$count}\">";
@@ -71,5 +62,5 @@ class XlsxSharedStringsHelper extends XlsxBaseHelper
         XlsxSharedStringsHelper::reset();
         return $result;
     }
-
+   
 }

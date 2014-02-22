@@ -18,6 +18,9 @@
 
 namespace Umbrella\SimpleReport\Fields;
 
+
+use Umbrella\SimpleReport\Fields\NumericType;
+
 /**
  * Description of IntegerType
  *

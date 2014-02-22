@@ -57,6 +57,10 @@ class WkPdfRenderer extends BaseRenderer
      * @var int 
      */
     private $length = 0;
+    
+    private $tags;
+    
+    private $path;
 
     /**
      * Inicializa uma nova instancia da classe WkPdfRenderer
@@ -68,6 +72,28 @@ class WkPdfRenderer extends BaseRenderer
         parent::__construct($datasource, $template);
         $this->htmlRenderer = new HtmlRenderer($datasource, $template);
         $this->parser = new TemplateParser($template);
+    }
+
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    public function setTags(array $tags)
+    {
+        $this->tags = $tags;
+        return $this;
+    }
+
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    public function setPath($path)
+    {
+        $this->path = $path;
+        return $this;
     }
 
     /**

@@ -16,16 +16,19 @@
  * limitations under the License.
  */
 
-namespace Umbrella\SimpleReport\Fields\Xlsx;
-
-use Umbrella\SimpleReport\Fields\DateType;
-
 /**
  * Description of DateType
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class XlsxDateType extends DateType
-{
+class XlsxDateType extends DateType {
+    
+    public function format($value) {
+        if (empty($value)) {
+            return null;
+        }
+        $date = XlsxDateTimeUtils::toDate($value);
+        return "<c r=\"cellAddress\" s=\"6\"><v>{$date}</v></c>";
+    }
     
 }

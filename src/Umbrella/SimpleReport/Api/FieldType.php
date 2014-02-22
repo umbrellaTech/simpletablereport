@@ -38,8 +38,11 @@ abstract class FieldType
     protected $options;
     protected $typeprefix;
 
-    function __construct($options)
+    function __construct($options=null)
     {
+        if (empty($options)) {
+            $options = ConfigurationLoader::getInstance()->getConfiguration()->getOptions();
+        }
         $this->options = $options;
     }
 
@@ -48,15 +51,13 @@ abstract class FieldType
         return $this->format($this->toPrimitiveType($value));
     }
 
-    public function getOption($optionName)
-    {
+    public function getOption($optionName) {
         if (isset($this->options["simpletablereport.{$this->typeprefix}.{$optionName}"])) {
             return $this->options["simpletablereport.{$this->typeprefix}.{$optionName}"];
         } elseif (isset($this->options["simpletablereport.{$optionName}"])) {
             return $this->options["simpletablereport.{$optionName}"];
-        } else {
-            null;
         }
+        return null;
     }
 
     public abstract function format($value);

@@ -16,16 +16,21 @@
  * limitations under the License.
  */
 
-namespace Umbrella\SimpleReport\Fields\Xlsx;
-
-use Umbrella\SimpleReport\Fields\TimestampType;
-
 /**
  * Description of TimestampType
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class XlsxTimestampType extends TimestampType
-{
+class XlsxTimestampType extends TimestampType {
     
+    public function format($value) {
+        if (empty($value)) {
+            return null;
+        }
+        $date = XlsxDateTimeUtils::toDate($value);
+        $time = XlsxDateTimeUtils::toTime($value);
+        $timestamp = $date + $time;
+        return "<c r=\"cellAddress\" s=\"8\"><v>{$timestamp}</v></c>";
+    }
+   
 }

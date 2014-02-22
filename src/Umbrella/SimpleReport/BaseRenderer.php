@@ -59,8 +59,7 @@ abstract class BaseRenderer implements IRenderer
 
     protected function getValue(IDatasource $datasource, FieldDefinition $fieldDescription, $rendererPrefix)
     {
-        $fieldTypeName = $fieldDescription->getFieldType();
-        $fieldTypeInstance = $this->configuration->getFieldTypeInstance($fieldTypeName, $rendererPrefix);
+        $fieldTypeInstance = $fieldDescription->getFieldTypeInstance($rendererPrefix);
         $unformattedFieldValue = $datasource->getFieldValue($fieldDescription);
         return $fieldTypeInstance->render($unformattedFieldValue);
     }

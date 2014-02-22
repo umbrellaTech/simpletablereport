@@ -16,102 +16,82 @@
  * limitations under the License.
  */
 
-namespace Umbrella\SimpleReport\Renderer\Xlsx;
-
-use RuntimeException;
-use Umbrella\SimpleReport\BaseRenderer;
-use Umbrella\SimpleReport\ConfigurationLoader;
-use Umbrella\SimpleReport\Renderer\Xlsx\Helper\XlsxSharedStringsHelper;
-use Umbrella\SimpleReport\Renderer\Xlsx\Helper\XlsxSheetHelper;
-use Umbrella\SimpleReport\Renderer\Xlsx\Helper\XlsxStyleHelper;
-use Umbrella\SimpleReport\Renderer\Xlsx\Helper\XlsxTableHelper;
-use ZipArchive;
-
 /**
  * Description of XlsxRenderer
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class XlsxRenderer extends BaseRenderer
-{
-
+class XlsxRenderer extends BaseRenderer {
+    
     protected $tableString = '';
     protected $sheetString = '';
     protected $sharedStringsString = '';
     protected $stylesString = '';
     protected $outputFileName = '';
     protected $currentRow;
-
-    public function getTableString()
-    {
+    
+    public function getTableString() {
         return $this->tableString;
     }
 
-    public function getSheetString()
-    {
+    public function getSheetString() {
         return $this->sheetString;
     }
 
-    public function getOutputFileName()
-    {
+    public function getOutputFileName() {
         return $this->outputFileName;
     }
-
-    public function getSharedStringsString()
-    {
+    
+    public function getSharedStringsString() {
         return $this->sharedStringsString;
     }
-
-    public function render()
-    {
+   
+    
+    public function render() {
         $this->validate();
-
+        
         $xlsxTableHelper = new XlsxTableHelper($this->datasource, $this->template);
         $this->tableString = $xlsxTableHelper->renderTable();
 
         $xlsxSheetHelper = new XlsxSheetHelper($this->datasource, $this->template);
         $this->sheetString = $xlsxSheetHelper->renderSheet();
-
+        
         $xlsxSharedStringsHelper = new XlsxSharedStringsHelper($this->datasource, $this->template);
         $this->sharedStringsString = $xlsxSharedStringsHelper->renderSharedStrings();
-
+        
         $xlsxStyleHelper = new XlsxStyleHelper($this->datasource, $this->template);
         $this->styleString = $xlsxStyleHelper->renderStyle();
 
         $this->output();
     }
-
-    protected function validate()
-    {
+    
+    protected function validate() {
         $fields = $this->template->getFields();
         if (empty($fields) || (!empty($fields) && $fields->count() == 0)) {
             throw new RuntimeException("Empty FieldSet not allowed.");
         }
-
-        if ($this->datasource->getRowCount() == 0) {
+        
+        if ($this->datasource->getRowCount()==0) {
             throw new RuntimeException("Empty DataSource not allowed.");
         }
     }
-
-    protected function output()
-    {
+    
+    protected function output() {
         $this->buildOutputFileName();
         $this->copySampleFile();
         $this->zipContent();
     }
-
-    protected function buildOutputFileName()
-    {
+    
+    protected function buildOutputFileName() {
         if ($this->outputFileName) {
             return;
-        }
+        } 
         $rootDir = ConfigurationLoader::getInstance()->getRootDir();
         $concat = $this->tableString . $this->sheetString . $this->sharedStringsString;
-        $this->outputFileName = "{$rootDir}/test/" . md5($concat) . ".xlsx";
+        $this->outputFileName = "{$rootDir}/test/" . md5($concat) .  ".xlsx";
     }
-
-    protected function copySampleFile()
-    {
+    
+    protected function copySampleFile() {
         $rootDir = ConfigurationLoader::getInstance()->getRootDir();
         $sampleTmp = ConfigurationLoader::getInstance()->getConfiguration()->getOption('simpletablereport.xlsxrenderer.sample');
         $sample = "{$rootDir}/{$sampleTmp}";
@@ -119,11 +99,10 @@ class XlsxRenderer extends BaseRenderer
             throw new RuntimeException("Failed to copy '{$sample}'.");
         }
     }
-
-    protected function zipContent()
-    {
+    
+    protected function zipContent() {
         $zip = new ZipArchive();
-        if ($zip->open($this->outputFileName, ZipArchive::CREATE) !== TRUE) {
+        if ($zip->open($this->outputFileName, ZipArchive::CREATE)!==TRUE) {
             throw new RuntimeException("Cannot open [{$this->outputFileName}].");
         }
 
@@ -131,7 +110,6 @@ class XlsxRenderer extends BaseRenderer
         $zip->addFromString("xl/worksheets/sheet1.xml", $this->sheetString);
         $zip->addFromString("xl/sharedStrings.xml", $this->sharedStringsString);
         $zip->addFromString("xl/styles.xml", $this->styleString);
-        $zip->close();
+        $zip->close();        
     }
-
 }

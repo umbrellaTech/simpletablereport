@@ -16,19 +16,14 @@
  * limitations under the License.
  */
 
-namespace Umbrella\SimpleReport\Renderer\Xlsx\Helper;
-
-use Umbrella\SimpleReport\Api\FieldDefinition;
-
 /**
  * Description of XLSXSheetHelper
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class XlsxSheetHelper extends XlsxBaseHelper
-{
+class XlsxSheetHelper extends XlsxBaseHelper {
 
-    protected $sheetString = '';
+    protected $sheetString='';
     
     protected function getRenderedValue(FieldDefinition $fieldDescription) {
         $fieldTypeName = $fieldDescription->getFieldType();
@@ -46,9 +41,8 @@ class XlsxSheetHelper extends XlsxBaseHelper
         $this->doWriteSheetEnd();
         return $this->sheetString;
     }
-
-    protected function doWriteSheetBegin()
-    {
+    
+    protected function doWriteSheetBegin() {
         $tableRange = $this->getTableRange();
         $this->sheetString = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n";
         $this->sheetString .= "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" mc:Ignorable=\"x14ac\" xmlns:x14ac=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac\">";
@@ -60,16 +54,14 @@ class XlsxSheetHelper extends XlsxBaseHelper
         $this->sheetString .= "</sheetViews>";
         $this->sheetString .= "<sheetFormatPr defaultRowHeight=\"15\" x14ac:dyDescent=\"0.25\"/>";
     }
-
-    protected function doWriteSheetColumns()
-    {
+    
+    protected function doWriteSheetColumns() {
         $this->sheetString .= "<cols>";
         $this->sheetString .= "<col min=\"1\" max=\"1\" width=\"11.42578125\"/>";
         $this->sheetString .= "</cols>";
     }
-
-    protected function doWriteSheetData()
-    {
+    
+    protected function doWriteSheetData() {
         $this->sheetString .= "<sheetData>";
         $this->doWriteSheetDataHeader();
         $this->doWriteSheetDataBody();
@@ -85,9 +77,8 @@ class XlsxSheetHelper extends XlsxBaseHelper
         }
         $this->sheetString .= "</row>";
     }
-
-    protected function doWriteSheetDataBody()
-    {
+    
+    protected function doWriteSheetDataBody() {
         for ($this->datasource->rewind(); $this->datasource->valid(); $this->datasource->next()) {
             $this->currentRow++;
             $cols = $this->doWriteSheetDataBodyCols();
@@ -98,9 +89,8 @@ class XlsxSheetHelper extends XlsxBaseHelper
             }
         }
     }
-
-    protected function doWriteSheetDataBodyCols()
-    {
+    
+    protected function doWriteSheetDataBodyCols() {
         $return = "";
         foreach ($this->template->getFields() as $key => $fieldDescription) {
             $fieldTypeInstance = $fieldDescription->getFieldTypeInstance('Xlsx');
@@ -113,18 +103,16 @@ class XlsxSheetHelper extends XlsxBaseHelper
         }
         return $return;
     }
-
-    protected function doWriteSheetPageMargins()
-    {
+    
+    protected function doWriteSheetPageMargins() {
         $this->sheetString .= "<pageMargins left=\"0.511811024\" right=\"0.511811024\" top=\"0.78740157499999996\" bottom=\"0.78740157499999996\" header=\"0.31496062000000002\" footer=\"0.31496062000000002\"/>";
     }
-
-    protected function doWriteSheetEnd()
-    {
+    
+    protected function doWriteSheetEnd() {
         $this->sheetString .= "<tableParts count=\"1\">";
         $this->sheetString .= "<tablePart r:id=\"rId1\"/>";
         $this->sheetString .= "</tableParts>";
         $this->sheetString .= "</worksheet>";
     }
-
+    
 }

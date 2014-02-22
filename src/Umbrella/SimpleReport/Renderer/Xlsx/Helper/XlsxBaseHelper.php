@@ -16,53 +16,45 @@
  * limitations under the License.
  */
 
-namespace Umbrella\SimpleReport\Renderer\Xlsx\Helper;
-
-use Umbrella\SimpleReport\Api\IDatasource;
-use Umbrella\SimpleReport\Api\ITemplate;
-
 /**
  * Description of XLSXBaseHelper
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class XlsxBaseHelper
-{
+class XlsxBaseHelper {
 
     protected $datasource;
     protected $template;
-
-    function __construct(IDatasource $datasource, ITemplate $template)
-    {
+    
+    function __construct(IDatasource $datasource, ITemplate $template) {
         $this->datasource = $datasource;
         $this->template = $template;
     }
-
+    
     /**
      * 
      * @param int $columnIndex - Zero indexed
      * @return string - Column letters
      */
-    protected function getColumnLetters($columnIndex)
-    {
+    protected function getColumnLetters($columnIndex) {
         //A=65, Z=90
+
         // First Letter, if exists
-        $rest = ((int) (($columnIndex) / 26.0));
-        $result = ($rest > 0) ? chr(65 + $rest - 1) : '';
-
+        $rest = ((int)(($columnIndex)/26.0));
+        $result = ($rest>0) ? chr(65+$rest-1) : ''; 
+        
         // Second Letter
-        $rest = ($columnIndex - ($rest * 26));
-        $result .= chr(65 + $rest);
-
+        $rest = ($columnIndex-($rest*26));
+        $result .= chr(65+$rest);
+        
         return $result;
     }
-
-    protected function getTableRange()
-    {
+    
+    protected function getTableRange() {
         $colCount = $this->template->getFields()->count();
-        $colLetter = $this->getColumnLetters($colCount - 1);
-        $rowCount = $this->datasource->getRowCount() + 1;
+        $colLetter = $this->getColumnLetters($colCount-1);
+        $rowCount = $this->datasource->getRowCount()+1;
         return "A1:{$colLetter}{$rowCount}";
     }
-
+    
 }

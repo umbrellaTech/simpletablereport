@@ -40,7 +40,8 @@ class TimestampType extends DateTimeType
             if (substr_count($value, $this->getOption('timeseparator')) == 1) {
                 $value .= $this->getOption('timeseparator') . '00';
             }
-            return DateTime::createFromFormat($this->getOption('fromlongformat'), $value, $this->getDateTimeZone());
+            $d = DateTime::createFromFormat($this->getOption('fromlongformat'), $value, $this->getDateTimeZone());
+            return $d;
         } else if (is_array($value)) {
             return DateTime::createFromFormat('Y-m-d H:i:s', sprintf('%d-%02d-%02d %02d:%02d:%02d', $value['year'], $value['mon'], $value['mday'], $value['hours'], $value['minutes'], $value['seconds']), $this->getDateTimeZone());
         }

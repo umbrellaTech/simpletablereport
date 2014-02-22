@@ -32,18 +32,27 @@ abstract class DateTimeType extends FieldType
 
     protected static $timezones = array();
 
+    public static function getDefaultDateTimeZone()
+    {
+        if (!DateTimeType::$defaultTimezone) {
+            $me = new DateTimeType();
+            $timezoneName = $me->getOption('timezone');
+            if (!isset(DateTimeType::$timezones[$timezoneName])) {
+                DateTimeType::$timezones[$timezoneName] = new DateTimeZone($timezoneName);
+            }
+            DateTimeType::$defaultTimezone = DateTimeType::$timezones[$timezoneName];
+        }
+        return DateTimeType::$defaultTimezone;
+    }
+
     public function format($value)
     {
         return is_null($value) ? '' : $value->format($this->getOption('toformat'));
-    }
+        }
 
     protected function getDateTimeZone()
     {
-        $timezoneName = $this->getOption('timezone');
-        if (!isset(DateType::$timezones[$timezoneName])) {
-            DateType::$timezones[$timezoneName] = new DateTimeZone($this->getOption('timezone'));
-        }
-        return DateType::$timezones[$timezoneName];
+        return DateTimeType::getDefaultDateTimeZone();
     }
 
     public function toPrimitiveType($value)

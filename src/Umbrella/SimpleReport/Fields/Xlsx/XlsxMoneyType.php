@@ -16,22 +16,14 @@
  * limitations under the License.
  */
 
-namespace Umbrella\SimpleReport\Fields\Xlsx;
-
-use Umbrella\SimpleReport\Fields\DecimalType;
-
 /**
  * Description of MoneyType
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class XlsxMoneyType extends DecimalType
-{
-
-    public function format($value)
-    {
+class XlsxMoneyType extends DecimalType {
+    public function format($value) {
         $value = parent::format($value);
         return empty($value) ? null : "<c r=\"cellAddress\" s=\"2\"><v>{$value}</v></c>";
     }
-
 }

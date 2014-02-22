@@ -122,7 +122,7 @@ class FieldDefinition
         } elseif (class_exists($classnameBase, true)) {
             return new $classnameBase(array());
         } else {
-            throw new Exception("Field class don't exists for field type '{$fieldTypeName}'.");
+            throw new Exception("Field class don't exists for field type '{$fieldTypeName}' ({$classnameBase}, {$classnameConcrete}).");
         }
     }
 
