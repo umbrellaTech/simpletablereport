@@ -22,4 +22,13 @@
  * @author kelsoncm <falecom@kelsoncm.com>
  */
 class XlsxTimeType extends TimeType {
+
+    public function format($value) {
+        if (empty($value)) {
+            return null;
+        }
+        $time = XlsxDateTimeUtils::toTime($value);
+        return "<c r=\"cellAddress\" s=\"7\"><v>{$time}</v></c>";
+    }
+
 }

@@ -27,7 +27,7 @@ class MoneyType extends DecimalType {
     protected $prefix;
     protected $sufix;
     
-    function __construct($options) {
+    function __construct($options=null) {
         parent::__construct($options);
         $this->prefix = $this->getOption("prefix") ?: '$';
         $this->sufix = $this->getOption("sufix") ?: '';

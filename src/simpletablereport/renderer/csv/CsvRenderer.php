@@ -23,18 +23,29 @@
  */
 class CsvRenderer extends BaseRenderer {
     
+    private $stringBuffer;
+    
+    public function getStringBuffer() {
+        return $this->stringBuffer;
+    }
+    
     public function render() {
+        $this->stringBuffer = ''; 
         for ($this->datasource->rewind(); $this->datasource->valid(); $this->datasource->next()) {
             $this->renderRow();
         }
     }
+    
+    protected function write($string) {
+        $this->stringBuffer .= $string;
+    } 
     
     protected function renderRow() {
         $row = array();
         foreach ($this->template->getFields() as $fieldDescription) {
             $row[] = $this->getValue($this->datasource, $fieldDescription, 'CSV');
         }
-        echo implode(',', $row) . "\n";
+        $this->write(implode(',', $row) . "\n");
     }
 
 }

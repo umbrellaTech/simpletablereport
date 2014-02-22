@@ -25,12 +25,7 @@ require_once 'SimpleTest.php';
 
 class SimpleCsvTest extends SimpleTest {
     
-    /**
-     * 
-     */
     public function testArrayDatasource_TypeInteger() {
-        $this->expectOutputString("0\n1\n2\n3\n4\n\n\n\n5\n");
-        
         $fieldSet = new FieldSet();
         $fieldSet->addField('i', '#', FieldType::INTEGER);
         
@@ -41,14 +36,10 @@ class SimpleCsvTest extends SimpleTest {
         $renderer = new CsvRenderer($datasource, $template);
         
         $renderer->render($datasource, $template);
+        $this->assertEquals("0\n1\n2\n3\n4\n\n\n\n5\n", $renderer->getStringBuffer());
     }
     
-    /**
-     * 
-     */
     public function testArrayDatasource_TypeFloat() {
-        $this->expectOutputString("0\n1.1\n2.4\n4\n\n\n\n5.6\n");
-        
         $fieldSet = new FieldSet();
         $fieldSet->addField('i', '#', FieldType::FLOAT);
         
@@ -59,14 +50,10 @@ class SimpleCsvTest extends SimpleTest {
         $renderer = new CsvRenderer($datasource, $template);
         
         $renderer->render($datasource, $template);
+        $this->assertEquals("0\n1.1\n2.4\n4\n\n\n\n5.6\n", $renderer->getStringBuffer());
     }
     
-    /**
-     * 
-     */
     public function testArrayDatasource_TypeDecimal() {
-        $this->expectOutputString("0.000\n1.100\n2.400\n4.000\n5.678\n6.790\n\n\n\n5.600\n654321.000\n");
-        
         $fieldSet = new FieldSet();
         $fieldSet->addField('i', '#', FieldType::DECIMAL);
         
@@ -77,14 +64,10 @@ class SimpleCsvTest extends SimpleTest {
         $renderer = new CsvRenderer($datasource, $template);
         
         $renderer->render($datasource, $template);
+        $this->assertEquals("0.000\n1.100\n2.400\n4.000\n5.678\n6.790\n\n\n\n5.600\n654321.000\n", $renderer->getStringBuffer());
     }
     
-    /**
-     * 
-     */
     public function testArrayDatasource_TypeMoney() {
-        $this->expectOutputString("R$0.0000\nR$1.1000\nR$2.4000\nR$4.0000\nR$5.6780\nR$6.7899\n\n\n\nR$5.6000\nR$654321.0000\n");
-        
         $fieldSet = new FieldSet();
         $fieldSet->addField('i', '#', FieldType::MONEY);
         
@@ -95,17 +78,13 @@ class SimpleCsvTest extends SimpleTest {
         $renderer = new CsvRenderer($datasource, $template);
         
         $renderer->render($datasource, $template);
+        $this->assertEquals("R$0.0000\nR$1.1000\nR$2.4000\nR$4.0000\nR$5.6780\nR$6.7899\n\n\n\nR$5.6000\nR$654321.0000\n", $renderer->getStringBuffer());
     }
-    
-    /**
-     * 
-     */
+   
     public function testArrayDatasource_TypeDate() {
         $today = new DateTime();
         $today->setTimestamp(time());
 
-        $this->expectOutputString($today->format('d/m/Y') . "\n" . $today->format('d/m/Y') . "\n13/12/2011\n15/12/2013\n\n\n");
-        
         $fieldSet = new FieldSet();
         $fieldSet->addField('i', '#', FieldType::DATE);
         
@@ -116,17 +95,13 @@ class SimpleCsvTest extends SimpleTest {
         $renderer = new CsvRenderer($datasource, $template);
         
         $renderer->render($datasource, $template);
+        $this->assertEquals($today->format('d/m/Y') . "\n" . $today->format('d/m/Y') . "\n13/12/2011\n15/12/2013\n\n\n", $renderer->getStringBuffer());
     }
     
-    /**
-     * 
-     */
     public function testArrayDatasource_TypeTime() {
         $today = new DateTime();
         $today->setTimestamp(time());
 
-        $this->expectOutputString($today->format('H:i:s') . "\n" . $today->format('H:i:s') . "\n23:59:00\n22:00:00\n\n\n23:59:35\n");
-        
         $fieldSet = new FieldSet();
         $fieldSet->addField('i', '#', FieldType::TIME);
         
@@ -137,17 +112,13 @@ class SimpleCsvTest extends SimpleTest {
         $renderer = new CsvRenderer($datasource, $template);
         
         $renderer->render($datasource, $template);
+        $this->assertEquals($today->format('H:i:s') . "\n" . $today->format('H:i:s') . "\n23:59:00\n22:00:00\n\n\n23:59:35\n", $renderer->getStringBuffer());
     }
     
-    /**
-     * 
-     */
     public function testArrayDatasource_TypeTimestamp() {
         $today = new DateTime();
         $today->setTimestamp(time());
 
-        $this->expectOutputString($today->format('d/m/Y H:i:s') . "\n" . $today->format('d/m/Y H:i:s') . "\n15/12/2013 23:59:00\n20/11/2011 22:00:00\n\n\n01/01/1991 23:59:35\n");
-        
         $fieldSet = new FieldSet();
         $fieldSet->addField('i', '#', FieldType::TIMESTAMP);
         
@@ -158,14 +129,10 @@ class SimpleCsvTest extends SimpleTest {
         $renderer = new CsvRenderer($datasource, $template);
         
         $renderer->render($datasource, $template);
+        $this->assertEquals($today->format('d/m/Y H:i:s') . "\n" . $today->format('d/m/Y H:i:s') . "\n15/12/2013 23:59:00\n20/11/2011 22:00:00\n\n\n01/01/1991 23:59:35\n", $renderer->getStringBuffer());
     }
     
-    /**
-     * 
-     */
     public function testArrayDatasource_TypeString() {
-        $this->expectOutputString("umbrella\nsimpletablereport\n\n\n\nkelsoncm\nline1 line2\n");
-        
         $fieldSet = new FieldSet();
         $fieldSet->addField('i', '#', FieldType::STRING);
         
@@ -176,32 +143,28 @@ class SimpleCsvTest extends SimpleTest {
         $renderer = new CsvRenderer($datasource, $template);
         
         $renderer->render($datasource, $template);
+        $this->assertEquals("umbrella\nsimpletablereport\n\n\n\nkelsoncm\nline1 line2\n", $renderer->getStringBuffer());
     }
     
-    /**
-     * 
-     */
     public function testArrayDatasource_emptyArray() {
-        $this->expectOutputString("");
-        
         $datasource = new ArrayDatasource(array());
         $template = new BaseTemplate(new FieldSet());
         $renderer = new CsvRenderer($datasource, $template);
         
         $renderer->render($datasource, $template);
+        $this->assertEquals("", $renderer->getStringBuffer());
     }
-    
+
     /**
      *  @expectedException InvalidArgumentException
      *  @expectedExceptionMessage Passed variable is not an array or object, using empty array instead
      */
     public function testArrayDatasource_null() {
-        $this->expectOutputString("");
-        
         $datasource = new ArrayDatasource(null);
         $template = new BaseTemplate(new FieldSet());
         $renderer = new CsvRenderer($datasource, $template);
         
         $renderer->render($datasource, $template);
+        $this->assertEquals("", $renderer->getStringBuffer());
     }
 }

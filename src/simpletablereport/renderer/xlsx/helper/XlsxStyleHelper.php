@@ -28,6 +28,8 @@ class XlsxStyleHelper extends XlsxBaseHelper {
         $result .= "<numFmts count=\"2\">";
         $result .=   "<numFmt numFmtId=\"44\" formatCode=\"_-&quot;R$&quot;\ * #,##0.00_-;\-&quot;R$&quot;\ * #,##0.00_-;_-&quot;R$&quot;\ * &quot;-&quot;??_-;_-@_-\"/>";
         $result .=   "<numFmt numFmtId=\"165\" formatCode=\"&quot;R$&quot;\ #,##0.00\"/>";
+        $result .=   "<numFmt numFmtId=\"166\" formatCode=\"[$-F400]h:mm:ss\ AM/PM\"/>";        
+        $result .=   "<numFmt numFmtId=\"167\" formatCode=\"dd/mm/yyyy\\ hh:mm:ss\"/>";        
         $result .= "</numFmts>";
         $result .= "<fonts count=\"1\" x14ac:knownFonts=\"1\">";
         $result .=   "<font><sz val=\"11\"/><color theme=\"1\"/><name val=\"Calibri\"/><family val=\"2\"/><scheme val=\"minor\"/></font>";
@@ -41,6 +43,7 @@ class XlsxStyleHelper extends XlsxBaseHelper {
         $result .= "</borders>";
         $result .= "<cellStyleXfs count=\"1\">";
         $result .= "<xf numFmtId=\"0\" fontId=\"0\" fillId=\"0\" borderId=\"0\"/>";
+        $result .=   "<xf numFmtId=\"164\" fontId=\"0\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\"/>";
         $result .= "</cellStyleXfs>";
         $result .= "<cellXfs count=\"6\">";
         $result .=   "<xf numFmtId=\"0\" fontId=\"0\" fillId=\"0\" borderId=\"0\" xfId=\"0\"/>";
@@ -49,6 +52,9 @@ class XlsxStyleHelper extends XlsxBaseHelper {
         $result .=   "<xf numFmtId=\"44\" fontId=\"0\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\"/>";
         $result .=   "<xf numFmtId=\"12\" fontId=\"0\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\"/>";
         $result .=   "<xf numFmtId=\"49\" fontId=\"0\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\"/>";
+        $result .=   "<xf numFmtId=\"14\" fontId=\"0\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\"/>";
+        $result .=   "<xf numFmtId=\"166\" fontId=\"0\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\"/>";
+        $result .=   "<xf numFmtId=\"167\" fontId=\"0\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\"/>";
         $result .= "</cellXfs><cellStyles count=\"1\">";
         $result .= "<cellStyle name=\"Normal\" xfId=\"0\" builtinId=\"0\"/></cellStyles>";
         $result .= "<dxfs count=\"0\"/>";

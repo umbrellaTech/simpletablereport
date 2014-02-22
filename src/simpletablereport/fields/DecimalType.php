@@ -27,7 +27,7 @@ class DecimalType extends FloatType {
     protected $precision;
     protected $separator;
     
-    function __construct($options) {
+    function __construct($options=null) {
         parent::__construct($options);
         $this->precision = intval($this->getOption("precision")) ?: 2;
         $this->separator = $this->getOption("separator") ?: '.';

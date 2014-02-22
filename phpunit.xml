@@ -25,7 +25,7 @@ limitations under the License.
 >
     <testsuites>
         <testsuite name="Base">
-            <directory suffix=".php">test</directory>
+            <directory suffix="Test.php">test</directory>
         </testsuite>
     </testsuites>
 </phpunit>
