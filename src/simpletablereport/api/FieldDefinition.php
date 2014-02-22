@@ -99,9 +99,9 @@ class FieldDefinition {
         $classnameBase = ucfirst(strtolower($fieldTypeName)) . 'Type';
         $classnameConcrete = ucfirst(strtolower($strategy)) . $classnameBase;
         if (class_exists($classnameConcrete,true)) {
-            return new $classnameConcrete();
+            return new $classnameConcrete(array());
         } elseif(class_exists($classnameBase,true)) {
-            return new $classnameBase();
+            return new $classnameBase(array());
         } else {
             throw new Exception("Field class don't exists for field type '{$fieldTypeName}'.");
         }

@@ -54,7 +54,7 @@ abstract class FieldType {
         } elseif (isset($this->options["simpletablereport.{$optionName}"])) {
             return $this->options["simpletablereport.{$optionName}"];
         }
-        null;
+        return null;
     }
 
     public abstract function format($value);
