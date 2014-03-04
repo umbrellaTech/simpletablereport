@@ -16,6 +16,10 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Fields\Xlsx;
+
+use Umbrella\SimpleReport\Fields\DateTimeType;
+
 /**
  * Description of XlsxDateTimeUtils
  *
@@ -26,7 +30,7 @@ class XlsxDateTimeUtils {
     protected static $START_DATE = null;
     protected static $TIMEZONE = null;
     
-    public static function toTime(DateTime $endTime) {
+    public static function toTime(\DateTime $endTime) {
         $seconds = ($endTime->format('H') * 60 * 60) +
                    ($endTime->format('i') * 60) +
                    ($endTime->format('i') + 0);
@@ -34,9 +38,9 @@ class XlsxDateTimeUtils {
         return $xlxSeconds;
     }
    
-    public static function toDate(DateTime $endDate) {
+    public static function toDate(\DateTime $endDate) {
         if (!XlsxDateTimeUtils::$START_DATE) {
-            XlsxDateTimeUtils::$START_DATE = DateTime::createFromFormat('Y-m-d H:i:s', '1900-01-01 00:00:00', DateTimeType::getDefaultDateTimeZone());
+            XlsxDateTimeUtils::$START_DATE = \DateTime::createFromFormat('Y-m-d H:i:s', '1900-01-01 00:00:00', DateTimeType::getDefaultDateTimeZone());
         };
         $diff = XlsxDateTimeUtils::$START_DATE->diff($endDate);
         $days = $diff->format('%a') + 2;

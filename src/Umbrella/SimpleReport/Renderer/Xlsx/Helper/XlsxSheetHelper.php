@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Renderer\Xlsx\Helper;
+
 /**
  * Description of XLSXSheetHelper
  *
@@ -32,7 +34,7 @@ class XlsxSheetHelper extends XlsxBaseHelper {
         return $fieldTypeInstance->render($unformattedFieldValue);
     }
     
-    public function renderSheet() {
+    public function render() {
         $this->currentRow = 0;
         $this->doWriteSheetBegin();
         $this->doWriteSheetColumns();
@@ -44,7 +46,7 @@ class XlsxSheetHelper extends XlsxBaseHelper {
     
     protected function doWriteSheetBegin() {
         $tableRange = $this->getTableRange();
-        $this->sheetString = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n";
+        $this->sheetString = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n";
         $this->sheetString .= "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" mc:Ignorable=\"x14ac\" xmlns:x14ac=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac\">";
         $this->sheetString .= "<dimension ref=\"{$tableRange}\"/>";
         $this->sheetString .= "<sheetViews>";

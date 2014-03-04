@@ -28,17 +28,17 @@ use Exception;
 class BaseConfiguration
 {
 
-    private $option;
+    private $options;
     private $loadedFields = array();
 
-    function __construct($option)
+    function __construct($options)
     {
-        $this->option = $option;
+        $this->options = $options;
     }
 
     public function getOption($name)
     {
-        return $this->option[$name];
+        return $this->options[$name];
     }
 
     public function getOptions()

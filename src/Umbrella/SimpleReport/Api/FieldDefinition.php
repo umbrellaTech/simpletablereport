@@ -115,8 +115,10 @@ class FieldDefinition
 
     protected function createFieldType($fieldTypeName, $strategy)
     {
-        $classnameBase = ucfirst(strtolower($fieldTypeName)) . 'Type';
-        $classnameConcrete = ucfirst(strtolower($strategy)) . $classnameBase;
+        $rootPath = "Umbrella\\SimpleReport\\Fields\\";
+        $base = ucfirst(strtolower($fieldTypeName)) . 'Type';
+        $classnameBase = $rootPath . $base;
+        $classnameConcrete = $rootPath . ucfirst(strtolower($strategy)) . "\\" . ucfirst(strtolower($strategy)) . $base;
         if (class_exists($classnameConcrete, true)) {
             return new $classnameConcrete(array());
         } elseif (class_exists($classnameBase, true)) {

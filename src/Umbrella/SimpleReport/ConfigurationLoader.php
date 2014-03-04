@@ -62,7 +62,7 @@ class ConfigurationLoader
     {
         $configFile = __DIR__ . "/../../../config.ini";
         $ini_array = parse_ini_file($configFile);
-        $configurationClassName = $ini_array['simpletablereport.configurationClassName'];
+        $configurationClassName = $ini_array['simplereport.configurationClassName'];
         $this->configuration = new $configurationClassName($ini_array);
     }
 

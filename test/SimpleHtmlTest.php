@@ -4,7 +4,7 @@ use Umbrella\SimpleReport\Api\FieldSet;
 use Umbrella\SimpleReport\Api\FieldType;
 use Umbrella\SimpleReport\ArrayDatasource;
 use Umbrella\SimpleReport\BaseTemplate;
-use Umbrella\SimpleReport\Renderer\HtmlRenderer;
+use Umbrella\SimpleReport\Renderer\Html\HtmlRenderer;
 
 /*
  * Copyright 2013 kelsoncm.
@@ -62,7 +62,7 @@ class SimpleHtmlTest extends SimpleTest {
         $renderer = new HtmlRenderer($datasource, $template);
         
         $renderer->render();
-        $this->assertEquals('<!DOCTYPE html><html><head><title></title><meta charset="UTF-8"></head><body><table><thead><tr><th>#</th><th>Nome</th><th>Razao</th><th>Salario</th><th>Nascimento</th><th>Almoco</th><th>Casamento</th></tr></thead><tbody><tr><td>1</td><td>Kelson</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>2</td><td>KelsonCM</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>5</td><td>null</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody><tfoot><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tfoot></table></body></html>', $renderer->getStringBuffer());
+        $this->assertEquals('<table border="1"><thead><tr><th>#</th><th>Nome</th><th>Razao</th><th>Salario</th><th>Nascimento</th><th>Almoco</th><th>Casamento</th></tr></thead><tbody><tr><td>1</td><td>Kelson</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>2</td><td>KelsonCM</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>5</td><td>null</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody><tfoot><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tfoot></table>', $renderer->getStringBuffer());
     }
     
 }

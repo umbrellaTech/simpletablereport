@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Renderer\Xlsx\Helper;
+
 /**
  * Description of XLSXSharedStringsHelper
  *
@@ -39,7 +41,7 @@ class XlsxSharedStringsHelper extends XlsxBaseHelper {
     }
     
     public static function getIterator() {
-        return new ArrayIterator(array_keys(XlsxSharedStringsHelper::$strings));
+        return new \ArrayIterator(array_keys(XlsxSharedStringsHelper::$strings));
     }
     
     public static function count() {
@@ -51,9 +53,9 @@ class XlsxSharedStringsHelper extends XlsxBaseHelper {
         XlsxSharedStringsHelper::$lastId = 0;
     }
 
-    public function renderSharedStrings() {
+    public function render() {
         $count = XlsxSharedStringsHelper::count();
-        $result = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n";
+        $result = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n";
         $result .= "<sst xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" count=\"{$count}\" uniqueCount=\"{$count}\">";
         foreach (XlsxSharedStringsHelper::getIterator() as $value) {
             $result .= "<si><t>{$value}</t></si>";

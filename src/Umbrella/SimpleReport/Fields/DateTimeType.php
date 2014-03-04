@@ -27,10 +27,11 @@ use Umbrella\SimpleReport\Api\FieldType;
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-abstract class DateTimeType extends FieldType
+class DateTimeType extends FieldType
 {
 
     protected static $timezones = array();
+    protected static $defaultTimezone;
 
     public static function getDefaultDateTimeZone()
     {

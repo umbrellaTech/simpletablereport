@@ -18,6 +18,8 @@
 
 namespace Umbrella\SimpleReport\Api;
 
+use Umbrella\SimpleReport\ConfigurationLoader;
+
 /**
  * Description of FieldType
  *
@@ -52,10 +54,10 @@ abstract class FieldType
     }
 
     public function getOption($optionName) {
-        if (isset($this->options["simpletablereport.{$this->typeprefix}.{$optionName}"])) {
-            return $this->options["simpletablereport.{$this->typeprefix}.{$optionName}"];
-        } elseif (isset($this->options["simpletablereport.{$optionName}"])) {
-            return $this->options["simpletablereport.{$optionName}"];
+        if (isset($this->options["simplereport.{$this->typeprefix}.{$optionName}"])) {
+            return $this->options["simplereport.{$this->typeprefix}.{$optionName}"];
+        } elseif (isset($this->options["simplereport.{$optionName}"])) {
+            return $this->options["simplereport.{$optionName}"];
         }
         return null;
     }

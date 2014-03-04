@@ -16,14 +16,16 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Renderer\Xlsx\Helper;
+
 /**
  * Description of XLSXSharedStringsHelper
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
 class XlsxStyleHelper extends XlsxBaseHelper {
-    public function renderStyle() {
-        $result = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n";
+    public function render() {
+        $result = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n";
         $result .= "<styleSheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" mc:Ignorable=\"x14ac\" xmlns:x14ac=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac\">";
         $result .= "<numFmts count=\"2\">";
         $result .=   "<numFmt numFmtId=\"44\" formatCode=\"_-&quot;R$&quot;\ * #,##0.00_-;\-&quot;R$&quot;\ * #,##0.00_-;_-&quot;R$&quot;\ * &quot;-&quot;??_-;_-@_-\"/>";

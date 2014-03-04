@@ -16,6 +16,11 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Renderer\Xlsx\Helper;
+
+use Umbrella\SimpleReport\Api\IDatasource;
+use Umbrella\SimpleReport\Api\ITemplate;
+
 /**
  * Description of XLSXBaseHelper
  *

@@ -4,7 +4,8 @@ use Umbrella\SimpleReport\Api\FieldSet;
 use Umbrella\SimpleReport\Api\FieldType;
 use Umbrella\SimpleReport\ArrayDatasource;
 use Umbrella\SimpleReport\BaseTemplate;
-use Umbrella\SimpleReport\Renderer\CsvRenderer;
+use Umbrella\SimpleReport\BaseRenderer;
+use Umbrella\SimpleReport\Renderer\Csv\CsvRenderer;
 
 /*
  * Copyright 2013 kelsoncm.

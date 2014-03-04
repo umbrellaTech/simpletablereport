@@ -16,100 +16,100 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Renderer\Xlsx;
+
+use Umbrella\SimpleReport\BaseRenderer;
+use Umbrella\SimpleReport\Renderer\Xlsx\Helper\XlsxTableHelper;
+use Umbrella\SimpleReport\Renderer\Xlsx\Helper\XlsxSheetHelper;
+use Umbrella\SimpleReport\Renderer\Xlsx\Helper\XlsxStyleHelper;
+use Umbrella\SimpleReport\Renderer\Xlsx\Helper\XlsxSharedStringsHelper;
+use Umbrella\SimpleReport\ConfigurationLoader;
+
 /**
  * Description of XlsxRenderer
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
 class XlsxRenderer extends BaseRenderer {
-    
+
+    /*
     protected $tableString = '';
     protected $sheetString = '';
     protected $sharedStringsString = '';
     protected $stylesString = '';
+    */
     protected $outputFileName = '';
     protected $currentRow;
     
-    public function getTableString() {
-        return $this->tableString;
-    }
-
-    public function getSheetString() {
-        return $this->sheetString;
-    }
+    protected $partsNames = array(
+        'XlsxContentTypesHelper' => '[Content_Types].xml',
+        'XlsxRelsHelper' => '_rels/.rels',
+        'XlsxRelsWorkbookHelper' => 'xl/_rels/workbook.xml.rels',
+        'XlsxRelsSheetHelper' => 'xl/worksheets/_rels/sheet1.xml.rels',
+        'XlsxThemeHelper' => 'xl/theme/theme1.xml',
+        'XlsxWorkbookHelper' => 'xl/workbook.xml',
+        'XlsxDocPropsAppHelper' => 'docProps/app.xml',
+        'XlsxDocPropsCoreHelper' => 'docProps/core.xml',
+        
+        'XlsxTableHelper' => 'xl/tables/table1.xml',
+        'XlsxSheetHelper' => 'xl/worksheets/sheet1.xml',
+        'XlsxSharedStringsHelper' => 'xl/sharedStrings.xml',
+        'XlsxStyleHelper' => 'xl/styles.xml',
+        );
+    
+    protected $parts = array();
 
     public function getOutputFileName() {
         return $this->outputFileName;
     }
+
+    public function setOutputFileName($outputFileName) {
+        return $this->outputFileName = $outputFileName;
+    }
+    
+    public function getTableString() {
+        return $this->parts['XlsxTableHelper'];
+    }
+
+    public function getSheetString() {
+        return $this->parts['XlsxSheetHelper'];
+    }
     
     public function getSharedStringsString() {
-        return $this->sharedStringsString;
-    }
-   
-    
-    public function render() {
-        $this->validate();
-        
-        $xlsxTableHelper = new XlsxTableHelper($this->datasource, $this->template);
-        $this->tableString = $xlsxTableHelper->renderTable();
-
-        $xlsxSheetHelper = new XlsxSheetHelper($this->datasource, $this->template);
-        $this->sheetString = $xlsxSheetHelper->renderSheet();
-        
-        $xlsxSharedStringsHelper = new XlsxSharedStringsHelper($this->datasource, $this->template);
-        $this->sharedStringsString = $xlsxSharedStringsHelper->renderSharedStrings();
-        
-        $xlsxStyleHelper = new XlsxStyleHelper($this->datasource, $this->template);
-        $this->styleString = $xlsxStyleHelper->renderStyle();
-
-        $this->output();
+        return $this->parts['XlsxSharedStringsHelper'];
     }
     
     protected function validate() {
         $fields = $this->template->getFields();
         if (empty($fields) || (!empty($fields) && $fields->count() == 0)) {
-            throw new RuntimeException("Empty FieldSet not allowed.");
+            throw new \RuntimeException("Empty FieldSet not allowed.");
         }
         
         if ($this->datasource->getRowCount()==0) {
-            throw new RuntimeException("Empty DataSource not allowed.");
+            throw new \RuntimeException("Empty DataSource not allowed.");
         }
     }
     
-    protected function output() {
-        $this->buildOutputFileName();
-        $this->copySampleFile();
-        $this->zipContent();
-    }
-    
-    protected function buildOutputFileName() {
-        if ($this->outputFileName) {
-            return;
-        } 
-        $rootDir = ConfigurationLoader::getInstance()->getRootDir();
-        $concat = $this->tableString . $this->sheetString . $this->sharedStringsString;
-        $this->outputFileName = "{$rootDir}/test/" . md5($concat) .  ".xlsx";
-    }
-    
-    protected function copySampleFile() {
-        $rootDir = ConfigurationLoader::getInstance()->getRootDir();
-        $sampleTmp = ConfigurationLoader::getInstance()->getConfiguration()->getOption('simpletablereport.xlsxrenderer.sample');
-        $sample = "{$rootDir}/{$sampleTmp}";
-        if (!copy($sample, $this->outputFileName)) {
-            throw new RuntimeException("Failed to copy '{$sample}'.");
-        }
-    }
-    
-    protected function zipContent() {
-        $zip = new ZipArchive();
-        if ($zip->open($this->outputFileName, ZipArchive::CREATE)!==TRUE) {
-            throw new RuntimeException("Cannot open [{$this->outputFileName}].");
+    public function render() {
+        $this->validate();
+        
+        $this->outputFileName = $this->outputFileName ?: tempnam("", "xlsx");
+
+        $zip = new \ZipArchive();
+        
+        if ($zip->open($this->outputFileName, \ZipArchive::CREATE)!==TRUE) {
+            throw new \RuntimeException("Cannot open [{$this->outputFileName}].");
         }
 
-        $zip->addFromString("xl/tables/table1.xml", $this->tableString);
-        $zip->addFromString("xl/worksheets/sheet1.xml", $this->sheetString);
-        $zip->addFromString("xl/sharedStrings.xml", $this->sharedStringsString);
-        $zip->addFromString("xl/styles.xml", $this->styleString);
+        foreach ($this->partsNames as $partName => $fileName) {
+            $partClassName = "Umbrella\\SimpleReport\\Renderer\\Xlsx\\Helper\\{$partName}";
+            $partHelper = new $partClassName($this->datasource, $this->template);
+            $partContent = $partHelper->render();
+            $this->parts[$partName] = $partContent;
+            $zip->addFromString($fileName, $partContent);
+        }
+        
         $zip->close();        
     }
+    
 }

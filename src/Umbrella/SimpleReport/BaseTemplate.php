@@ -33,10 +33,6 @@ class BaseTemplate implements ITemplate, ISum
 
     private $fields;
     private $params;
-    private $tags;
-    private $path;
-    private $enableColunmCount;
-    private $colunmFieldCounts;
 
     public function __construct(FieldSet $fieldSet = null, array $params = array())
     {
@@ -78,48 +74,5 @@ class BaseTemplate implements ITemplate, ISum
     {
         return $this->params[$param];
     }
-
-    public function getTags()
-    {
-        return $this->tags;
-    }
-
-    public function setTags(array $tags)
-    {
-        $this->tags = $tags;
-        return $this;
-    }
-
-    public function getPath()
-    {
-        return $this->path;
-    }
-
-    public function setPath($path)
-    {
-        $this->path = $path;
-        return $this;
-    }
-
-    public function getColumnFieldCounts()
-    {
-        return $this->colunmFieldCounts;
-    }
-
-    public function setColumnFieldCounts($fieldsCounts)
-    {
-        $this->colunmFieldCounts = $fieldsCounts;
-        return $this;
-    }
-
-    public function enableColumnCount($enable)
-    {
-        $this->enableColunmCount = $enable;
-        return $this;
-    }
-
-    public function getEnabledColumnCount()
-    {
-        return $this->enableColunmCount;
-    }
+    
 }

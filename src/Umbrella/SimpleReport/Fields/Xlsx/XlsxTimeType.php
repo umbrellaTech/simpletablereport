@@ -16,6 +16,11 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Fields\Xlsx;
+
+use Umbrella\SimpleReport\Fields\TimeType;
+use Umbrella\SimpleReport\Fields\Xlsx\XlsxDateTimeUtils;
+
 /**
  * Description of TimeType
  *

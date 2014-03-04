@@ -15,6 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+namespace Umbrella\SimpleReport\Renderer\Html;
+
+use Closure;
+use Umbrella\SimpleReport\BaseRenderer;
 
 /**
  * Description of HTMLRenderer

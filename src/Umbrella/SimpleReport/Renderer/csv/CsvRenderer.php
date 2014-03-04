@@ -16,6 +16,10 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Renderer\Csv;
+
+use Umbrella\SimpleReport\BaseRenderer;
+
 /**
  * Description of CSVRenderer
  *

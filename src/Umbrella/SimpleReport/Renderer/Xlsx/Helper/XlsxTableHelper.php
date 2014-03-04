@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Renderer\Xlsx\Helper;
+
 /**
  * Description of XLSXTableHelper
  *
@@ -23,7 +25,7 @@
  */
 class XlsxTableHelper extends XlsxBaseHelper {
 
-    public function renderTable() {
+    public function render() {
         return $this->doWriteTableBegin()
                 . $this->doWriteTableColumn()
                 . $this->doWriteTableEnd();
@@ -32,7 +34,7 @@ class XlsxTableHelper extends XlsxBaseHelper {
     protected function doWriteTableBegin() {
         $colCount = $this->template->getFields()->count();
         $tableRange = $this->getTableRange();
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" 
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n" 
                 . "<table xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\""
                 . " id=\"1\" name=\"Tabela1\" displayName=\"Tabela1\""
                 . " ref=\"{$tableRange}\" totalsRowShown=\"0\">"

@@ -1,5 +1,5 @@
 {
-    "name": "umbrella/simpletablereport",
+    "name": "Umbrella/SimpleReport",
     "description": "PHP Simple Table Report. Export data as tables to PDF, CSV, Excel, etc...",
     "license": "MIT",
     "authors": [
@@ -12,9 +12,6 @@
             "email": "italolelis@gmail.com"
         }
     ],
-    "require": {
-        "symfony/http-foundation": "v2.4.1"
-    },
     "autoload": {
         "psr-0": {
             "Umbrella\\SimpleReport": "src/"
