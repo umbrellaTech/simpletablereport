@@ -20,7 +20,6 @@ namespace Umbrella\SimpleReport;
 
 use Umbrella\SimpleReport\Api\FieldSet;
 use Umbrella\SimpleReport\Api\ITemplate;
-use Umbrella\SimpleReport\Api\ISum;
 
 /**
  * Description of SimpleTemplate
@@ -28,7 +27,7 @@ use Umbrella\SimpleReport\Api\ISum;
  * @author kelsocm
  * @author Ítalo Lelis <italo@voxtecnologia.com.br>
  */
-class BaseTemplate implements ITemplate, ISum
+class BaseTemplate implements ITemplate
 {
 
     private $fields;
