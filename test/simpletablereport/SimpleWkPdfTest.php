@@ -29,15 +29,13 @@ use Umbrella\SimpleReport\Renderer\WkPdfRenderer;
  */
 require_once 'SimpleTest.php';
 
-class SimpleWkPdfTest extends SimpleTest
-{
+class SimpleWkPdfTest extends SimpleTest {
 
     /**
      * 
      * @return array
      */
-    public function getData()
-    {
+    public function getData() {
         return array
             (
             array('id' => 1, 'nome' => 'Kelson'),
@@ -49,8 +47,7 @@ class SimpleWkPdfTest extends SimpleTest
         );
     }
 
-    public function getFieldset()
-    {
+    public function getFieldset() {
         $fieldSet = new FieldSet();
         return $fieldSet
                         ->addField('id', '#', FieldType::INTEGER)
@@ -65,17 +62,17 @@ class SimpleWkPdfTest extends SimpleTest
     /**
      * 
      */
-    public function testArrayDatasourceInitial()
-    {
+    public function testArrayDatasourceInitial() {
         $fieldSet = $this->getFieldset();
         $datasource = new ArrayDatasource($this->getData());
 
         $template = new BaseTemplate($fieldSet);
-        $template->addParam('out', '/tmp/pdf/teste.pdf');
         $template->addParam('imageQuality', 100);
-        $template->addParam('template', '/var/www/pdf/teste.html');
+        $template->setPath('/var/www/simpletablereport/test/test.html');
 
-        $renderer = new WkPdfRenderer($datasource, $template);
+        $html = new \Umbrella\SimpleReport\Renderer\HtmlRenderer($datasource, $template);
+        $renderer = new WkPdfRenderer($datasource, $template, $html);
+        $renderer->setOutput('/tmp/teste.pdf');
         $renderer->render();
     }
 

@@ -18,6 +18,8 @@
 
 namespace Umbrella\SimpleReport\Renderer;
 
+use Umbrella\SimpleReport\Api\IRenderer;
+
 use DateTime;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -30,7 +32,7 @@ use Umbrella\SimpleReport\Parser\TemplateParser;
  * Classe utilizada para gerar relatórios em PDF com o wkhtmltopdf
  * @author Ítalo Lelis <italo@voxtecnologia.com.br>
  */
-class WkPdfRenderer extends BaseRenderer
+class WkPdfRenderer implements IRenderer
 {
 
     /**
@@ -38,6 +40,11 @@ class WkPdfRenderer extends BaseRenderer
      */
     private $output;
 
+    /**
+     * @var ITemplate
+     */
+    private $template;
+    
     /**
      * @var HtmlRenderer
      */
@@ -63,10 +70,10 @@ class WkPdfRenderer extends BaseRenderer
      * @param IDatasource $datasource Uma instância de IDatasource
      * @param ITemplate $template Uma instância de ITemplate
      */
-    public function __construct(IDatasource $datasource, ITemplate $template)
+    public function __construct(IDatasource $datasource, ITemplate $template, IHtmlRenderer $htmlRenderer)
     {
-        parent::__construct($datasource, $template);
-        $this->htmlRenderer = new HtmlRenderer($datasource, $template);
+        $this->template = $template;
+        $this->htmlRenderer = $htmlRenderer;
         $this->parser = new TemplateParser($template);
     }
 
@@ -120,7 +127,7 @@ class WkPdfRenderer extends BaseRenderer
         $response->headers->set('Content-type', 'application/pdf');
         $response->headers->set('Cache-Control', 'max-age=0, must-revalidate');
         $response->headers->set('Pragma', 'public');
-        ini_set('zlib.output_compression', '0');
+//        ini_set('zlib.output_compression', '0');
 
         $response->send();
 
@@ -133,7 +140,7 @@ class WkPdfRenderer extends BaseRenderer
         $this->htmlRenderer->render();
         $page = ob_get_contents();
         $filename = '/tmp/' . microtime() . '.html';
-
+        
         $this->parser->setTags(array_merge(array(
             "content" => $page,
             "date" => $this->createDate(),
@@ -175,6 +182,7 @@ class WkPdfRenderer extends BaseRenderer
      */
     protected function setPermissions($htmlFile, $pdfFile)
     {
+        var_dump($pdfFile);
         chmod($htmlFile, 0777);
         chmod($pdfFile, 0777);
     }

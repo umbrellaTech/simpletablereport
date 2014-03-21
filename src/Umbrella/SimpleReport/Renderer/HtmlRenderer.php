@@ -26,9 +26,9 @@ use Umbrella\SimpleReport\BaseRenderer;
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class HtmlRenderer extends BaseRenderer
+class HtmlRenderer extends BaseRenderer implements IHtmlRenderer
 {
-
+    
     public function getOption($optionName)
     {
         return parent::getOption("htmlrenderer.{$optionName}");

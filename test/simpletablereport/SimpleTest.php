@@ -21,7 +21,7 @@
  *
  * @author kelsoncm
  */
-class SimpleTest extends PHPUnit_Framework_TestCase {
+abstract class SimpleTest extends PHPUnit_Framework_TestCase {
     
     protected function arrayArray($name, $elems) {
         $result = array();
