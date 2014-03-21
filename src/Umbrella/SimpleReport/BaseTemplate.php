@@ -33,7 +33,7 @@ class BaseTemplate implements ITemplate, ISum
 
     private $fields;
     private $params;
-    private $tags;
+    private $tags = array();
     private $path;
     private $enableColunmCount;
     private $colunmFieldCounts;

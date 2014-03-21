@@ -29,7 +29,7 @@ use Umbrella\SimpleReport\Renderer\CsvRenderer;
  */
 require_once 'SimpleTest.php';
 
-class SimpleCsvTest extends SimpleTest
+class SimpleCsvTests extends SimpleTest
 {
 
     /**

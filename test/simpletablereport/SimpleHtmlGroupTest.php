@@ -4,7 +4,7 @@ use Umbrella\SimpleReport\Api\FieldSet;
 use Umbrella\SimpleReport\Api\FieldType;
 use Umbrella\SimpleReport\ArrayDatasource;
 use Umbrella\SimpleReport\BaseTemplate;
-use Umbrella\SimpleReport\Renderer\HtmlRenderer;
+use Umbrella\SimpleReport\Renderer\GroupedHtmlRenderer;
 
 /*
  * Copyright 2013 kelsoncm.
@@ -29,48 +29,42 @@ use Umbrella\SimpleReport\Renderer\HtmlRenderer;
  */
 require_once 'SimpleTest.php';
 
-class SimpleHtmlTest extends SimpleTest
-{
+class SimpleHtmlGroupTest extends SimpleTest {
 
     /**
      * 
      * @return array
      */
-    public function getData()
-    {
+    public function getData() {
         return array
             (
-            array('id' => 1, 'nome' => 'Kelson'),
-            array('id' => 2, 'nome' => 'KelsonCM'),
-            array('id' => 3, 'nome' => ''),
-            array('id' => 4, 'nome' => null),
-            array('id' => 5, 'nome' => 'null', 'nome2' => '#error'),
-            array('id' => 6, 'nome2' => '#error'),
+            array('id' => 1, 'nome' => 'Kelson', 'qtde' => 1),
+            array('id' => 1, 'nome' => 'KelsonCM', 'qtde' => 2),
+            array('id' => 1, 'nome' => '', 'qtde' => 5),
+            array('id' => 4, 'nome' => null, 'qtde' => 4),
+            array('id' => 5, 'nome' => 'null', 'nome2' => '#error', 'qtde' => 2),
+            array('id' => 6, 'nome2' => '#error', 'qtde' => 3),
         );
     }
 
-    public function getFieldset()
-    {
+    public function getFieldset() {
         $fieldSet = new FieldSet();
         return $fieldSet
                         ->addField('id', '#', FieldType::INTEGER)
                         ->addField('nome', 'Nome', FieldType::STRING)
-                        ->addField('razao', 'Razao', FieldType::FLOAT)
-                        ->addField('salario', 'Salario', FieldType::DECIMAL)
-                        ->addField('nascimento', 'Nascimento', FieldType::DATE)
-                        ->addField('almoco', 'Almoco', FieldType::TIME)
-                        ->addField('casamento', 'Casamento', FieldType::TIMESTAMP);
+                        ->addField('qtde', 'Quantidade', FieldType::INTEGER)
+            ;
     }
 
     /**
      * 
      */
-    public function testArrayDatasource_Initial()
-    {
+    public function testArrayDatasource_Initial() {
         $fieldSet = $this->getFieldset();
         $datasource = new ArrayDatasource($this->getData());
         $template = new BaseTemplate($fieldSet);
-        $renderer = new HtmlRenderer($datasource, $template);
+        $template->addParam('grouped', 1);
+        $renderer = new GroupedHtmlRenderer($datasource, $template);
 
         $renderer->render();
     }
