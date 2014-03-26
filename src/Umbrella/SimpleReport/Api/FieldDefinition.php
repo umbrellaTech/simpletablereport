@@ -34,14 +34,16 @@ class FieldDefinition
     private $fieldWidth;
     private $fieldOrder;
     private $fieldCaption;
+    private $callback;
 
-    function __construct($fieldName, $fieldCaption, $fieldType = FieldType::STRING, $fieldSize = null, $fieldWidth = null)
+    function __construct($fieldName, $fieldCaption, $fieldType = FieldType::STRING, $callback = null, $fieldSize = null, $fieldWidth = null)
     {
         $this->fieldName = $fieldName;
         $this->fieldType = $fieldType;
         $this->fieldSize = $fieldSize;
         $this->fieldWidth = $fieldWidth;
         $this->fieldCaption = $fieldCaption;
+        $this->callback = $callback;
     }
 
     public function getFieldName()
@@ -111,6 +113,27 @@ class FieldDefinition
     public function setFieldCaption($fieldCaption)
     {
         $this->fieldCaption = $fieldCaption;
+    }
+
+    public function getCallback()
+    {
+        return $this->callback;
+    }
+
+    public function setCallback($callback)
+    {
+        $this->callback = $callback;
+        return $this;
+    }
+
+    public function executeCallback($value)
+    {
+        $callback = $this->callback;
+
+        if (!is_callable($callback)) {
+            throw new \InvalidArgumentException('The callback must be a callable');
+        }
+        return $callback($value);
     }
 
     protected function createFieldType($fieldTypeName, $strategy)

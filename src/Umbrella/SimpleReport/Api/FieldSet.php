@@ -32,9 +32,9 @@ class FieldSet extends \ArrayIterator
         parent::__construct(array());
     }
 
-    public function addField($fieldName, $fieldCaption, $fieldType, $fieldSize = null, $fieldWidth = null)
+    public function addField($fieldName, $fieldCaption, $fieldType, $callback = null, $fieldSize = null, $fieldWidth = null)
     {
-        $fieldDefinition = new FieldDefinition($fieldName, $fieldCaption, $fieldType, $fieldSize, $fieldWidth);
+        $fieldDefinition = new FieldDefinition($fieldName, $fieldCaption, $fieldType, $callback, $fieldSize, $fieldWidth);
         $fieldDefinition->setFieldOrder($this->count());
         parent::append($fieldDefinition);
         return $this;

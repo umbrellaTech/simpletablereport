@@ -28,7 +28,7 @@ use Umbrella\SimpleReport\BaseRenderer;
  */
 class HtmlRenderer extends BaseRenderer implements IHtmlRenderer
 {
-    
+
     public function getOption($optionName)
     {
         return parent::getOption("htmlrenderer.{$optionName}");
@@ -95,7 +95,7 @@ class HtmlRenderer extends BaseRenderer implements IHtmlRenderer
         $this->doWriteTableFooterStart();
         $this->doWriteTableFooterRowStart();
         $columnCountEnabled = $this->template->getEnabledColumnCount();
-        $countColumn = ($columnCountEnabled)? $this->template->getColumnFieldCounts() : $this->template->getFields();
+        $countColumn = ($columnCountEnabled) ? $this->template->getColumnFieldCounts() : $this->template->getFields();
         $columnPrint = '';
 
         for ($i = 0; $i < count($countColumn); $i++) {

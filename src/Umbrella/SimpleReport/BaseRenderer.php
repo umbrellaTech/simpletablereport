@@ -62,7 +62,11 @@ abstract class BaseRenderer implements IRenderer
         $fieldTypeName = $fieldDescription->getFieldType();
         $fieldTypeInstance = $this->configuration->getFieldTypeInstance($fieldTypeName, $rendererPrefix);
         $unformattedFieldValue = $datasource->getFieldValue($fieldDescription);
-        return $fieldTypeInstance->render($unformattedFieldValue);
+        $formattedFieldValue = $fieldTypeInstance->render($unformattedFieldValue);
+        if ($fieldDescription->getCallback()) {
+            $formattedFieldValue = $fieldDescription->executeCallBack($formattedFieldValue);
+        }
+        return $formattedFieldValue;
     }
 
     protected function getColumnCountTotal($field)

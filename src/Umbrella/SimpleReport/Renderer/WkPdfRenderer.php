@@ -101,6 +101,10 @@ class WkPdfRenderer implements IRenderer
         $this->parser = new TemplateParser($template);
     }
 
+    /**
+     * Get 
+     * @return type
+     */
     public function getUseFooter()
     {
         return $this->useFooter;
@@ -126,30 +130,55 @@ class WkPdfRenderer implements IRenderer
         return $this->footerText;
     }
 
+    /**
+     * Define 
+     * @param type $useFooter
+     * @return \Umbrella\SimpleReport\Renderer\WkPdfRenderer
+     */
     public function setUseFooter($useFooter)
     {
         $this->useFooter = $useFooter;
         return $this;
     }
 
+    /**
+     * Define onde está localizado o HTML template do footer
+     * @param string $footerPathTemplate
+     * @return \Umbrella\SimpleReport\Renderer\WkPdfRenderer
+     */
     public function setFooterPathTemplate($footerPathTemplate)
     {
         $this->footerPathTemplate = $footerPathTemplate;
         return $this;
     }
 
+    /**
+     * Define a URL onde será criado o HTML parseado do footer
+     * @param string $footerPath
+     * @return \Umbrella\SimpleReport\Renderer\WkPdfRenderer
+     */
     public function setFooterPath($footerPath)
     {
         $this->footerPath = $footerPath;
         return $this;
     }
 
+    /**
+     * Define a URL onde o footer se encontra, para o wkpdf encontrar o arquivo HTML
+     * @param string $footerHtmlUrl
+     * @return \Umbrella\SimpleReport\Renderer\WkPdfRenderer
+     */
     public function setFooterHtmlUrl($footerHtmlUrl)
     {
         $this->footerHtmlUrl = $footerHtmlUrl;
         return $this;
     }
 
+    /**
+     * Define o texto que será renderizado no footer
+     * @param string $footerText
+     * @return \Umbrella\SimpleReport\Renderer\WkPdfRenderer
+     */
     public function setFooterText($footerText)
     {
         $this->footerText = $footerText;
@@ -157,7 +186,17 @@ class WkPdfRenderer implements IRenderer
     }
 
     /**
-     * Retorna o 
+     * Define o caminho do PDF a ser gerado
+     * @return string
+     */
+    public function setOutput($output)
+    {
+        $this->output = $output;
+        return $this;
+    }
+
+    /**
+     * Recupera o caminho do PDF gerado
      * @return string
      */
     public function getOutput()
@@ -165,23 +204,30 @@ class WkPdfRenderer implements IRenderer
         return $this->output;
     }
 
-    public function setOutput($output)
-    {
-        $this->output = $output;
-        return $this;
-    }
-
+    /**
+     * Verifica se o relatório será renderizado por streaming
+     * @return type
+     */
     public function isStreaming()
     {
         return $this->isStreaming;
     }
 
+    /**
+     * Define se o relatório será renderizado por streaming
+     * @param boolean $isStreaming
+     * @return \Umbrella\SimpleReport\Renderer\WkPdfRenderer
+     */
     public function setStreaming($isStreaming)
     {
         $this->isStreaming = $isStreaming;
         return $this;
     }
 
+    /**
+     * Renderiza o PDF
+     * @return \Umbrella\SimpleReport\Renderer\WkPdfRenderer
+     */
     public function render()
     {
         $htmlFile = $this->getHtmlPageContent();
@@ -192,13 +238,13 @@ class WkPdfRenderer implements IRenderer
             $self = $this;
 
             $response->setCallback(function () use($htmlFile, $self, &$lenght) {
-                $self->renderPdf($htmlFile);
+                $self->createPdf($htmlFile);
                 ob_flush();
                 flush();
             });
         } else {
             $response = new Response();
-            $this->renderPdf($htmlFile);
+            $this->createPdf($htmlFile);
         }
 
         $disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, md5($this->output));
@@ -206,13 +252,16 @@ class WkPdfRenderer implements IRenderer
         $response->headers->set('Content-type', 'application/pdf');
         $response->headers->set('Cache-Control', 'max-age=0, must-revalidate');
         $response->headers->set('Pragma', 'public');
-//        ini_set('zlib.output_compression', '0');
 
         $response->send();
 
         return $this;
     }
 
+    /**
+     * Recupera o conteúdo HTML do template. O método faz o parse do HTML e retorna o conteúdo pronto.
+     * @return string O HTML final após o parse
+     */
     protected function getHtmlPageContent()
     {
         ob_start();
@@ -222,7 +271,7 @@ class WkPdfRenderer implements IRenderer
 
         $this->parser->setTags(array_merge(array(
             "content" => $page,
-            "date" => $this->createDate(),
+            "date" => $this->createAndFormatDate(),
                         ), $this->template->getTags())
         );
         $content = $this->parser->parse();
@@ -232,13 +281,21 @@ class WkPdfRenderer implements IRenderer
         return $filename;
     }
 
-    protected function createDate()
+    /**
+     * Cria a data data atual e formata para o formato desejado
+     * @return string
+     */
+    protected function createAndFormatDate($format = 'd/m/Y')
     {
         $date = new DateTime();
-        return $date->format('d/m/Y');
+        return $date->format($format);
     }
 
-    public function renderPdf($htmlFile)
+    /**
+     * Converte um HTML em PDF
+     * @param string $htmlFile O conteúdo HTML para ser convertido
+     */
+    protected function createPdf($htmlFile)
     {
         \wkhtmltox_convert('pdf', array(
             'out' => $this->output,
@@ -267,7 +324,11 @@ class WkPdfRenderer implements IRenderer
         chmod($pdfFile, 0777);
     }
 
-    public function unlinkFile($file)
+    /**
+     * Deleta um arquivo do File System
+     * @param string $file O caminho para o arquivo
+     */
+    protected function unlinkFile($file)
     {
         if (file_exists($file)) {
             unlink($file);
@@ -275,9 +336,10 @@ class WkPdfRenderer implements IRenderer
     }
 
     /**
-     * adiciona a propriedade do footer
+     * Pega o footer para ser utilizado no \wkhtmltox_convert()
+     * @return array
      */
-    private function getFooter()
+    protected function getFooter()
     {
         if ($this->useFooter) {
             $text = implode('<br />', $this->footerText);
@@ -298,36 +360,13 @@ class WkPdfRenderer implements IRenderer
      * @param string $text
      * @return mixed
      */
-    private function appendScript($text)
+    protected function appendScript($text)
     {
         $script = '<script>function subst() {var vars={};var x=document.location.search.substring(1).split(\'&\');';
         $script .= 'for(var i in x) {var z=x[i].split(\'=\',2);vars[z[0]] = unescape(z[1]);}var x=[\'frompage\',\'topage\',\'page\',';
         $script .= '\'webpage\',\'section\',\'subsection\',\'subsubsection\']; for(var i in x) { var y = document.getElementsByClassName(x[i]);';
         $script .= 'for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];}}</script></head><body onload="subst()">';
         return preg_replace('#\<\/head\>([^\<]+|)\<body([^\>]+|)\>#im', $script, $text);
-    }
-
-    /**
-     * Atribui um template do footer diferente
-     * 
-     * @param realpath $footerPathTemplate
-     */
-    public function setFooterTemplate($footerPathTemplate)
-    {
-        $this->footerPathTemplate = $footerPathTemplate;
-        return $this;
-    }
-
-    /**
-     * Força a exibição do Footer
-     * 
-     * @param boolean $useFooter
-     * @return Application_Pdf_WkPdf
-     */
-    public function showFooter($useFooter = true)
-    {
-        $this->useFooter = $useFooter;
-        return $this;
     }
 
 }
