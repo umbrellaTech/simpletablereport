@@ -40,12 +40,12 @@ class SimpleWkPdfTest extends SimpleTest
     {
         return array
             (
-            array('id' => 1, 'nome' => 'Kelson'),
-            array('id' => 2, 'nome' => 'KelsonCM'),
-            array('id' => 3, 'nome' => ''),
-            array('id' => 4, 'nome' => null),
-            array('id' => 5, 'nome' => 'null', 'nome2' => '#error'),
-            array('id' => 6, 'nome2' => '#error')
+            array('id' => 1, 'nome' => 'Kelson', 'data' => '2014-03-26'),
+            array('id' => 2, 'nome' => 'KelsonCM', 'data' => '2014-03-26'),
+            array('id' => 3, 'nome' => '', 'data' => '2014-03-26'),
+            array('id' => 4, 'nome' => null, 'data' => '2014-03-26'),
+            array('id' => 5, 'nome' => 'null', 'nome2' => '#error', 'data' => '2014-03-26'),
+            array('id' => 6, 'nome2' => '#error', 'data' => '2014-03-26')
         );
     }
 
@@ -55,11 +55,10 @@ class SimpleWkPdfTest extends SimpleTest
         return $fieldSet
                         ->addField('id', '#', FieldType::INTEGER)
                         ->addField('nome', 'Nome', FieldType::STRING)
-                        ->addField('razao', 'Razao', FieldType::FLOAT)
-                        ->addField('salario', 'Salario', FieldType::DECIMAL)
-                        ->addField('nascimento', 'Nascimento', FieldType::DATE)
-                        ->addField('almoco', 'Almoco', FieldType::TIME)
-                        ->addField('casamento', 'Casamento', FieldType::TIMESTAMP);
+                        ->addField('almoco', 'Almoco', FieldType::TIME, null, null, function($value) {
+                            $date = new DateTime($value);
+                            return $date->format('d-m-Y');
+                        });
     }
 
     /**
@@ -95,7 +94,7 @@ class SimpleWkPdfTest extends SimpleTest
         $html = new \Umbrella\SimpleReport\Renderer\HtmlRenderer($datasource, $template);
         $renderer = new WkPdfRenderer($datasource, $template, $html);
         $renderer->setOutput('/tmp/teste-footer.pdf');
-        
+
         $renderer->setUseFooter(true)
                 ->setFooterPathTemplate('/var/www/simpletablereport/test/footer.html')
                 ->setFooterPath('/tmp/teste-footer')

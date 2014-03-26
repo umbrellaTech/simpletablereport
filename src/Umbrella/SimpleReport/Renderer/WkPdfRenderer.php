@@ -292,10 +292,10 @@ class WkPdfRenderer implements IRenderer
     }
 
     /**
-     * Converte um HTML em PDF
+     * Converte um HTML em PDF. Esse método deve ser publico pois quando é feito o streaming ele precisa ser acessível.
      * @param string $htmlFile O conteúdo HTML para ser convertido
      */
-    protected function createPdf($htmlFile)
+    public function createPdf($htmlFile)
     {
         \wkhtmltox_convert('pdf', array(
             'out' => $this->output,

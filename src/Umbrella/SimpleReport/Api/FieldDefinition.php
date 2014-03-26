@@ -36,7 +36,7 @@ class FieldDefinition
     private $fieldCaption;
     private $callback;
 
-    function __construct($fieldName, $fieldCaption, $fieldType = FieldType::STRING, $callback = null, $fieldSize = null, $fieldWidth = null)
+    function __construct($fieldName, $fieldCaption, $fieldType = FieldType::STRING, $fieldSize = null, $fieldWidth = null, $callback = null)
     {
         $this->fieldName = $fieldName;
         $this->fieldType = $fieldType;
@@ -130,9 +130,10 @@ class FieldDefinition
     {
         $callback = $this->callback;
 
-        if (!is_callable($callback)) {
+        if (!$callback instanceof \Closure) {
             throw new \InvalidArgumentException('The callback must be a callable');
         }
+
         return $callback($value);
     }
 

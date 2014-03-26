@@ -63,7 +63,7 @@ abstract class BaseRenderer implements IRenderer
         $fieldTypeInstance = $this->configuration->getFieldTypeInstance($fieldTypeName, $rendererPrefix);
         $unformattedFieldValue = $datasource->getFieldValue($fieldDescription);
         $formattedFieldValue = $fieldTypeInstance->render($unformattedFieldValue);
-        if ($fieldDescription->getCallback()) {
+        if (null !== $fieldDescription->getCallback()) {
             $formattedFieldValue = $fieldDescription->executeCallBack($formattedFieldValue);
         }
         return $formattedFieldValue;
