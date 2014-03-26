@@ -29,13 +29,15 @@ use Umbrella\SimpleReport\Renderer\WkPdfRenderer;
  */
 require_once 'SimpleTest.php';
 
-class SimpleWkPdfTest extends SimpleTest {
+class SimpleWkPdfTest extends SimpleTest
+{
 
     /**
      * 
      * @return array
      */
-    public function getData() {
+    public function getData()
+    {
         return array
             (
             array('id' => 1, 'nome' => 'Kelson'),
@@ -47,7 +49,8 @@ class SimpleWkPdfTest extends SimpleTest {
         );
     }
 
-    public function getFieldset() {
+    public function getFieldset()
+    {
         $fieldSet = new FieldSet();
         return $fieldSet
                         ->addField('id', '#', FieldType::INTEGER)
@@ -62,7 +65,8 @@ class SimpleWkPdfTest extends SimpleTest {
     /**
      * 
      */
-    public function testArrayDatasourceInitial() {
+    public function testArrayDatasourceInitial()
+    {
         $fieldSet = $this->getFieldset();
         $datasource = new ArrayDatasource($this->getData());
 
@@ -73,6 +77,29 @@ class SimpleWkPdfTest extends SimpleTest {
         $html = new \Umbrella\SimpleReport\Renderer\HtmlRenderer($datasource, $template);
         $renderer = new WkPdfRenderer($datasource, $template, $html);
         $renderer->setOutput('/tmp/teste.pdf');
+        $renderer->render();
+    }
+
+    /**
+     * 
+     */
+    public function testFooter()
+    {
+        $fieldSet = $this->getFieldset();
+        $datasource = new ArrayDatasource($this->getData());
+
+        $template = new BaseTemplate($fieldSet);
+        $template->addParam('imageQuality', 100);
+        $template->setPath('/var/www/simpletablereport/test/test.html');
+
+        $html = new \Umbrella\SimpleReport\Renderer\HtmlRenderer($datasource, $template);
+        $renderer = new WkPdfRenderer($datasource, $template, $html);
+        $renderer->setOutput('/tmp/teste-footer.pdf');
+        
+        $renderer->setUseFooter(true)
+                ->setFooterPathTemplate('/var/www/simpletablereport/test/footer.html')
+                ->setFooterPath('/tmp/teste-footer')
+                ->setFooterHtmlUrl('file:///var/www/simpletablereport/test/footer.html');
         $renderer->render();
     }
 

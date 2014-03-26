@@ -18,14 +18,13 @@
 
 namespace Umbrella\SimpleReport\Renderer;
 
-use Umbrella\SimpleReport\Api\IRenderer;
-
 use DateTime;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Umbrella\SimpleReport\Api\IDatasource;
+use Umbrella\SimpleReport\Api\IRenderer;
 use Umbrella\SimpleReport\Api\ITemplate;
-use Umbrella\SimpleReport\BaseRenderer;
 use Umbrella\SimpleReport\Parser\TemplateParser;
 
 /**
@@ -44,7 +43,7 @@ class WkPdfRenderer implements IRenderer
      * @var ITemplate
      */
     private $template;
-    
+
     /**
      * @var HtmlRenderer
      */
@@ -66,6 +65,31 @@ class WkPdfRenderer implements IRenderer
     private $length = 0;
 
     /**
+     * @var boolean 
+     */
+    private $useFooter = false;
+
+    /**
+     * @var string 
+     */
+    private $footerPathTemplate;
+
+    /**
+     * @var string 
+     */
+    private $footerPath;
+
+    /**
+     * @var string 
+     */
+    private $footerHtmlUrl;
+
+    /**
+     * @var array 
+     */
+    private $footerText = array();
+
+    /**
      * Inicializa uma nova instancia da classe WkPdfRenderer
      * @param IDatasource $datasource Uma instância de IDatasource
      * @param ITemplate $template Uma instância de ITemplate
@@ -75,6 +99,61 @@ class WkPdfRenderer implements IRenderer
         $this->template = $template;
         $this->htmlRenderer = $htmlRenderer;
         $this->parser = new TemplateParser($template);
+    }
+
+    public function getUseFooter()
+    {
+        return $this->useFooter;
+    }
+
+    public function getFooterPathTemplate()
+    {
+        return $this->footerPathTemplate;
+    }
+
+    public function getFooterPath()
+    {
+        return $this->footerPath;
+    }
+
+    public function getFooterHtmlUrl()
+    {
+        return $this->footerHtmlUrl;
+    }
+
+    public function getFooterText()
+    {
+        return $this->footerText;
+    }
+
+    public function setUseFooter($useFooter)
+    {
+        $this->useFooter = $useFooter;
+        return $this;
+    }
+
+    public function setFooterPathTemplate($footerPathTemplate)
+    {
+        $this->footerPathTemplate = $footerPathTemplate;
+        return $this;
+    }
+
+    public function setFooterPath($footerPath)
+    {
+        $this->footerPath = $footerPath;
+        return $this;
+    }
+
+    public function setFooterHtmlUrl($footerHtmlUrl)
+    {
+        $this->footerHtmlUrl = $footerHtmlUrl;
+        return $this;
+    }
+
+    public function setFooterText($footerText)
+    {
+        $this->footerText = $footerText;
+        return $this;
     }
 
     /**
@@ -118,12 +197,12 @@ class WkPdfRenderer implements IRenderer
                 flush();
             });
         } else {
-            $response = new \Symfony\Component\HttpFoundation\Response();
+            $response = new Response();
             $this->renderPdf($htmlFile);
         }
 
-        $d = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, md5($this->output));
-        $response->headers->set('Content-Disposition', $d);
+        $disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, md5($this->output));
+        $response->headers->set('Content-Disposition', $disposition);
         $response->headers->set('Content-type', 'application/pdf');
         $response->headers->set('Cache-Control', 'max-age=0, must-revalidate');
         $response->headers->set('Pragma', 'public');
@@ -140,7 +219,7 @@ class WkPdfRenderer implements IRenderer
         $this->htmlRenderer->render();
         $page = ob_get_contents();
         $filename = '/tmp/' . microtime() . '.html';
-        
+
         $this->parser->setTags(array_merge(array(
             "content" => $page,
             "date" => $this->createDate(),
@@ -165,13 +244,15 @@ class WkPdfRenderer implements IRenderer
             'out' => $this->output,
             'imageQuality' => '75'
                 ), array(
-            array(
-                'page' => 'file://' . $htmlFile
-            ))
-        );
+            array_merge(array(
+                'page' => "file://{$htmlFile}",
+                    ), $this->getFooter())
+        ));
 
         $this->setPermissions($htmlFile, $this->output);
         $this->unlinkFile($htmlFile);
+        $this->unlinkFile($this->footerPath);
+
         $this->length = readfile($this->output);
     }
 
@@ -182,14 +263,71 @@ class WkPdfRenderer implements IRenderer
      */
     protected function setPermissions($htmlFile, $pdfFile)
     {
-        var_dump($pdfFile);
         chmod($htmlFile, 0777);
         chmod($pdfFile, 0777);
     }
 
     public function unlinkFile($file)
     {
-        unlink($file);
+        if (file_exists($file)) {
+            unlink($file);
+        }
+    }
+
+    /**
+     * adiciona a propriedade do footer
+     */
+    private function getFooter()
+    {
+        if ($this->useFooter) {
+            $text = implode('<br />', $this->footerText);
+            fopen($this->footerPath, 'a');
+            chmod($this->footerPath, 0755);
+            $text = preg_replace(
+                    array('#\$\{TEXTO\}#i', '#\$\{([^\}]+)\}#ie'), array($text, "'<span class=\"'.strtolower('$1').'\">'.strtolower('$1').'</span>'"), $this->appendScript(file_get_contents($this->footerPathTemplate))
+            );
+            file_put_contents($this->footerPath, $text);
+            return array('footer.htmlUrl' => $this->footerHtmlUrl);
+        }
+        return array();
+    }
+
+    /**
+     * Adiciona o script para gerar as variáveis dinamicas
+     * 
+     * @param string $text
+     * @return mixed
+     */
+    private function appendScript($text)
+    {
+        $script = '<script>function subst() {var vars={};var x=document.location.search.substring(1).split(\'&\');';
+        $script .= 'for(var i in x) {var z=x[i].split(\'=\',2);vars[z[0]] = unescape(z[1]);}var x=[\'frompage\',\'topage\',\'page\',';
+        $script .= '\'webpage\',\'section\',\'subsection\',\'subsubsection\']; for(var i in x) { var y = document.getElementsByClassName(x[i]);';
+        $script .= 'for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];}}</script></head><body onload="subst()">';
+        return preg_replace('#\<\/head\>([^\<]+|)\<body([^\>]+|)\>#im', $script, $text);
+    }
+
+    /**
+     * Atribui um template do footer diferente
+     * 
+     * @param realpath $footerPathTemplate
+     */
+    public function setFooterTemplate($footerPathTemplate)
+    {
+        $this->footerPathTemplate = $footerPathTemplate;
+        return $this;
+    }
+
+    /**
+     * Força a exibição do Footer
+     * 
+     * @param boolean $useFooter
+     * @return Application_Pdf_WkPdf
+     */
+    public function showFooter($useFooter = true)
+    {
+        $this->useFooter = $useFooter;
+        return $this;
     }
 
 }

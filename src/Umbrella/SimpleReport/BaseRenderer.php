@@ -65,7 +65,7 @@ abstract class BaseRenderer implements IRenderer
         return $fieldTypeInstance->render($unformattedFieldValue);
     }
 
-    protected function getColumnCountTotal ($field)
+    protected function getColumnCountTotal($field)
     {
         $countAll = 0;
         foreach ($this->datasource as $key => $fieldData) {
@@ -77,4 +77,5 @@ abstract class BaseRenderer implements IRenderer
         }
         return $countAll;
     }
+
 }
