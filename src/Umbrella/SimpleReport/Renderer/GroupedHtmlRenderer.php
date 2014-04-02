@@ -38,14 +38,20 @@ class GroupedHtmlRenderer extends HtmlRenderer {
 
     protected function renderTableHeader() {
         $depth = $this->template->getParam('grouped');
+        $show = null;
+        if(is_array($depth)) {
+            $show = isset($depth['showHeader'])? $depth['showHeader'] : false;
+            $depth = isset($depth['depth'])? $depth['depth'] : null;
+        }
+
         $this->doWriteTableHeaderStart();
         $this->doWriteTableHeaderRowStart();
         $fields = $this->template->getFields();
 
         for ($i = 0; $i < count($fields); $i++) {
             $this->doWriteTableHeaderDataStart();
-            if (($i == 0) || ($i > $depth)) {
-                echo $fields[$i]->getFieldCaption();
+            if (($i == 0) || ($i > $depth) || ($show)) {
+                echo $fields[$i]->getFieldCaption(); 
             }
             $this->doWriteTableHeaderDataEnd();
         }
@@ -60,7 +66,13 @@ class GroupedHtmlRenderer extends HtmlRenderer {
     protected function renderTableBodyRows() {
         $this->setSumGroupedValue();
         $fields = $this->template->getFields();
+
         $depth = $this->template->getParam('grouped');
+        
+        if(is_array($depth)) {
+            $depth = isset($depth['depth'])? $depth['depth'] : null;
+        }
+        
         $lastValue = null;
         for ($this->datasource->rewind(); $this->datasource->valid(); $this->datasource->next()) {
             if ($depth) {
@@ -85,6 +97,11 @@ class GroupedHtmlRenderer extends HtmlRenderer {
 
     protected function renderGroupHeadFields() {
         $depth = $this->template->getParam('grouped');
+
+        if(is_array($depth)) {
+            $depth = isset($depth['depth'])? $depth['depth'] : null;
+        }
+
         $fields = $this->template->getFields();
         $value = $this->getValue($this->datasource, $fields[$depth - 1], '');
         for ($i = 0; $i < count($fields) - 1; $i++) {
@@ -107,6 +124,11 @@ class GroupedHtmlRenderer extends HtmlRenderer {
 
     protected function renderTableBodyFields() {
         $depth = $this->template->getParam('grouped');
+
+        if(is_array($depth)) {
+            $depth = isset($depth['depth'])? $depth['depth'] : null;
+        }
+
         $fields = $this->template->getFields();
         for ($i = 0; $i < count($fields); $i++) {
             $this->doWriteTableBodyDataStart();
