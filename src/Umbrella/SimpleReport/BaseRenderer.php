@@ -64,7 +64,7 @@ abstract class BaseRenderer implements IRenderer
         $unformattedFieldValue = $datasource->getFieldValue($fieldDescription);
         $formattedFieldValue = $fieldTypeInstance->render($unformattedFieldValue);
         if (null !== $fieldDescription->getCallback()) {
-            $formattedFieldValue = $fieldDescription->executeCallBack($formattedFieldValue);
+            $formattedFieldValue = $fieldDescription->executeCallBack($formattedFieldValue, $datasource);
         }
         return $formattedFieldValue;
     }

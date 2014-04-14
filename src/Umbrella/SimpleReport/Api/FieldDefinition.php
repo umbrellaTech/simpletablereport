@@ -126,7 +126,7 @@ class FieldDefinition
         return $this;
     }
 
-    public function executeCallback($value)
+    public function executeCallback($value, IDatasource $datasource)
     {
         $callback = $this->callback;
 
@@ -134,7 +134,7 @@ class FieldDefinition
             throw new \InvalidArgumentException('The callback must be a callable');
         }
 
-        return $callback($value);
+        return $callback($value, $datasource->current());
     }
 
     protected function createFieldType($fieldTypeName, $strategy)
