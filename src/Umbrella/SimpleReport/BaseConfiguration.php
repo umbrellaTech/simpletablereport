@@ -33,7 +33,7 @@ class BaseConfiguration
 
     function __construct($option)
     {
-        $this->option = new \Easy\Collections\Dictionry($option);
+        $this->option = new \Easy\Collections\Dictionary($option);
     }
 
     public function getOption($name)
