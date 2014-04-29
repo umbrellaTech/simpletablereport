@@ -43,7 +43,7 @@ class BaseConfiguration
 
     public function getOptions()
     {
-        return $this->options;
+        return $this->option;
     }
 
     public function getFieldTypeInstance($fieldTypeName, $rendererPrefix)
