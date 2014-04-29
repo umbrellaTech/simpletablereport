@@ -33,12 +33,12 @@ class BaseConfiguration
 
     function __construct($option)
     {
-        $this->option = $option;
+        $this->option = new \Easy\Collections\Dictionry($option);
     }
 
     public function getOption($name)
     {
-        return $this->option[$name];
+        return $this->option->get($name);
     }
 
     public function getOptions()

@@ -57,6 +57,11 @@ abstract class BaseRenderer implements IRenderer
         return $this->configuration->getOption("simpletablereport.{$optionName}");
     }
 
+    protected function getOptions()
+    {
+        return $this->configuration->getOptions();
+    }
+
     protected function getValue(IDatasource $datasource, FieldDefinition $fieldDescription, $rendererPrefix)
     {
         $fieldTypeName = $fieldDescription->getFieldType();
