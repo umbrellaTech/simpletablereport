@@ -94,18 +94,11 @@ class HtmlRenderer extends BaseRenderer implements IHtmlRenderer
     {
         $this->doWriteTableFooterStart();
         $this->doWriteTableFooterRowStart();
-        $columnCountEnabled = $this->template->getEnabledColumnCount();
-        $countColumn = ($columnCountEnabled) ? $this->template->getColumnFieldCounts() : $this->template->getFields();
-        $columnPrint = '';
+        $countColumn = $this->template->getFields();
 
         for ($i = 0; $i < count($countColumn); $i++) {
             $this->doWriteTableFooterDataStart();
-            if ($columnCountEnabled) {
-                $columnPrint = $this->getColumnCountTotal($countColumn[$i]);
-            } else {
-                $columnPrint = '&nbsp;';
-            }
-            echo $columnPrint;
+            echo '&nbsp;';
             $this->doWriteTableFooterDataEnd();
         }
         $this->doWriteTableFooterRowEnd();

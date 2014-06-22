@@ -20,7 +20,6 @@ namespace Umbrella\SimpleReport;
 
 use Umbrella\SimpleReport\Api\FieldSet;
 use Umbrella\SimpleReport\Api\ITemplate;
-use Umbrella\SimpleReport\Api\ISum;
 
 /**
  * Description of SimpleTemplate
@@ -28,15 +27,13 @@ use Umbrella\SimpleReport\Api\ISum;
  * @author kelsocm
  * @author Ítalo Lelis <italo@voxtecnologia.com.br>
  */
-class BaseTemplate implements ITemplate, ISum
+class BaseTemplate implements ITemplate
 {
 
     private $fields;
     private $params;
     private $tags = array();
     private $path;
-    private $enableColunmCount;
-    private $colunmFieldCounts;
 
     public function __construct(FieldSet $fieldSet = null, array $params = array())
     {
@@ -101,25 +98,4 @@ class BaseTemplate implements ITemplate, ISum
         return $this;
     }
 
-    public function getColumnFieldCounts()
-    {
-        return $this->colunmFieldCounts;
-    }
-
-    public function setColumnFieldCounts($fieldsCounts)
-    {
-        $this->colunmFieldCounts = $fieldsCounts;
-        return $this;
-    }
-
-    public function enableColumnCount($enable)
-    {
-        $this->enableColunmCount = $enable;
-        return $this;
-    }
-
-    public function getEnabledColumnCount()
-    {
-        return $this->enableColunmCount;
-    }
 }
