@@ -74,17 +74,4 @@ abstract class BaseRenderer implements IRenderer
         return $formattedFieldValue;
     }
 
-    protected function getColumnCountTotal($field)
-    {
-        $countAll = 0;
-        foreach ($this->datasource as $key => $fieldData) {
-            if (!is_array($field) && isset($this->datasource[$key][$field])) {
-                $countAll += $this->datasource[$key][$field];
-            } elseif (is_array($field)) {
-                $countAll = $field[0];
-            }
-        }
-        return $countAll;
-    }
-
 }

@@ -22,6 +22,7 @@ namespace Umbrella\SimpleReport\Api;
  * Defines a datasource to use with the report. 
  * @author kelsoncm <falecom@kelsoncm.com>
  * @author Ítalo Lelis de Vietro <italo@voxtecnologia.com.br>
+ * @author Ayrton Ricardo <ayrton_jampa15@hotmail.com>
  */
 interface IDatasource extends \Iterator
 {
@@ -29,4 +30,15 @@ interface IDatasource extends \Iterator
     public function getFieldValue(FieldDefinition $fieldDefinition);
 
     public function getRowCount();
+
+    public function getColumnFieldCounts();
+
+    public function setColumnFieldCounts(array $fieldsCounts);
+
+    public function ColumnCount($enable);
+
+    public function getEnabledColumnCount();
+
+    public function appendColumnCount();
+
 }
