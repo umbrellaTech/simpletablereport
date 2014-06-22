@@ -57,7 +57,6 @@ class ArrayDatasource extends ArrayIterator implements IDatasource
             throw new OutOfBoundsException();
         }
         $current = $this->current();
-//        var_dump($current[$fieldDefinition->getFieldName()]);
         return isset($current[$fieldDefinition->getFieldName()]) ? $current[$fieldDefinition->getFieldName()] : null;
     }
 
