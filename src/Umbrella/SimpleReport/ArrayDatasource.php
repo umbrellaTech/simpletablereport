@@ -94,7 +94,7 @@ class ArrayDatasource extends ArrayIterator implements IDatasource
      * @param bool $enable
      * @return $this
      */
-    public function ColumnCount($enable = false)
+    public function columnCount($enable = false)
     {
         $this->enableColumnCount = $enable;
         return $this;
