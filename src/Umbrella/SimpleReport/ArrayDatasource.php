@@ -127,6 +127,7 @@ class ArrayDatasource extends ArrayIterator implements IDatasource
                     if (is_numeric($valueField)) {
                         $count += $valueField;
                         $arrayAppend[$keyIdentification] = $count;
+                        $count = 0;
                     } elseif (isset($columns[$keyIdentification]) && is_array($columns[$keyIdentification])) {
                         $label = isset($columns[$keyIdentification]['label'])? $columns[$keyIdentification]['label'] : $valueField;
                         $prefix = isset($columns[$keyIdentification]['prefix'])? $columns[$keyIdentification]['prefix'] : '';
