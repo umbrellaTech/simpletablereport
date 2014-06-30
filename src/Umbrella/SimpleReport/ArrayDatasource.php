@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport;
 
 use ArrayIterator;
@@ -31,7 +30,6 @@ use Umbrella\SimpleReport\Api\IDatasource;
  */
 class ArrayDatasource extends ArrayIterator implements IDatasource
 {
-
     /**
      * Variable for to store if will count the values of columns
      * @var bool
@@ -119,27 +117,29 @@ class ArrayDatasource extends ArrayIterator implements IDatasource
         }
 
         $columns = $this->getColumnFieldCounts();
-        $count = 0;
         $arrayAppend = array();
         for ($this->rewind(); $this->valid(); $this->next()) {
-            foreach($this->current() as $keyIdentification => $valueField) {
-                if (isset($columns[$keyIdentification]) || in_array($keyIdentification, $columns)) {
-                    if (is_numeric($valueField)) {
-                        $count += $valueField;
-                        $arrayAppend[$keyIdentification] = $count;
-                        $count = 0;
-                    } elseif (isset($columns[$keyIdentification]) && is_array($columns[$keyIdentification])) {
-                        $label = isset($columns[$keyIdentification]['label'])? $columns[$keyIdentification]['label'] : $valueField;
-                        $prefix = isset($columns[$keyIdentification]['prefix'])? $columns[$keyIdentification]['prefix'] : '';
-                        $suffix = isset($columns[$keyIdentification]['suffix'])? $columns[$keyIdentification]['suffix'] : '';
-                        $arrayAppend[$keyIdentification] = sprintf('%s %s %s', $prefix, $label, $suffix);
+            foreach ($this->current() as $keyIdentification => $valueField) {
+                if (isset($columns[$keyIdentification]) || in_array($keyIdentification,
+                                                                    $columns)) {
+                    if (isset($columns[$keyIdentification]) && is_array($columns[$keyIdentification])) {
+                        $label = isset($columns[$keyIdentification]['label']) ? $columns[$keyIdentification]['label'] : $valueField;
+                        $prefix = isset($columns[$keyIdentification]['prefix']) ? $columns[$keyIdentification]['prefix'] : '';
+                        $suffix = isset($columns[$keyIdentification]['suffix']) ? $columns[$keyIdentification]['suffix'] : '';
+                        $arrayAppend[$keyIdentification] = sprintf('%s %s %s',
+                                                                   $prefix,
+                                                                   $label,
+                                                                   $suffix);
+                    } elseif (is_numeric($valueField)) {
+                        $arrayAppend[$keyIdentification] = isset($arrayAppend[$keyIdentification]) 
+                            ? $arrayAppend[$keyIdentification] + $valueField 
+                            : $valueField; 
                     }
                 }
             }
+            
         }
-
         $this->append($arrayAppend);
         return $this;
     }
-
 }
