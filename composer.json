@@ -17,8 +17,8 @@
         }
     ],
     "require": {
-        "symfony/http-foundation": "v2.4.1",
-        "easyframework/collections": "2.0.*"
+        "symfony/http-foundation": "~2.4",
+        "easyframework/collections": "~2.1"
     },
     "autoload": {
         "psr-0": {
