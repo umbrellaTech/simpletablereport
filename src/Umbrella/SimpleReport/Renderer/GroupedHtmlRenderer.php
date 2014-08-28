@@ -132,7 +132,8 @@ class GroupedHtmlRenderer extends HtmlRenderer
         }
 
         $fields = $this->template->getFields();
-        for ($i = 0; $i < count($fields); $i++) {
+        $count = count($fields);
+        for ($i = 0; $i < $count; $i++) {
             $this->doWriteTableBodyDataStart();
             if ($i >= $depth) {
                 echo $this->getValue($this->datasource, $fields[$i], '');
