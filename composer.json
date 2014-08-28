@@ -1,17 +1,28 @@
 {
     "name": "umbrella/simpletablereport",
     "description": "PHP Simple Table Report. Export data as tables to PDF, CSV, Excel, etc...",
-    "license": "APL",
+    "license": "MIT",
     "authors": [
         {
             "name": "kelsoncm",
             "email": "kelsoncm@gmail.com"
+        },
+        {
+            "name": "Ítalo Lelis",
+            "email": "italolelis@gmail.com"
+        },
+        {
+            "name": "Ayrton Ricardo",
+            "email": "ayrton_jampa15@hotmail.com"
         }
     ],
     "require": {
-
+        "symfony/http-foundation": "~2.4",
+        "easyframework/collections": "~2.1"
     },
     "autoload": {
-    	"classmap": ["./src"]
+        "psr-0": {
+            "Umbrella\\SimpleReport": "src/"
+        }
     }
 }

@@ -16,23 +16,18 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Api;
+
 /**
- * Description of SimpleTest
- *
- * @author kelsoncm
+ * Defines a generic render method. 
+ * @author kelsoncm <falecom@kelsoncm.com>
+ * @author Ítalo Lelis de Vietro <italo@voxtecnologia.com.br>
  */
-abstract class SimpleTest extends PHPUnit_Framework_TestCase {
-    
-    protected function arrayArray($name, $elems) {
-        $result = array();
-        foreach ($elems as $value) {
-            $result[] = array($name=>$value);
-        }
-        return $result;
-    }
-    
-    public function testDummy() {
-        
-    }
-    
+interface IRenderer
+{
+
+    /**
+     * Writes the content to be rendered on the client.
+     */
+    public function render();
 }

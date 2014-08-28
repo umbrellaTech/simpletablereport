@@ -16,23 +16,33 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Api;
+
 /**
- * Description of SimpleTest
- *
- * @author kelsoncm
+ * Defines the basics templates methods.
+ * @author kelsoncm <falecom@kelsoncm.com>
+ * @author Ítalo Lelis de Vietro <italo@voxtecnologia.com.br>
  */
-abstract class SimpleTest extends PHPUnit_Framework_TestCase {
-    
-    protected function arrayArray($name, $elems) {
-        $result = array();
-        foreach ($elems as $value) {
-            $result[] = array($name=>$value);
-        }
-        return $result;
-    }
-    
-    public function testDummy() {
-        
-    }
-    
+interface ITemplate
+{
+
+    public function setFields(FieldSet $fieldSet);
+
+    public function getFields();
+
+    public function setParams(array $params);
+
+    public function getParams();
+
+    public function addParam($param, $value);
+
+    public function getParam($param);
+
+    public function getTags();
+
+    public function setTags(array $tags);
+
+    public function getPath();
+
+    public function setPath($path);
 }

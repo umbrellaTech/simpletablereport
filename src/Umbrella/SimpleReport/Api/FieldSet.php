@@ -16,23 +16,28 @@
  * limitations under the License.
  */
 
+namespace Umbrella\SimpleReport\Api;
+
 /**
- * Description of SimpleTest
  *
  * @author kelsoncm
  */
-abstract class SimpleTest extends PHPUnit_Framework_TestCase {
-    
-    protected function arrayArray($name, $elems) {
-        $result = array();
-        foreach ($elems as $value) {
-            $result[] = array($name=>$value);
-        }
-        return $result;
+class FieldSet extends \ArrayIterator
+{
+
+    protected $fieldcount = 0;
+
+    function __construct()
+    {
+        parent::__construct(array());
     }
-    
-    public function testDummy() {
-        
+
+    public function addField($fieldName, $fieldCaption, $fieldType, $fieldSize = null, $fieldWidth = null, $callback = null)
+    {
+        $fieldDefinition = new FieldDefinition($fieldName, $fieldCaption, $fieldType, $fieldSize, $fieldWidth, $callback);
+        $fieldDefinition->setFieldOrder($this->count());
+        parent::append($fieldDefinition);
+        return $this;
     }
-    
+
 }
