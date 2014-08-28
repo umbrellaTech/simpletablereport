@@ -35,11 +35,11 @@ class ConfigurationLoader
      */
     public static function getInstance()
     {
-        if (!ConfigurationLoader::$instance) {
-            ConfigurationLoader::$instance = new ConfigurationLoader();
-            ConfigurationLoader::$instance->load();
+        if (!static::$instance) {
+            static::$instance = new ConfigurationLoader();
+            static::$instance->load();
         }
-        return ConfigurationLoader::$instance;
+        return static::$instance;
     }
 
     /**

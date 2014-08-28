@@ -35,39 +35,39 @@ class XlsxSharedStringsHelper extends XlsxBaseHelper
         if (empty($trimString) || is_null($value)) {
             return null;
         }
-        if (!isset(XlsxSharedStringsHelper::$strings[$value])) {
-            XlsxSharedStringsHelper::$strings[$value] = XlsxSharedStringsHelper::$lastId;
-            XlsxSharedStringsHelper::$lastId = XlsxSharedStringsHelper::$lastId + 1;
+        if (!isset(static::$strings[$value])) {
+            static::$strings[$value] = static::$lastId;
+            static::$lastId = static::$lastId + 1;
         }
-        return XlsxSharedStringsHelper::$strings[$value];
+        return static::$strings[$value];
     }
 
     public static function getIterator()
     {
-        return new ArrayIterator(array_keys(XlsxSharedStringsHelper::$strings));
+        return new ArrayIterator(array_keys(static::$strings));
     }
 
     public static function count()
     {
-        return XlsxSharedStringsHelper::$lastId - 1;
+        return static::$lastId - 1;
     }
 
     public static function reset()
     {
-        XlsxSharedStringsHelper::$strings = array();
-        XlsxSharedStringsHelper::$lastId = 0;
+        static::$strings = array();
+        static::$lastId = 0;
     }
 
     public function renderSharedStrings()
     {
-        $count = XlsxSharedStringsHelper::count();
+        $count = static::count();
         $result = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n";
         $result .= "<sst xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" count=\"{$count}\" uniqueCount=\"{$count}\">";
-        foreach (XlsxSharedStringsHelper::getIterator() as $value) {
+        foreach (static::getIterator() as $value) {
             $result .= "<si><t>{$value}</t></si>";
         }
         $result .= "</sst>";
-        XlsxSharedStringsHelper::reset();
+        static::reset();
         return $result;
     }
 }

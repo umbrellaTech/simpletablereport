@@ -60,10 +60,10 @@ class FieldDefinition
     public function getFieldTypeInstance($strategy = '')
     {
         $key = "{$this->fieldType}, {$strategy}";
-        if (!isset(FieldDefinition::$loadedFieldsTypes[$key])) {
-            FieldDefinition::$loadedFieldsTypes[$key] = $this->createFieldType($this->fieldType, $strategy);
+        if (!isset(static::$loadedFieldsTypes[$key])) {
+            static::$loadedFieldsTypes[$key] = $this->createFieldType($this->fieldType, $strategy);
         }
-        return FieldDefinition::$loadedFieldsTypes[$key];
+        return static::$loadedFieldsTypes[$key];
     }
 
     public function getFieldSize()

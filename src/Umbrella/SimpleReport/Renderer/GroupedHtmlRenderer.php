@@ -45,7 +45,8 @@ class GroupedHtmlRenderer extends HtmlRenderer
         $this->doWriteTableHeaderRowStart();
         $fields = $this->template->getFields();
 
-        for ($i = 0; $i < count($fields); $i++) {
+        $count = count($fields);
+        for ($i = 0; $i < $count; $i++) {
             $this->doWriteTableHeaderDataStart();
             if (($i == 0) || ($i > $depth) || ($show)) {
                 echo $fields[$i]->getFieldCaption();
@@ -103,7 +104,9 @@ class GroupedHtmlRenderer extends HtmlRenderer
 
         $fields = $this->template->getFields();
         $value = $this->getValue($this->datasource, $fields[$depth - 1], '');
-        for ($i = 0; $i < count($fields) - 1; $i++) {
+
+        $count = count($fields);
+        for ($i = 0; $i < $count - 1; $i++) {
             $this->doWriteTableBodyDataStart();
             if ($i == $depth - 1) {
                 echo $value;
@@ -146,7 +149,8 @@ class GroupedHtmlRenderer extends HtmlRenderer
         $countColumn = ($columnCountEnabled) ? $this->datasource->getColumnFieldCounts() : $this->template->getFields();
         $columnPrint = '';
 
-        for ($i = 0; $i < count($countColumn); $i++) {
+        $count = count($countColumn);
+        for ($i = 0; $i < $count; $i++) {
             $this->doWriteTableFooterDataStart();
             if ($columnCountEnabled) {
                 $columnPrint = $this->getColumnCountTotal($countColumn[$i]);
