@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2013 kelsoncm <falecom@kelsoncm.com>.
+ * Copyright 2013 kelsoncm.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-namespace Umbrella\SimpleReport\Api;
+namespace Umbrella\Tests\SimpleReport;
 
 /**
- * Defines a configuration type to use with the report. 
- * @author kelsoncm <falecom@kelsoncm.com>
- * @author Ítalo Lelis de Vietro <italo@voxtecnologia.com.br>
+ * Description of SimpleTest
+ *
+ * @author kelsoncm
  */
-interface IConfiguration
+abstract class SimpleTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function getFieldTypeOptions($fieldTypeName, $rendererPrefix);
+    protected function arrayArray($name, $elems)
+    {
+        $result = array();
+        foreach ($elems as $value) {
+            $result[] = array($name => $value);
+        }
+        return $result;
+    }
 
-    public function getFieldTypeInstance($fieldTypeName, $rendererPrefix);
-
-    public function getOption($name);
-
-    public function getOptions();
+    public function testDummy()
+    {
+        
+    }
 }

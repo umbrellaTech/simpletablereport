@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Fields;
 
 use DateTime;
@@ -29,7 +28,6 @@ use Umbrella\SimpleReport\Api\FieldType;
  */
 abstract class DateTimeType extends FieldType
 {
-
     protected static $timezones = array();
 
     public function format($value)
@@ -61,5 +59,4 @@ abstract class DateTimeType extends FieldType
         }
         return $value;
     }
-
 }

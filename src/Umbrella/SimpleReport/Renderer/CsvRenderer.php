@@ -15,37 +15,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+namespace Umbrella\SimpleReport\Renderer;
+
+use Umbrella\SimpleReport\BaseRenderer;
 
 /**
  * Description of CSVRenderer
  *
  * @author kelsoncm
  */
-class CsvRenderer extends BaseRenderer {
-    
+class CsvRenderer extends BaseRenderer
+{
     private $stringBuffer;
-    
-    public function getStringBuffer() {
+
+    public function getStringBuffer()
+    {
         return $this->stringBuffer;
     }
-    
-    public function render() {
-        $this->stringBuffer = ''; 
+
+    public function render()
+    {
+        $this->stringBuffer = '';
         for ($this->datasource->rewind(); $this->datasource->valid(); $this->datasource->next()) {
             $this->renderRow();
         }
     }
-    
-    protected function write($string) {
+
+    protected function write($string)
+    {
         $this->stringBuffer .= $string;
-    } 
-    
-    protected function renderRow() {
+    }
+
+    protected function renderRow()
+    {
         $row = array();
         foreach ($this->template->getFields() as $fieldDescription) {
             $row[] = $this->getValue($this->datasource, $fieldDescription, 'CSV');
         }
         $this->write(implode(',', $row) . "\n");
     }
-
 }

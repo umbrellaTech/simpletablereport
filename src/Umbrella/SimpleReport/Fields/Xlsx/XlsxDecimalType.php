@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Fields\Xlsx;
 
 use Umbrella\SimpleReport\Fields\DecimalType;
@@ -33,5 +32,4 @@ class XlsxDecimalType extends DecimalType
         $value = parent::format($value);
         return empty($value) ? null : "<c r=\"cellAddress\" s=\"1\"><v>{$value}</v></c>";
     }
-
 }

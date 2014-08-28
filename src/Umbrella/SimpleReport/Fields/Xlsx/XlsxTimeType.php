@@ -15,20 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+namespace Umbrella\SimpleReport\Fields\Xlsx;
+
+use Umbrella\SimpleReport\Fields\TimeType;
 
 /**
  * Description of TimeType
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class XlsxTimeType extends TimeType {
+class XlsxTimeType extends TimeType
+{
 
-    public function format($value) {
+    public function format($value)
+    {
         if (empty($value)) {
             return null;
         }
         $time = XlsxDateTimeUtils::toTime($value);
         return "<c r=\"cellAddress\" s=\"7\"><v>{$time}</v></c>";
     }
-
 }

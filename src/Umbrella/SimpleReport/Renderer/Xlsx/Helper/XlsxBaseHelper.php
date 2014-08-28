@@ -15,11 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Renderer\Xlsx\Helper;
 
-use Umbrella\SimpleReport\Api\IDatasource;
-use Umbrella\SimpleReport\Api\ITemplate;
+use Umbrella\SimpleReport\Api\DatasourceInterface;
+use Umbrella\SimpleReport\Api\TemplateInterface;
 
 /**
  * Description of XLSXBaseHelper
@@ -28,11 +27,10 @@ use Umbrella\SimpleReport\Api\ITemplate;
  */
 class XlsxBaseHelper
 {
-
     protected $datasource;
     protected $template;
 
-    function __construct(IDatasource $datasource, ITemplate $template)
+    function __construct(DatasourceInterface $datasource, TemplateInterface $template)
     {
         $this->datasource = $datasource;
         $this->template = $template;
@@ -64,5 +62,4 @@ class XlsxBaseHelper
         $rowCount = $this->datasource->getRowCount() + 1;
         return "A1:{$colLetter}{$rowCount}";
     }
-
 }

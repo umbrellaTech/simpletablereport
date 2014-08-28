@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Fields;
 
 /**
@@ -25,7 +24,6 @@ namespace Umbrella\SimpleReport\Fields;
  */
 class DecimalType extends FloatType
 {
-
     protected $typeprefix = 'decimaltype';
     protected $precision;
     protected $separator;
@@ -41,5 +39,4 @@ class DecimalType extends FloatType
     {
         return is_null($value) ? '' : str_replace('.', $this->separator, sprintf("%.{$this->precision}F", $value));
     }
-
 }

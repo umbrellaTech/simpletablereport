@@ -15,8 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Api;
+
+use Iterator;
 
 /**
  * Defines a datasource to use with the report. 
@@ -24,7 +25,7 @@ namespace Umbrella\SimpleReport\Api;
  * @author Ítalo Lelis de Vietro <italo@voxtecnologia.com.br>
  * @author Ayrton Ricardo <ayrton_jampa15@hotmail.com>
  */
-interface IDatasource extends \Iterator
+interface DatasourceInterface extends Iterator
 {
 
     public function getFieldValue(FieldDefinition $fieldDefinition);
@@ -40,5 +41,4 @@ interface IDatasource extends \Iterator
     public function getEnabledColumnCount();
 
     public function appendColumnCount();
-
 }

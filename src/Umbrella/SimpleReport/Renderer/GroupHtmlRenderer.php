@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Renderer;
 
 /**
@@ -39,7 +38,7 @@ class GroupHtmlRenderer extends HtmlRenderer
             $this->doWriteTableBodyDataStart();
 
             echo $this->getValue($this->datasource, $fieldDescription, '');
-            
+
             $this->doWriteTableBodyDataEnd();
         }
     }
@@ -72,5 +71,4 @@ class GroupHtmlRenderer extends HtmlRenderer
     {
         echo $this->getOption('table.body.row.end');
     }
-
 }

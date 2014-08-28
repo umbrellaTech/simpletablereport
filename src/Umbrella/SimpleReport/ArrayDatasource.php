@@ -20,7 +20,7 @@ namespace Umbrella\SimpleReport;
 use ArrayIterator;
 use OutOfBoundsException;
 use Umbrella\SimpleReport\Api\FieldDefinition;
-use Umbrella\SimpleReport\Api\IDatasource;
+use Umbrella\SimpleReport\Api\DatasourceInterface;
 
 /**
  * Description of AbstractDatasource
@@ -28,7 +28,7 @@ use Umbrella\SimpleReport\Api\IDatasource;
  * @author kelsoncm
  * @author Ayrton Ricardo<ayrton_jampa15@hotmail.com>
  */
-class ArrayDatasource extends ArrayIterator implements IDatasource
+class ArrayDatasource extends ArrayIterator implements DatasourceInterface
 {
     /**
      * Variable for to store if will count the values of columns
@@ -120,24 +120,17 @@ class ArrayDatasource extends ArrayIterator implements IDatasource
         $arrayAppend = array();
         for ($this->rewind(); $this->valid(); $this->next()) {
             foreach ($this->current() as $keyIdentification => $valueField) {
-                if (isset($columns[$keyIdentification]) || in_array($keyIdentification,
-                                                                    $columns)) {
+                if (isset($columns[$keyIdentification]) || in_array($keyIdentification, $columns)) {
                     if (isset($columns[$keyIdentification]) && is_array($columns[$keyIdentification])) {
                         $label = isset($columns[$keyIdentification]['label']) ? $columns[$keyIdentification]['label'] : $valueField;
                         $prefix = isset($columns[$keyIdentification]['prefix']) ? $columns[$keyIdentification]['prefix'] : '';
                         $suffix = isset($columns[$keyIdentification]['suffix']) ? $columns[$keyIdentification]['suffix'] : '';
-                        $arrayAppend[$keyIdentification] = sprintf('%s %s %s',
-                                                                   $prefix,
-                                                                   $label,
-                                                                   $suffix);
+                        $arrayAppend[$keyIdentification] = sprintf('%s %s %s', $prefix, $label, $suffix);
                     } elseif (is_numeric($valueField)) {
-                        $arrayAppend[$keyIdentification] = isset($arrayAppend[$keyIdentification]) 
-                            ? $arrayAppend[$keyIdentification] + $valueField 
-                            : $valueField; 
+                        $arrayAppend[$keyIdentification] = isset($arrayAppend[$keyIdentification]) ? $arrayAppend[$keyIdentification] + $valueField : $valueField;
                     }
                 }
             }
-            
         }
         $this->append($arrayAppend);
         return $this;

@@ -5,10 +5,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 namespace Umbrella\SimpleReport\Parser;
 
 use Exception;
+use Umbrella\SimpleReport\Api\TemplateInterface;
 
 /**
  * Description of TemplateRenderer
@@ -18,16 +18,15 @@ use Exception;
  */
 class TemplateParser
 {
-
     protected $tags = array();
     protected $template = null;
 
-    public function __construct(\Umbrella\SimpleReport\Api\ITemplate $template)
+    public function __construct(TemplateInterface $template)
     {
         $this->template = $template;
     }
 
-    public function setTemplate(\Umbrella\SimpleReport\Api\ITemplate $template)
+    public function setTemplate(TemplateInterface $template)
     {
         $this->template = $template;
         return $this;
@@ -84,5 +83,4 @@ class TemplateParser
 
         return $html;
     }
-
 }

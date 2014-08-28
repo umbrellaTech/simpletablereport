@@ -15,11 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport;
 
 use Umbrella\SimpleReport\Api\FieldSet;
-use Umbrella\SimpleReport\Api\ITemplate;
+use Umbrella\SimpleReport\Api\TemplateInterface;
 
 /**
  * Description of SimpleTemplate
@@ -27,9 +26,8 @@ use Umbrella\SimpleReport\Api\ITemplate;
  * @author kelsocm
  * @author Ítalo Lelis <italo@voxtecnologia.com.br>
  */
-class BaseTemplate implements ITemplate
+class BaseTemplate implements TemplateInterface
 {
-
     private $fields;
     private $params;
     private $tags = array();
@@ -97,5 +95,4 @@ class BaseTemplate implements ITemplate
         $this->path = $path;
         return $this;
     }
-
 }

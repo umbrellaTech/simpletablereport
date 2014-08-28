@@ -15,10 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Api;
 
+use Closure;
 use Exception;
+use InvalidArgumentException;
 
 /**
  *
@@ -26,7 +27,6 @@ use Exception;
  */
 class FieldDefinition
 {
-
     private static $loadedFieldsTypes = array();
     private $fieldName;
     private $fieldType;
@@ -36,7 +36,8 @@ class FieldDefinition
     private $fieldCaption;
     private $callback;
 
-    function __construct($fieldName, $fieldCaption, $fieldType = FieldType::STRING, $fieldSize = null, $fieldWidth = null, $callback = null)
+    function __construct($fieldName, $fieldCaption, $fieldType = FieldType::STRING, $fieldSize = null,
+                         $fieldWidth = null, $callback = null)
     {
         $this->fieldName = $fieldName;
         $this->fieldType = $fieldType;
@@ -126,12 +127,12 @@ class FieldDefinition
         return $this;
     }
 
-    public function executeCallback($value, IDatasource $datasource)
+    public function executeCallback($value, DatasourceInterface $datasource)
     {
         $callback = $this->callback;
 
-        if (!$callback instanceof \Closure) {
-            throw new \InvalidArgumentException('The callback must be a callable');
+        if (!$callback instanceof Closure) {
+            throw new InvalidArgumentException('The callback must be a callable');
         }
 
         return $callback($value, $datasource->current());
@@ -149,5 +150,4 @@ class FieldDefinition
             throw new Exception("Field class don't exists for field type '{$fieldTypeName}'.");
         }
     }
-
 }

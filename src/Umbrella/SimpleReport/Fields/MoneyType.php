@@ -15,27 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+namespace Umbrella\SimpleReport\Fields;
 
 /**
  * Description of MoneyType
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class MoneyType extends DecimalType {
-    
-    protected $typeprefix='moneytype';
+class MoneyType extends DecimalType
+{
+    protected $typeprefix = 'moneytype';
     protected $prefix;
     protected $sufix;
-    
-    function __construct($options=null) {
+
+    function __construct($options = null)
+    {
         parent::__construct($options);
-        $this->prefix = $this->getOption("prefix") ?: '$';
-        $this->sufix = $this->getOption("sufix") ?: '';
+        $this->prefix = $this->getOption("prefix") ? : '$';
+        $this->sufix = $this->getOption("sufix") ? : '';
     }
 
-    public function format($value) {
+    public function format($value)
+    {
         $result = parent::format($value);
         return $result == '' ? '' : "{$this->prefix}{$result}{$this->sufix}";
     }
-
 }

@@ -15,13 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport;
 
 use Umbrella\SimpleReport\Api\FieldDefinition;
-use Umbrella\SimpleReport\Api\IDatasource;
-use Umbrella\SimpleReport\Api\IRenderer;
-use Umbrella\SimpleReport\Api\ITemplate;
+use Umbrella\SimpleReport\Api\DatasourceInterface;
+use Umbrella\SimpleReport\Api\RendererInterface;
+use Umbrella\SimpleReport\Api\TemplateInterface;
 
 /**
  * Description of BaseRenderer
@@ -29,22 +28,21 @@ use Umbrella\SimpleReport\Api\ITemplate;
  * @author kelsoncm <falecom@kelsoncm.com>
  * @author ayrtonricardo <ayrton_jampa15@hotmail.com>
  */
-abstract class BaseRenderer implements IRenderer
+abstract class BaseRenderer implements RendererInterface
 {
-
     protected $configuration;
 
     /**
-     * @var IDatasource 
+     * @var DatasourceInterface 
      */
     protected $datasource;
 
     /**
-     * @var ITemplate 
+     * @var TemplateInterface 
      */
     protected $template;
 
-    public function __construct(IDatasource $datasource, ITemplate $template)
+    public function __construct(DatasourceInterface $datasource, TemplateInterface $template)
     {
         $this->datasource = $datasource;
         $this->template = $template;
@@ -62,7 +60,8 @@ abstract class BaseRenderer implements IRenderer
         return $this->configuration->getOptions();
     }
 
-    protected function getValue(IDatasource $datasource, FieldDefinition $fieldDescription, $rendererPrefix)
+    protected function getValue(DatasourceInterface $datasource, FieldDefinition $fieldDescription,
+                                $rendererPrefix = null)
     {
         $fieldTypeName = $fieldDescription->getFieldType();
         $fieldTypeInstance = $this->configuration->getFieldTypeInstance($fieldTypeName, $rendererPrefix);
@@ -73,5 +72,4 @@ abstract class BaseRenderer implements IRenderer
         }
         return $formattedFieldValue;
     }
-
 }

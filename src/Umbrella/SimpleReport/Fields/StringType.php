@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Fields;
 
 use Umbrella\SimpleReport\Api\FieldType;
@@ -37,5 +36,4 @@ class StringType extends FieldType
     {
         return "$value";
     }
-
 }

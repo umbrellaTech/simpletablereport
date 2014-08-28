@@ -15,16 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Api;
+
+use ArrayIterator;
 
 /**
  *
  * @author kelsoncm
  */
-class FieldSet extends \ArrayIterator
+class FieldSet extends ArrayIterator
 {
-
     protected $fieldcount = 0;
 
     function __construct()
@@ -32,12 +32,12 @@ class FieldSet extends \ArrayIterator
         parent::__construct(array());
     }
 
-    public function addField($fieldName, $fieldCaption, $fieldType, $fieldSize = null, $fieldWidth = null, $callback = null)
+    public function addField($fieldName, $fieldCaption, $fieldType, $fieldSize = null, $fieldWidth = null,
+                             $callback = null)
     {
         $fieldDefinition = new FieldDefinition($fieldName, $fieldCaption, $fieldType, $fieldSize, $fieldWidth, $callback);
         $fieldDefinition->setFieldOrder($this->count());
         parent::append($fieldDefinition);
         return $this;
     }
-
 }

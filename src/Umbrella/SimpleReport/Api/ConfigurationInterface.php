@@ -15,21 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Umbrella\SimpleReport\Fields\Xlsx;
-
-use Umbrella\SimpleReport\Fields\IntegerType;
+namespace Umbrella\SimpleReport\Api;
 
 /**
- * Description of IntegerType
- *
+ * Defines a configuration type to use with the report. 
  * @author kelsoncm <falecom@kelsoncm.com>
+ * @author Ítalo Lelis de Vietro <italo@voxtecnologia.com.br>
  */
-class XlsxIntegerType extends IntegerType
+interface ConfigurationInterface
 {
 
-    public function format($value)
-    {
-        $value = parent::format($value);
-        return empty($value) ? null : "<c r=\"cellAddress\"><v>{$value}</v></c>";
-    }
+    public function getFieldTypeOptions($fieldTypeName, $rendererPrefix);
+
+    public function getFieldTypeInstance($fieldTypeName, $rendererPrefix);
+
+    public function getOption($name);
+
+    public function getOptions();
 }

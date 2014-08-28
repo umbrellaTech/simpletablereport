@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Renderer\Xlsx\Helper;
 
 use ArrayIterator;
@@ -27,7 +26,6 @@ use ArrayIterator;
  */
 class XlsxSharedStringsHelper extends XlsxBaseHelper
 {
-
     private static $strings = array();
     private static $lastId = 0;
 
@@ -53,8 +51,9 @@ class XlsxSharedStringsHelper extends XlsxBaseHelper
     {
         return XlsxSharedStringsHelper::$lastId - 1;
     }
-    
-    public static function reset() {
+
+    public static function reset()
+    {
         XlsxSharedStringsHelper::$strings = array();
         XlsxSharedStringsHelper::$lastId = 0;
     }
@@ -71,5 +70,4 @@ class XlsxSharedStringsHelper extends XlsxBaseHelper
         XlsxSharedStringsHelper::reset();
         return $result;
     }
-
 }

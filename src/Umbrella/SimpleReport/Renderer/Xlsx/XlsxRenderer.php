@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Renderer\Xlsx;
 
 use RuntimeException;
@@ -34,7 +33,6 @@ use ZipArchive;
  */
 class XlsxRenderer extends BaseRenderer
 {
-
     protected $tableString = '';
     protected $sheetString = '';
     protected $sharedStringsString = '';
@@ -133,5 +131,4 @@ class XlsxRenderer extends BaseRenderer
         $zip->addFromString("xl/styles.xml", $this->styleString);
         $zip->close();
     }
-
 }

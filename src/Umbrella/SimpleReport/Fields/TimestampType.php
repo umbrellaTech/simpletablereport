@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Fields;
 
 use DateTime;
@@ -28,10 +27,10 @@ use Exception;
  */
 class TimestampType extends DateTimeType
 {
-
     protected $typeprefix = 'timestamptype';
 
-    public function toPrimitiveType($value) {
+    public function toPrimitiveType($value)
+    {
         $value = parent::toPrimitiveType($value);
         if (is_null($value) || $value instanceof DateTime) {
             return $value;
@@ -42,9 +41,11 @@ class TimestampType extends DateTimeType
             }
             return DateTime::createFromFormat($this->getOption('fromlongformat'), $value, $this->getDateTimeZone());
         } else if (is_array($value)) {
-            return DateTime::createFromFormat('Y-m-d H:i:s', sprintf('%d-%02d-%02d %02d:%02d:%02d', $value['year'], $value['mon'], $value['mday'], $value['hours'], $value['minutes'], $value['seconds']), $this->getDateTimeZone());
+            return DateTime::createFromFormat('Y-m-d H:i:s',
+                                              sprintf('%d-%02d-%02d %02d:%02d:%02d', $value['year'], $value['mon'],
+                                                      $value['mday'], $value['hours'], $value['minutes'],
+                                                      $value['seconds']), $this->getDateTimeZone());
         }
         throw new Exception('Invalid timestamp.');
     }
-
 }

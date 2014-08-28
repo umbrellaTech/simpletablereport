@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Fields;
 
 /**
@@ -25,7 +24,6 @@ namespace Umbrella\SimpleReport\Fields;
  */
 class IntegerType extends NumericType
 {
-
     protected $typeprefix = 'integertype';
 
     public function format($value)
@@ -37,5 +35,4 @@ class IntegerType extends NumericType
     {
         return intval($value);
     }
-
 }

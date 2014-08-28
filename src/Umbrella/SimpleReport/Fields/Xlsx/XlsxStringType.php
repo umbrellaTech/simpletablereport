@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Fields\Xlsx;
 
 use Umbrella\SimpleReport\Fields\StringType;
@@ -34,5 +33,4 @@ class XlsxStringType extends StringType
         $value = XlsxSharedStringsHelper::putIfNotExists(parent::format($value));
         return empty($value) ? null : "<c r=\"cellAddress\" t=\"s\"><v>{$value}</v></c>";
     }
-
 }

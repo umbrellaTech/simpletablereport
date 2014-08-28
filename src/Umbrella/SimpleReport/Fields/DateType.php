@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Fields;
 
 use DateTime;
@@ -28,10 +27,10 @@ use Exception;
  */
 class DateType extends DateTimeType
 {
-
     protected $typeprefix = 'datetype';
 
-    public function toPrimitiveType($value) {
+    public function toPrimitiveType($value)
+    {
         $value2 = parent::toPrimitiveType($value);
         if (is_null($value2) || $value2 instanceof DateTime) {
             return $value2;
@@ -39,9 +38,9 @@ class DateType extends DateTimeType
         if (is_string($value)) {
             return DateTime::createFromFormat($this->getOption('fromformat'), $value, $this->getDateTimeZone());
         } else if (is_array($value)) {
-            return DateTime::createFromFormat("Y-m-d", "{$value['year']}-{$value['mon']}-{$value['mday']}", $this->getDateTimeZone());
+            return DateTime::createFromFormat("Y-m-d", "{$value['year']}-{$value['mon']}-{$value['mday']}",
+                                              $this->getDateTimeZone());
         }
         throw new Exception("Invalid date.");
     }
-
 }

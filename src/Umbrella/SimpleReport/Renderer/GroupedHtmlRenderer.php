@@ -15,19 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Renderer;
-
-use Closure;
-use Umbrella\SimpleReport\BaseRenderer;
 
 /**
  * Description of HTMLRenderer
  *
- * @author kelsoncm <falecom@kelsoncm.com>O
+ * @author kelsoncm <falecom@kelsoncm.com>
  */
-class GroupedHtmlRenderer extends HtmlRenderer {
-
+class GroupedHtmlRenderer extends HtmlRenderer
+{
     protected $groupedSums = array();
 
     /*
@@ -36,12 +32,13 @@ class GroupedHtmlRenderer extends HtmlRenderer {
      * de suas respectivas linhas.
      */
 
-    protected function renderTableHeader() {
+    protected function renderTableHeader()
+    {
         $depth = $this->template->getParam('grouped');
         $show = null;
-        if(is_array($depth)) {
-            $show = isset($depth['showHeader'])? $depth['showHeader'] : false;
-            $depth = isset($depth['depth'])? $depth['depth'] : null;
+        if (is_array($depth)) {
+            $show = isset($depth['showHeader']) ? $depth['showHeader'] : false;
+            $depth = isset($depth['depth']) ? $depth['depth'] : null;
         }
 
         $this->doWriteTableHeaderStart();
@@ -51,28 +48,28 @@ class GroupedHtmlRenderer extends HtmlRenderer {
         for ($i = 0; $i < count($fields); $i++) {
             $this->doWriteTableHeaderDataStart();
             if (($i == 0) || ($i > $depth) || ($show)) {
-                echo $fields[$i]->getFieldCaption(); 
+                echo $fields[$i]->getFieldCaption();
             }
             $this->doWriteTableHeaderDataEnd();
         }
         $this->doWriteTableHeaderRowEnd();
         $this->doWriteTableHeaderEnd();
     }
-
     /*
      * Mudança: Deve incluir um head na primeira coluna para cada inicio de grupo
      */
 
-    protected function renderTableBodyRows() {
+    protected function renderTableBodyRows()
+    {
         $this->setSumGroupedValue();
         $fields = $this->template->getFields();
 
         $depth = $this->template->getParam('grouped');
-        
-        if(is_array($depth)) {
-            $depth = isset($depth['depth'])? $depth['depth'] : null;
+
+        if (is_array($depth)) {
+            $depth = isset($depth['depth']) ? $depth['depth'] : null;
         }
-        
+
         $lastValue = null;
         for ($this->datasource->rewind(); $this->datasource->valid(); $this->datasource->next()) {
             if ($depth) {
@@ -89,17 +86,19 @@ class GroupedHtmlRenderer extends HtmlRenderer {
         }
     }
 
-    public function renderGroupHeadRow() {
+    public function renderGroupHeadRow()
+    {
         $this->doWriteTableBodyGroupedRowStart();
         $this->renderGroupHeadFields();
         $this->doWriteTableBodyRowEnd();
     }
 
-    protected function renderGroupHeadFields() {
+    protected function renderGroupHeadFields()
+    {
         $depth = $this->template->getParam('grouped');
 
-        if(is_array($depth)) {
-            $depth = isset($depth['depth'])? $depth['depth'] : null;
+        if (is_array($depth)) {
+            $depth = isset($depth['depth']) ? $depth['depth'] : null;
         }
 
         $fields = $this->template->getFields();
@@ -117,16 +116,16 @@ class GroupedHtmlRenderer extends HtmlRenderer {
         echo $this->groupedSums[$value];
         $this->doWriteTableBodyDataEnd();
     }
-
     /*
      * Mudança: só deve iterar os valores a partir da coluna que não servir de head
      */
 
-    protected function renderTableBodyFields() {
+    protected function renderTableBodyFields()
+    {
         $depth = $this->template->getParam('grouped');
 
-        if(is_array($depth)) {
-            $depth = isset($depth['depth'])? $depth['depth'] : null;
+        if (is_array($depth)) {
+            $depth = isset($depth['depth']) ? $depth['depth'] : null;
         }
 
         $fields = $this->template->getFields();
@@ -139,11 +138,12 @@ class GroupedHtmlRenderer extends HtmlRenderer {
         }
     }
 
-    protected function renderTableFooter() {
+    protected function renderTableFooter()
+    {
         $this->doWriteTableFooterStart();
         $this->doWriteTableFooterRowStart();
-        $columnCountEnabled = $this->template->getEnabledColumnCount();
-        $countColumn = ($columnCountEnabled) ? $this->template->getColumnFieldCounts() : $this->template->getFields();
+        $columnCountEnabled = $this->datasource->getEnabledColumnCount();
+        $countColumn = ($columnCountEnabled) ? $this->datasource->getColumnFieldCounts() : $this->template->getFields();
         $columnPrint = '';
 
         for ($i = 0; $i < count($countColumn); $i++) {
@@ -160,7 +160,8 @@ class GroupedHtmlRenderer extends HtmlRenderer {
         $this->doWriteTableFooterEnd();
     }
 
-    protected function setSumGroupedValue() {
+    protected function setSumGroupedValue()
+    {
         $fields = $this->template->getFields();
         $value = null;
         for ($this->datasource->rewind(); $this->datasource->valid(); $this->datasource->next()) {
@@ -172,12 +173,13 @@ class GroupedHtmlRenderer extends HtmlRenderer {
         }
     }
 
-    protected function doWriteTableBodyGroupedDataStart() {
+    protected function doWriteTableBodyGroupedDataStart()
+    {
         echo $this->getOption('table.body.grouped.data.start');
     }
 
-    protected function doWriteTableBodyGroupedRowStart() {
+    protected function doWriteTableBodyGroupedRowStart()
+    {
         echo $this->getOption('table.body.grouped.row.start');
     }
-
 }

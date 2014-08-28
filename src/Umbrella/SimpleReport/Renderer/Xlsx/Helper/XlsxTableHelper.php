@@ -15,22 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Renderer\Xlsx\Helper;
 
-/**
+/* * namespace Umbrella\SimpleReport\Fields;
  * Description of XLSXTableHelper
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
+
 class XlsxTableHelper extends XlsxBaseHelper
 {
 
     public function renderTable()
     {
         return $this->doWriteTableBegin()
-                . $this->doWriteTableColumn()
-                . $this->doWriteTableEnd();
+            . $this->doWriteTableColumn()
+            . $this->doWriteTableEnd();
     }
 
     protected function doWriteTableBegin()
@@ -38,10 +38,10 @@ class XlsxTableHelper extends XlsxBaseHelper
         $colCount = $this->template->getFields()->count();
         $tableRange = $this->getTableRange();
         return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
-                . "<table xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\""
-                . " id=\"1\" name=\"Tabela1\" displayName=\"Tabela1\""
-                . " ref=\"{$tableRange}\" totalsRowShown=\"0\">"
-                . "<autoFilter ref=\"{$tableRange}\"/><tableColumns count=\"{$colCount}\">";
+            . "<table xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\""
+            . " id=\"1\" name=\"Tabela1\" displayName=\"Tabela1\""
+            . " ref=\"{$tableRange}\" totalsRowShown=\"0\">"
+            . "<autoFilter ref=\"{$tableRange}\"/><tableColumns count=\"{$colCount}\">";
     }
 
     protected function doWriteTableColumn()
@@ -59,8 +59,7 @@ class XlsxTableHelper extends XlsxBaseHelper
     protected function doWriteTableEnd()
     {
         return "</tableColumns>"
-                . "<tableStyleInfo name=\"TableStyleLight1\" showFirstColumn=\"0\" showLastColumn=\"0\" showRowStripes=\"1\" showColumnStripes=\"0\"/>"
-                . "</table>";
+            . "<tableStyleInfo name=\"TableStyleLight1\" showFirstColumn=\"0\" showLastColumn=\"0\" showRowStripes=\"1\" showColumnStripes=\"0\"/>"
+            . "</table>";
     }
-
 }

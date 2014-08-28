@@ -15,40 +15,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+namespace Umbrella\SimpleReport\Api;
+
+use Umbrella\SimpleReport\ConfigurationLoader;
 
 /**
  * Description of FieldType
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-abstract class FieldType {
-    
+abstract class FieldType
+{
     const STRING = 'STRING';
-    
     const DATE = 'DATE';
     const TIME = 'TIME';
     const TIMESTAMP = 'TIMESTAMP';
-    
     const INTEGER = 'INTEGER';
     const FLOAT = 'FLOAT';
     const DECIMAL = 'DECIMAL';
     const MONEY = 'MONEY';
-    
+
     protected $options;
     protected $typeprefix;
-    
-    function __construct($options=null) {
+
+    function __construct($options = null)
+    {
         if (empty($option)) {
             $options = ConfigurationLoader::getInstance()->getConfiguration()->getOptions();
         }
         $this->options = $options;
     }
-    
-    public function render($value){
+
+    public function render($value)
+    {
         return $this->format($this->toPrimitiveType($value));
     }
-    
-    public function getOption($optionName) {
+
+    public function getOption($optionName)
+    {
         if (isset($this->options["simpletablereport.{$this->typeprefix}.{$optionName}"])) {
             return $this->options["simpletablereport.{$this->typeprefix}.{$optionName}"];
         } elseif (isset($this->options["simpletablereport.{$optionName}"])) {
@@ -58,6 +62,6 @@ abstract class FieldType {
     }
 
     public abstract function format($value);
-    public abstract function toPrimitiveType($value);
 
+    public abstract function toPrimitiveType($value);
 }

@@ -15,44 +15,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+namespace Umbrella\SimpleReport\Renderer;
+
+use Umbrella\SimpleReport\BaseRenderer;
 
 /**
  * Description of HTMLRenderer
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class HtmlRenderer extends BaseRenderer {
-    
+class HtmlRenderer extends BaseRenderer
+{
     protected $stringBuffer;
-    
-    public function getStringBuffer() {
+
+    public function getStringBuffer()
+    {
         return $this->stringBuffer;
     }
-    
-    public function getOption($optionName) {
+
+    public function getOption($optionName)
+    {
         return parent::getOption("htmlrenderer.{$optionName}");
     }
-    
-    protected function write($string) {
+
+    protected function write($string)
+    {
         $this->stringBuffer .= $string;
-    } 
-    
-    public function render() {
-        $this->stringBuffer = ''; 
+    }
+
+    public function render()
+    {
+        $this->stringBuffer = '';
         $this->doWriteDocumentStart();
         $this->renderTable();
         $this->doWriteDocumentEnd();
     }
-    
-    protected function renderTable() {
+
+    protected function renderTable()
+    {
         $this->doWriteTableStart();
         $this->renderTableHeader();
         $this->renderTableBody();
         $this->renderTableFooter();
         $this->doWriteTableEnd();
     }
-    
-    protected function renderTableHeader() {
+
+    protected function renderTableHeader()
+    {
         $this->doWriteTableHeaderStart();
         $this->doWriteTableHeaderRowStart();
         foreach ($this->template->getFields() as $value) {
@@ -63,30 +72,34 @@ class HtmlRenderer extends BaseRenderer {
         $this->doWriteTableHeaderRowEnd();
         $this->doWriteTableHeaderEnd();
     }
-    
-    protected function renderTableBody() {
+
+    protected function renderTableBody()
+    {
         $this->doWriteTableBodyStart();
         $this->renderTableBodyRows();
         $this->doWriteTableBodyEnd();
     }
-    
-    protected function renderTableBodyRows() {
+
+    protected function renderTableBodyRows()
+    {
         for ($this->datasource->rewind(); $this->datasource->valid(); $this->datasource->next()) {
             $this->doWriteTableBodyRowStart();
             $this->renderTableBodyFields();
             $this->doWriteTableBodyRowEnd();
         }
     }
-    
-    protected function renderTableBodyFields() {
+
+    protected function renderTableBodyFields()
+    {
         foreach ($this->template->getFields() as $fieldDescription) {
             $this->doWriteTableBodyDataStart();
-            $this->write($this->getValue($this->datasource, $fieldDescription, 'HTML'));
+            $this->write($this->getValue($this->datasource, $fieldDescription));
             $this->doWriteTableBodyDataEnd();
         }
     }
-    
-    protected function renderTableFooter() {
+
+    protected function renderTableFooter()
+    {
         $this->doWriteTableFooterStart();
         $this->doWriteTableFooterRowStart();
         for ($this->datasource->rewind(); $this->datasource->valid(); $this->datasource->next()) {
@@ -98,92 +111,113 @@ class HtmlRenderer extends BaseRenderer {
         $this->doWriteTableFooterEnd();
     }
 
-    protected function doWriteDocumentStart() {
+    protected function doWriteDocumentStart()
+    {
         $this->write($this->getOption('documentbody.start'));
     }
-    
-    protected function doWriteTableStart() {
+
+    protected function doWriteTableStart()
+    {
         $this->write($this->getOption('table.start'));
     }
-    
-    protected function doWriteTableHeaderStart() {
+
+    protected function doWriteTableHeaderStart()
+    {
         $this->write($this->getOption('table.head.start'));
     }
-    
-    protected function doWriteTableHeaderRowStart() {
+
+    protected function doWriteTableHeaderRowStart()
+    {
         $this->write($this->getOption('table.head.row.start'));
     }
-    
-    protected function doWriteTableHeaderDataStart() {
+
+    protected function doWriteTableHeaderDataStart()
+    {
         $this->write($this->getOption('table.head.data.start'));
     }
-    
-    protected function doWriteTableHeaderDataEnd() {
+
+    protected function doWriteTableHeaderDataEnd()
+    {
         $this->write($this->getOption('table.head.data.end'));
     }
-    
-    protected function doWriteTableHeaderRowEnd() {
+
+    protected function doWriteTableHeaderRowEnd()
+    {
         $this->write($this->getOption('table.head.row.end'));
     }
-    
-    protected function doWriteTableHeaderEnd() {
+
+    protected function doWriteTableHeaderEnd()
+    {
         $this->write($this->getOption('table.head.end'));
     }
-    
-    protected function doWriteTableBodyStart() {
+
+    protected function doWriteTableBodyStart()
+    {
         $this->write($this->getOption('table.body.start'));
     }
-    
-    protected function doWriteTableBodyRowStart() {
+
+    protected function doWriteTableBodyRowStart()
+    {
         $this->write($this->getOption('table.body.row.start'));
     }
-    
-    protected function doWriteTableBodyDataStart() {
+
+    protected function doWriteTableBodyDataStart()
+    {
         $this->write($this->getOption('table.body.data.start'));
     }
-    
-    protected function doWriteTableBodyDataEnd() {
+
+    protected function doWriteTableBodyDataEnd()
+    {
         $this->write($this->getOption('table.body.data.end'));
     }
-    
-    protected function doWriteTableBodyRowEnd() {
+
+    protected function doWriteTableBodyRowEnd()
+    {
         $this->write($this->getOption('table.body.row.end'));
     }
-    
-    protected function doWriteTableBodyEnd() {
+
+    protected function doWriteTableBodyEnd()
+    {
         $this->write($this->getOption('table.body.end'));
     }
-    
-    protected function doWriteTableFooterStart() {
+
+    protected function doWriteTableFooterStart()
+    {
         $this->write($this->getOption('table.footer.start'));
     }
-    
-    protected function doWriteTableFooterRowStart() {
+
+    protected function doWriteTableFooterRowStart()
+    {
         $this->write($this->getOption('table.footer.row.start'));
     }
-    
-    protected function doWriteTableFooterDataStart() {
+
+    protected function doWriteTableFooterDataStart()
+    {
         $this->write($this->getOption('table.footer.data.start'));
     }
-    
-    protected function doWriteTableFooterDataEnd() {
+
+    protected function doWriteTableFooterDataEnd()
+    {
         $this->write($this->getOption('table.footer.data.end'));
     }
-    
-    protected function doWriteTableFooterRowEnd() {
+
+    protected function doWriteTableFooterRowEnd()
+    {
         $this->write($this->getOption('table.footer.row.end'));
     }
-    
-    protected function doWriteTableFooterEnd() {
+
+    protected function doWriteTableFooterEnd()
+    {
         $this->write($this->getOption('table.footer.end'));
     }
-    
-    protected function doWriteTableEnd() {
+
+    protected function doWriteTableEnd()
+    {
         $this->write($this->getOption('table.end'));
     }
-    
-    protected function doWriteDocumentEnd() {
+
+    protected function doWriteDocumentEnd()
+    {
         $this->write($this->getOption('documentbody.end'));
     }
-
 }

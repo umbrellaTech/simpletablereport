@@ -15,19 +15,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Api;
 
 /**
- * Defines a generic render method. 
+ * Defines the basics templates methods.
  * @author kelsoncm <falecom@kelsoncm.com>
  * @author Ítalo Lelis de Vietro <italo@voxtecnologia.com.br>
  */
-interface IRenderer
+interface TemplateInterface
 {
 
-    /**
-     * Writes the content to be rendered on the client.
-     */
-    public function render();
+    public function setFields(FieldSet $fieldSet);
+
+    public function getFields();
+
+    public function setParams(array $params);
+
+    public function getParams();
+
+    public function addParam($param, $value);
+
+    public function getParam($param);
+
+    public function getTags();
+
+    public function setTags(array $tags);
+
+    public function getPath();
+
+    public function setPath($path);
 }

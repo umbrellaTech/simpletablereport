@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Fields;
 
 /**
@@ -25,7 +24,6 @@ namespace Umbrella\SimpleReport\Fields;
  */
 class FloatType extends NumericType
 {
-
     protected $typeprefix = 'floattype';
 
     public function format($value)
@@ -37,5 +35,4 @@ class FloatType extends NumericType
     {
         return floatval($value);
     }
-
 }

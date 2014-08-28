@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport\Renderer\Xlsx\Helper;
 
 use Umbrella\SimpleReport\Api\FieldDefinition;
@@ -27,17 +26,18 @@ use Umbrella\SimpleReport\Api\FieldDefinition;
  */
 class XlsxSheetHelper extends XlsxBaseHelper
 {
-
     protected $sheetString = '';
-    
-    protected function getRenderedValue(FieldDefinition $fieldDescription) {
+
+    protected function getRenderedValue(FieldDefinition $fieldDescription)
+    {
         $fieldTypeName = $fieldDescription->getFieldType();
         $fieldTypeInstance = $this->configuration->getFieldTypeInstance($fieldTypeName, 'Xlsx');
         $unformattedFieldValue = $this->datasource->getFieldValue($fieldDescription);
         return $fieldTypeInstance->render($unformattedFieldValue);
     }
-    
-    public function renderSheet() {
+
+    public function renderSheet()
+    {
         $this->currentRow = 0;
         $this->doWriteSheetBegin();
         $this->doWriteSheetColumns();
@@ -75,8 +75,10 @@ class XlsxSheetHelper extends XlsxBaseHelper
         $this->doWriteSheetDataBody();
         $this->sheetString .= "</sheetData>";
     }
-    
-    protected function doWriteSheetDataHeader() {$this->currentRow++;
+
+    protected function doWriteSheetDataHeader()
+    {
+        $this->currentRow++;
         $this->sheetString .= "<row r=\"{$this->currentRow}\" spans=\"1:1\" x14ac:dyDescent=\"0.25\">";
         foreach ($this->template->getFields() as $key => $fieldDescription) {
             $stringId = XlsxSharedStringsHelper::putIfNotExists($fieldDescription->getFieldCaption());
@@ -126,5 +128,4 @@ class XlsxSheetHelper extends XlsxBaseHelper
         $this->sheetString .= "</tableParts>";
         $this->sheetString .= "</worksheet>";
     }
-
 }

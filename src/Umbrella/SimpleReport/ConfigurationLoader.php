@@ -15,10 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Umbrella\SimpleReport;
 
-use Umbrella\SimpleReport\Api\IConfiguration;
+use Umbrella\SimpleReport\Api\ConfigurationInterface;
 
 /**
  * Description of BaseConfigurationLoader
@@ -27,7 +26,6 @@ use Umbrella\SimpleReport\Api\IConfiguration;
  */
 class ConfigurationLoader
 {
-
     private static $instance;
     private $configuration;
 
@@ -46,7 +44,7 @@ class ConfigurationLoader
 
     /**
      * 
-     * @return IConfiguration
+     * @return ConfigurationInterface
      */
     public function getConfiguration()
     {
@@ -65,5 +63,4 @@ class ConfigurationLoader
         $configurationClassName = $ini_array['simpletablereport.configurationClassName'];
         $this->configuration = new $configurationClassName($ini_array);
     }
-
 }
