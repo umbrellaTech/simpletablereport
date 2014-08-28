@@ -31,4 +31,8 @@ abstract class SimpleTest extends PHPUnit_Framework_TestCase {
         return $result;
     }
     
+    public function testDummy() {
+        
+    }
+    
 }

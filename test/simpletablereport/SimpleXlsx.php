@@ -1,11 +1,5 @@
 <?php
 
-use Umbrella\SimpleReport\Api\FieldSet;
-use Umbrella\SimpleReport\Api\FieldType;
-use Umbrella\SimpleReport\ArrayDatasource;
-use Umbrella\SimpleReport\BaseTemplate;
-use Umbrella\SimpleReport\Renderer\Xlsx\XlsxRenderer;
-
 /*
  * Copyright 2013 kelsoncm.
  *
@@ -42,6 +36,17 @@ class SimpleXlsxTest extends SimpleTest {
                . "</table>";
     }
     
+    private function getSheetXML_1Col_fromArray(array $sheetDataArray) {
+        $sheetDataString = '';
+        foreach ($sheetDataArray as $key => $value) {
+            $r = $key+1;
+            if ($value) {
+                $sheetDataString .= "<row r=\"{$r}\" spans=\"1:1\" x14ac:dyDescent=\"0.25\">{$value}</row>";
+            }
+        }
+        return $this->getSheetXML_1Col($sheetDataString);
+    }
+    
     private function getSheetXML_1Col($sheetData) {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
                 . "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" mc:Ignorable=\"x14ac\" xmlns:x14ac=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac\">"
@@ -61,49 +66,46 @@ class SimpleXlsxTest extends SimpleTest {
                 . "<si><t>{$title}</t></si>"
                 . "</sst>";
     }
-    
+
     /**
      *  @expectedException InvalidArgumentException
      *  @expectedExceptionMessage Passed variable is not an array or object, using empty array instead
      */
-    public function testArrayDatasource_null()
-    {
+    public function testArrayDatasource_null() {
         $datasource = new ArrayDatasource(null);
         $template = new BaseTemplate(new FieldSet());
         $renderer = new XlsxRenderer($datasource, $template);
-
+        
         $renderer->render($datasource, $template);
     }
-
+    
     /**
      *  
      * @expectedException RuntimeException
      * @expectedExceptionMessage Empty FieldSet not allowed
      */
-    public function testArrayDatasource_emptyFieldSet()
-    {
+    public function testArrayDatasource_emptyFieldSet() {
         $datasource = new ArrayDatasource(array());
         $template = new BaseTemplate(new FieldSet());
         $renderer = new XlsxRenderer($datasource, $template);
-
+        
         $renderer->render($datasource, $template);
     }
-
+    
     /**
      *  
      * @expectedException RuntimeException
      * @expectedExceptionMessage Empty DataSource not allowed
      */
-    public function testArrayDatasource_emptyArray()
-    {
-
+    public function testArrayDatasource_emptyArray() {
+        
         $fieldSet = new FieldSet();
         $fieldSet->addField('i', '#', FieldType::STRING);
-
+                
         $datasource = new ArrayDatasource(array());
         $template = new BaseTemplate($fieldSet);
         $renderer = new XlsxRenderer($datasource, $template);
-
+        
         $renderer->render($datasource, $template);
     }
     
@@ -117,12 +119,12 @@ class SimpleXlsxTest extends SimpleTest {
         $datasource = new ArrayDatasource($model);
         $template = new BaseTemplate($fieldSet);
         $renderer = new XlsxRenderer($datasource, $template);
-
+        
         $renderer->render($datasource, $template);
 
         $this->assertEquals($this->getTableXML_1Col($title), $renderer->getTableString());
         $this->assertEquals(
-                $this->getSheetXML_1Col("<row r=\"1\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A1\" t=\"s\"><v>0</v></c></row><row r=\"2\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A2\" t=\"s\"><v>1</v></c></row><row r=\"3\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A3\" t=\"s\"><v>2</v></c></row><row r=\"7\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A7\" t=\"s\"><v>3</v></c></row><row r=\"8\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A8\" t=\"s\"><v>4</v></c></row>")
+                $this->getSheetXML_1Col_fromArray(array("<c r=\"A1\" t=\"s\"><v>0</v></c>", "<c r=\"A2\" t=\"s\"><v>1</v></c></row><row r=\"3\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A3\" t=\"s\"><v>2</v></c></row><row r=\"7\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A7\" t=\"s\"><v>3</v></c></row><row r=\"8\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A8\" t=\"s\"><v>4</v></c>"))
                 , $renderer->getSheetString());
         $this->assertEquals($this->getSharedXML_1Col("{$title}</t></si><si><t>ddois</t></si><si><t>3</t></si><si><t>B6-String6</t></si><si><t>B7-Cacar", 4), $renderer->getSharedStringsString());
     }
@@ -142,7 +144,7 @@ class SimpleXlsxTest extends SimpleTest {
         
         $this->assertEquals($this->getTableXML_1Col($title), $renderer->getTableString());
         $this->assertEquals(
-                $this->getSheetXML_1Col("<row r=\"1\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A1\" t=\"s\"><v>0</v></c></row><row r=\"2\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A2\"><v>2</v></c></row><row r=\"3\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A3\"><v>3</v></c></row><row r=\"7\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A7\"><v>6</v></c></row><row r=\"8\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A8\"><v>7</v></c></row>")
+                $this->getSheetXML_1Col_fromArray(array("<c r=\"A1\" t=\"s\"><v>0</v></c>", "<c r=\"A2\"><v>2</v></c>", "<c r=\"A3\"><v>3</v></c>", null, null, null, "<c r=\"A7\"><v>6</v></c>", "<c r=\"A8\"><v>7</v></c>", ))
                 , $renderer->getSheetString());
         $this->assertEquals($this->getSharedXML_1Col($title, 0), $renderer->getSharedStringsString());
     }
@@ -162,7 +164,7 @@ class SimpleXlsxTest extends SimpleTest {
         
         $this->assertEquals($this->getTableXML_1Col($title), $renderer->getTableString());
         $this->assertEquals(
-                $this->getSheetXML_1Col("<row r=\"1\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A1\" t=\"s\"><v>0</v></c></row><row r=\"2\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A2\"><v>2</v></c></row><row r=\"3\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A3\"><v>3</v></c></row><row r=\"7\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A7\"><v>6.7</v></c></row><row r=\"8\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A8\"><v>7.8</v></c></row>")
+                $this->getSheetXML_1Col_fromArray(array("<c r=\"A1\" t=\"s\"><v>0</v></c>", "<c r=\"A2\"><v>2</v></c>", "<c r=\"A3\"><v>3</v></c>", null, null, null, "<c r=\"A7\"><v>6.7</v></c>", "<c r=\"A8\"><v>7.8</v></c>", ))
                 , $renderer->getSheetString());
         $this->assertEquals($this->getSharedXML_1Col($title, 0), $renderer->getSharedStringsString());
     }
@@ -181,7 +183,7 @@ class SimpleXlsxTest extends SimpleTest {
         $renderer->render($datasource, $template);
         $this->assertEquals($this->getTableXML_1Col($title), $renderer->getTableString());
         $this->assertEquals(
-                $this->getSheetXML_1Col("<row r=\"1\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A1\" t=\"s\"><v>0</v></c></row><row r=\"2\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A2\" s=\"1\"><v>2.00</v></c></row><row r=\"3\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A3\" s=\"1\"><v>3.00</v></c></row><row r=\"7\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A7\" s=\"1\"><v>6.70</v></c></row><row r=\"8\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A8\" s=\"1\"><v>7.80</v></c></row>")
+                $this->getSheetXML_1Col_fromArray(array("<c r=\"A1\" t=\"s\"><v>0</v></c>", "<c r=\"A2\" s=\"1\"><v>2.000</v></c>", "<c r=\"A3\" s=\"1\"><v>3.000</v></c>", null, null, null, "<c r=\"A7\" s=\"1\"><v>6.700</v></c>", "<c r=\"A8\" s=\"1\"><v>7.800</v></c>", ))
                 , $renderer->getSheetString());
         $this->assertEquals($this->getSharedXML_1Col($title, 0), $renderer->getSharedStringsString());
     }
@@ -200,9 +202,97 @@ class SimpleXlsxTest extends SimpleTest {
         $renderer->render($datasource, $template);
         $this->assertEquals($this->getTableXML_1Col($title), $renderer->getTableString());
         $this->assertEquals(
-                $this->getSheetXML_1Col("<row r=\"1\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A1\" t=\"s\"><v>0</v></c></row><row r=\"2\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A2\" s=\"2\"><v>2.00</v></c></row><row r=\"3\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A3\" s=\"2\"><v>3.00</v></c></row><row r=\"7\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A7\" s=\"2\"><v>6.70</v></c></row><row r=\"8\" spans=\"1:1\" x14ac:dyDescent=\"0.25\"><c r=\"A8\" s=\"2\"><v>7.80</v></c></row>")
+                $this->getSheetXML_1Col_fromArray(array("<c r=\"A1\" t=\"s\"><v>0</v></c>", "<c r=\"A2\" s=\"2\"><v>2.000</v></c>", "<c r=\"A3\" s=\"2\"><v>3.000</v></c>", null, null, null, "<c r=\"A7\" s=\"2\"><v>6.700</v></c>", "<c r=\"A8\" s=\"2\"><v>7.800</v></c>", ))
                 , $renderer->getSheetString());
         $this->assertEquals($this->getSharedXML_1Col($title, 0), $renderer->getSharedStringsString());
+    }
+ 
+    public function testArrayDatasource_TypeDate() {
+        $now = time();
+        $today = new DateTime();
+        $title = 'H1-Date';
+        
+        $t = DateTime::createFromFormat('Y-m-d', '1900-01-01')->diff($today)->format('%a') + 2;
+        
+        $fieldSet = new FieldSet();
+        $fieldSet->addField('i', $title, FieldType::DATE);
+        
+        $model = $this->arrayArray('i', array($now, $today, '13/12/2011', '01/01/1901', array('year'=>2013, 'mon'=>12, 'mday'=>15), null, '', ));
+        
+        $datasource = new ArrayDatasource($model);
+        $template = new BaseTemplate($fieldSet);
+        $renderer = new XlsxRenderer($datasource, $template);
+       
+        $today->setTimestamp(time());
+        
+        $renderer->render($datasource, $template);
+        /*
+        $this->assertEquals($this->getTableXML_1Col($title), $renderer->getTableString());
+        $this->assertEquals(
+                $this->getSheetXML_1Col_fromArray(array('<c r="A1" t="s"><v>0</v></c>', '<c r="A2" s="6"><v>' . $t . '</v></c>', '<c r="A3" s="6"><v>' . $t . '</v></c>', '<c r="A4" s="6"><v>40890</v></c>', '<c r="A5" s="6"><v>367</v></c>', '<c r="A6" s="6"><v>41623</v></c>'))
+                , $renderer->getSheetString());
+        $this->assertEquals($this->getSharedXML_1Col($title, 0), $renderer->getSharedStringsString());
+         */
+    }
+    
+    public function testArrayDatasource_TypeTime() {
+        $now = time();
+        $today = new DateTime("now");
+        $title = 'H1-Time';
+        
+        $fieldSet = new FieldSet();
+        $fieldSet->addField('i', $title, FieldType::TIME);
+        
+        $model = $this->arrayArray('i', array($now, $today, '00:00:00', '23:59', array('hours'=>23, 'minutes'=>59, 'seconds'=>59), null, '', ));
+        //$model = $this->arrayArray('i', array('00:00:00', '22:00:01'));
+        
+        $datasource = new ArrayDatasource($model);
+        $template = new BaseTemplate($fieldSet);
+        $renderer = new XlsxRenderer($datasource, $template);
+       
+        $today->setTimestamp(time());
+        
+        $renderer->render($datasource, $template);
+        /*
+        $this->assertEquals($this->getTableXML_1Col($title), $renderer->getTableString());
+        $this->assertEquals(
+                $this->getSheetXML_1Col_fromArray(array('<c r="A1" t="s"><v>0</v></c>', '<c r="A2" s="6"><v>41656</v></c>', '<c r="A3" s="6"><v>41656</v></c>', '<c r="A4" s="6"><v>40890</v></c>', '<c r="A5" s="6"><v>367</v></c>', '<c r="A6" s="6"><v>41623</v></c>'))
+                , $renderer->getSheetString());
+        $this->assertEquals($this->getSharedXML_1Col($title, 0), $renderer->getSharedStringsString());
+        */
+    }
+
+    public function testArrayDatasource_TypeTimestamp() {
+        $now = time();
+        $today = new DateTime("now");
+        $title = 'H1-Timestamp';
+
+        $fieldSet = new FieldSet();
+        $fieldSet->addField('i', $title, FieldType::TIMESTAMP);
+        
+        $model = $this->arrayArray('i', array(
+            $now, 
+            $today, 
+            '13/12/2011 00:00:00', 
+            '01/01/1901 23:59:59', 
+            array('year'=>2013, 'mon'=>12, 'mday'=>15, 'hours'=>23, 'minutes'=>59, 'seconds'=>59), 
+            '15/12/2013 23:59:59', 
+            null, 
+            '', ));
+        
+        $datasource = new ArrayDatasource($model);
+        $template = new BaseTemplate($fieldSet);
+        $renderer = new XlsxRenderer($datasource, $template);
+        
+        $renderer->render($datasource, $template);
+        /*
+        $this->assertEquals($this->getTableXML_1Col($title), $renderer->getTableString());
+        $this->assertEquals(
+                $this->getSheetXML_1Col_fromArray(array("<c r=\"A1\" t=\"s\"><v>0</v></c>", "<c r=\"A2\" s=\"2\"><v>2.00</v></c>", 
+                    "<c r=\"A3\" s=\"2\"><v>3.00</v></c>", "<c r=\"A7\" s=\"2\"><v>6.70</v></c>", "<c r=\"A8\" s=\"2\"><v>7.80</v></c>"))
+                , $renderer->getSheetString());
+        $this->assertEquals($this->getSharedXML_1Col($title, 0), $renderer->getSharedStringsString());
+        */
     }
 
 }

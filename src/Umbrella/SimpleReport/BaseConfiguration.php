@@ -16,38 +16,29 @@
  * limitations under the License.
  */
 
-namespace Umbrella\SimpleReport;
-
-use Exception;
-
 /**
  * Description of BaseConfiguration
  *
  * @author kelsoncm <falecom@kelsoncm.com>
  */
-class BaseConfiguration
-{
+class BaseConfiguration {
 
-    private $option;
+    private $options;
     private $loadedFields = array();
-
-    function __construct($option)
-    {
-        $this->option = new \Easy\Collections\Dictionary($option);
+    
+    function __construct($option) {
+        $this->options = $option;
     }
 
-    public function getOption($name)
-    {
-        return $this->option->get($name);
+    public function getOption($name) {
+        return $this->options[$name];
     }
 
-    public function getOptions()
-    {
-        return $this->option;
+    public function getOptions() {
+        return $this->options;
     }
-
-    public function getFieldTypeInstance($fieldTypeName, $rendererPrefix)
-    {
+    
+    public function getFieldTypeInstance($fieldTypeName, $rendererPrefix) {
         $key = "$fieldTypeName, $rendererPrefix";
         if (!isset($this->loadedFields[$key])) {
             $this->loadedFields[$key] = $this->createFieldTypeInstance($fieldTypeName, $rendererPrefix);
@@ -55,17 +46,16 @@ class BaseConfiguration
         return $this->loadedFields[$key];
     }
 
-    protected function createFieldTypeInstance($fieldTypeName, $rendererPrefix)
-    {
+    protected function createFieldTypeInstance($fieldTypeName, $rendererPrefix) {
         $classnameBase = ucfirst(strtolower($fieldTypeName)) . 'Type';
-        $classnameConcrete = "Umbrella\SimpleReport\Fields\\" . ucfirst(strtolower($rendererPrefix)) . $classnameBase;
+        $classnameConcrete = ucfirst(strtolower($rendererPrefix)) . $classnameBase;
         if (class_exists($classnameConcrete)) {
             return new $classnameConcrete($this->option);
-        } elseif (class_exists($classnameBase)) {
+        } elseif(class_exists($classnameBase)) {
             return new $classnameBase($this->option);
         } else {
             throw new Exception("Field class don't exists for field type '{$fieldTypeName}'.");
         }
     }
-
+    
 }
