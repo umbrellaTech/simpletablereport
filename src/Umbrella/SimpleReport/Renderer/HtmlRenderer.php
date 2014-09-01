@@ -102,7 +102,9 @@ class HtmlRenderer extends BaseRenderer
     {
         $this->doWriteTableFooterStart();
         $this->doWriteTableFooterRowStart();
-        for ($this->datasource->rewind(); $this->datasource->valid(); $this->datasource->next()) {
+        $countColumn = $this->template->getFields();
+
+        for ($i = 0; $i < count($countColumn); $i++) {
             $this->doWriteTableFooterDataStart();
             $this->write('&nbsp;');
             $this->doWriteTableFooterDataEnd();
