@@ -17,7 +17,6 @@
         }
     ],
     "require": {
-        "symfony/http-foundation": "~2.5",
         "easyframework/collections": "~3.1"
     },
     "require-dev": {
