@@ -9,11 +9,11 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
-         bootstrap="./tests/Umbrella/Tests/TestInit.php"
+         bootstrap="./tests/bootstrap.php"
 >
     <testsuites>
-        <testsuite name="Suite de Testes do Simple Table Report">
-            <directory>./tests/Umbrella/</directory>
+        <testsuite name="Simple Table Report test suite">
+            <directory>./tests/</directory>
         </testsuite>
     </testsuites>
 
@@ -21,7 +21,7 @@
         <whitelist>
             <directory>./</directory>
             <exclude>
-                <directory>./tests/Umbrella/</directory>
+                <directory>./tests/</directory>
                 <directory>./vendor</directory>
             </exclude>
         </whitelist>
