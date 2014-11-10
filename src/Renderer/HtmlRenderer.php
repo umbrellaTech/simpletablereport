@@ -56,7 +56,7 @@ class HtmlRenderer extends BaseRenderer
         $this->doWriteTableStart();
         $this->renderTableHeader();
         $this->renderTableBody();
-        $this->renderTableFooter();
+//        $this->renderTableFooter();
         $this->doWriteTableEnd();
     }
 
