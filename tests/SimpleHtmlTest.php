@@ -33,7 +33,7 @@ class SimpleHtmlTest extends SimpleTest
     public function getData()
     {
         return array
-            (
+        (
             array('id' => 1, 'nome' => 'Kelson'),
             array('id' => 2, 'nome' => 'KelsonCM'),
             array('id' => 3, 'nome' => ''),
@@ -61,28 +61,27 @@ class SimpleHtmlTest extends SimpleTest
         $fieldSet = new FieldSet();
 
         return $fieldSet
-                ->addField('id', '#', FieldType::INTEGER)
-                ->addField('nome', 'Nome', FieldType::STRING)
-                ->addField('razao', 'Razao', FieldType::FLOAT)
-                ->addField('salario', 'Salario', FieldType::DECIMAL)
-                ->addField('nascimento', 'Nascimento', FieldType::DATE)
-                ->addField('almoco', 'Almoco', FieldType::TIME)
-                ->addField('casamento', 'Casamento', FieldType::TIMESTAMP);
+            ->addField('id', '#', FieldType::INTEGER)
+            ->addField('nome', 'Nome', FieldType::STRING)
+            ->addField('razao', 'Razao', FieldType::FLOAT)
+            ->addField('salario', 'Salario', FieldType::DECIMAL)
+            ->addField('nascimento', 'Nascimento', FieldType::DATE)
+            ->addField('almoco', 'Almoco', FieldType::TIME)
+            ->addField('casamento', 'Casamento', FieldType::TIMESTAMP);
     }
 
     /**
      * Create the fieldset for test of columnCount
-     * @return $this
+     * @return FieldSet
      */
     public function getFieldsetCount()
     {
         $fieldSet = new FieldSet();
 
-        //array('nome' => 'Ayrton', 'salario' => 1522, 'pagamento' => 1560),
         return $fieldSet
-                ->addField('nome', 'Nome', FieldType::STRING)
-                ->addField('salario', 'Salário', FieldType::INTEGER)
-                ->addField('pagamento', 'Razao', FieldType::INTEGER);
+            ->addField('nome', 'Nome', FieldType::STRING)
+            ->addField('salario', 'Salário', FieldType::INTEGER)
+            ->addField('pagamento', 'Razao', FieldType::INTEGER);
     }
 
     /**
