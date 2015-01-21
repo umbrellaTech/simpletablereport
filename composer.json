@@ -1,35 +1,36 @@
 {
-    "name": "umbrella/simpletablereport",
-    "description": "PHP Simple Table Report. Export data as tables to PDF, CSV, Excel, etc...",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "kelsoncm",
-            "email": "kelsoncm@gmail.com"
-        },
-        {
-            "name": "Ítalo Lelis",
-            "email": "italolelis@gmail.com"
-        },
-        {
-            "name": "Ayrton Ricardo",
-            "email": "ayrton_jampa15@hotmail.com"
-        }
-    ],
-    "require": {
-        "easyframework/collections": "~3.1"
+  "name": "umbrella/simpletablereport",
+  "description": "PHP Simple Table Report. Export data as tables to PDF, CSV, Excel, etc...",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "kelsoncm",
+      "email": "kelsoncm@gmail.com"
     },
-    "require-dev": {
-        "phpunit/phpunit": "~4.2"
+    {
+      "name": "Ítalo Lelis",
+      "email": "italolelis@gmail.com"
     },
-    "autoload": {
-        "psr-4": {
-            "Umbrella\\SimpleReport\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Umbrella\\Tests\\SimpleReport\\": "tests/"
-        }
+    {
+      "name": "Ayrton Ricardo",
+      "email": "ayrton_jampa15@hotmail.com"
     }
+  ],
+  "require": {
+    "twig/twig": "~1.17",
+    "easyframework/collections": "~3.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Umbrella\\SimpleReport\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Umbrella\\Tests\\SimpleReport\\": "tests/"
+    }
+  }
 }

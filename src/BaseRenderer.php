@@ -17,10 +17,11 @@
  */
 namespace Umbrella\SimpleReport;
 
+use Easy\Collections\Dictionary;
 use Umbrella\SimpleReport\Api\FieldDefinition;
 use Umbrella\SimpleReport\Api\DatasourceInterface;
+use Umbrella\SimpleReport\Api\FieldSet;
 use Umbrella\SimpleReport\Api\RendererInterface;
-use Umbrella\SimpleReport\Api\TemplateInterface;
 
 /**
  * Description of BaseRenderer
@@ -33,19 +34,29 @@ abstract class BaseRenderer implements RendererInterface
     protected $configuration;
 
     /**
-     * @var DatasourceInterface 
+     * @var DatasourceInterface
      */
     protected $datasource;
 
     /**
-     * @var TemplateInterface 
+     * @var FieldSet
      */
-    protected $template;
+    protected $fieldset;
 
-    public function __construct(DatasourceInterface $datasource, TemplateInterface $template)
+    /**
+     * @var Dictionary
+     */
+    protected $options;
+
+    public function __construct(DatasourceInterface $datasource, FieldSet $fieldset, Dictionary $options = null)
     {
         $this->datasource = $datasource;
-        $this->template = $template;
+        $this->fieldset = $fieldset;
+        $this->options = new Dictionary();
+        if ($options) {
+            $this->options->concat($options);
+        }
+
         $configurationLoader = ConfigurationLoader::getInstance();
         $this->configuration = $configurationLoader->getConfiguration();
     }

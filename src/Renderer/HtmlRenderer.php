@@ -31,9 +31,7 @@ class HtmlRenderer extends BaseRenderer
     public function render()
     {
         $this->stringBuffer = '';
-        $this->doWriteDocumentStart();
         $this->renderTable();
-        $this->doWriteDocumentEnd();
     }
 
     protected function renderTable()
@@ -48,7 +46,7 @@ class HtmlRenderer extends BaseRenderer
     {
         $this->doWriteTableHeaderStart();
         $this->doWriteTableHeaderRowStart();
-        foreach ($this->template->getFields() as $value) {
+        foreach ($this->fieldset as $value) {
             $this->doWriteTableHeaderDataStart();
             $this->write($value->getFieldCaption());
             $this->doWriteTableHeaderDataEnd();
@@ -75,7 +73,7 @@ class HtmlRenderer extends BaseRenderer
 
     protected function renderTableBodyFields()
     {
-        foreach ($this->template->getFields() as $fieldDescription) {
+        foreach ($this->fieldset as $fieldDescription) {
             $this->doWriteTableBodyDataStart();
             $this->write($this->getValue($this->datasource, $fieldDescription));
             $this->doWriteTableBodyDataEnd();
@@ -86,8 +84,7 @@ class HtmlRenderer extends BaseRenderer
     {
         $this->doWriteTableFooterStart();
         $this->doWriteTableFooterRowStart();
-        $countColumn = $this->template->getFields();
-        $count = count($countColumn);
+        $count = count(fieldset);
 
         for ($i = 0; $i < $count; $i++) {
             $this->doWriteTableFooterDataStart();
@@ -96,11 +93,6 @@ class HtmlRenderer extends BaseRenderer
         }
         $this->doWriteTableFooterRowEnd();
         $this->doWriteTableFooterEnd();
-    }
-
-    protected function doWriteDocumentStart()
-    {
-        $this->write($this->getOption('documentbody.start'));
     }
 
     protected function doWriteTableStart()
@@ -203,8 +195,4 @@ class HtmlRenderer extends BaseRenderer
         $this->write($this->getOption('table.end'));
     }
 
-    protected function doWriteDocumentEnd()
-    {
-        $this->write($this->getOption('documentbody.end'));
-    }
 }
