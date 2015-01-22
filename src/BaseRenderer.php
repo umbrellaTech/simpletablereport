@@ -47,6 +47,8 @@ abstract class BaseRenderer implements RendererInterface
      * @var Dictionary
      */
     protected $options;
+    
+    protected $stringBuffer;
 
     public function __construct(DatasourceInterface $datasource, FieldSet $fieldset, Dictionary $options = null)
     {
@@ -59,6 +61,16 @@ abstract class BaseRenderer implements RendererInterface
 
         $configurationLoader = ConfigurationLoader::getInstance();
         $this->configuration = $configurationLoader->getConfiguration();
+    }
+    
+    public function getStringBuffer()
+    {
+        return $this->stringBuffer;
+    }
+
+    protected function write($string)
+    {
+        $this->stringBuffer .= $string;
     }
 
     protected function getOption($optionName)

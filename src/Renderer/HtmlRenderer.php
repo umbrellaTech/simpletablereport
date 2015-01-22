@@ -11,21 +11,10 @@ use Umbrella\SimpleReport\BaseRenderer;
  */
 class HtmlRenderer extends BaseRenderer
 {
-    protected $stringBuffer;
-
-    public function getStringBuffer()
-    {
-        return $this->stringBuffer;
-    }
 
     public function getOption($optionName)
     {
         return parent::getOption("htmlrenderer.{$optionName}");
-    }
-
-    protected function write($string)
-    {
-        $this->stringBuffer .= $string;
     }
 
     public function render()
