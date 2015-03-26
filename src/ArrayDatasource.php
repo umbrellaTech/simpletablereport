@@ -121,12 +121,17 @@ class ArrayDatasource extends ArrayIterator implements DatasourceInterface
         for ($this->rewind(); $this->valid(); $this->next()) {
             foreach ($this->current() as $keyIdentification => $valueField) {
                 if (isset($columns[$keyIdentification]) || in_array($keyIdentification, $columns)) {
-                    if (isset($columns[$keyIdentification]) && is_array($columns[$keyIdentification])) {
+                    
+                    if (isset($columns[$keyIdentification]) && is_array($columns[$keyIdentification]) && !isset($columns[$keyIdentification]['callback'])) {
                         $label = isset($columns[$keyIdentification]['label']) ? $columns[$keyIdentification]['label'] : $valueField;
                         $prefix = isset($columns[$keyIdentification]['prefix']) ? $columns[$keyIdentification]['prefix'] : '';
                         $suffix = isset($columns[$keyIdentification]['suffix']) ? $columns[$keyIdentification]['suffix'] : '';
                         $arrayAppend[$keyIdentification] = sprintf('%s %s %s', $prefix, $label, $suffix);
-                    } elseif (is_numeric($valueField)) {
+                    } elseif (isset($columns[$keyIdentification]['callback']) && is_callable($columns[$keyIdentification]['callback'])) {
+                        $valueField = $columns[$keyIdentification]['callback']($valueField);
+                    }
+                    
+                    if (is_numeric($valueField)) {
                         $arrayAppend[$keyIdentification] = isset($arrayAppend[$keyIdentification]) ? $arrayAppend[$keyIdentification] + $valueField : $valueField;
                     }
                 }
