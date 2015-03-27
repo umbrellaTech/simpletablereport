@@ -28,7 +28,7 @@ class FloatType extends NumericType
 
     public function format($value)
     {
-        return is_null($value) ? '' : "$value";
+        return is_null($value) ? '' : number_format($value,2, ',','.');
     }
 
     public function toNumeric($value)

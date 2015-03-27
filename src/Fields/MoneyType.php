@@ -37,7 +37,15 @@ class MoneyType extends DecimalType
 
     public function format($value)
     {
-        $result = parent::format($value);
-        return $result == '' ? '' : "{$this->prefix}{$result}{$this->sufix}";
+        $result = number_format(parent::format($value), 2, ',', '.');
+        return $result == '' ? '' : "{$this->prefix} {$result} {$this->sufix}";
+    }
+    
+    public function toNumeric($value)
+    {
+        if (!preg_match('#(\,|\.)[\d]{2}$#', $value)) {
+            $value = $value. '00';
+        }
+        return (preg_replace('#[^\d]#', '', $value))/100;
     }
 }

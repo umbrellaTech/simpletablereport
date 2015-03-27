@@ -130,7 +130,6 @@ class ArrayDatasource extends ArrayIterator implements DatasourceInterface
                     } elseif (isset($columns[$keyIdentification]['callback']) && is_callable($columns[$keyIdentification]['callback'])) {
                         $valueField = $columns[$keyIdentification]['callback']($valueField);
                     }
-                    
                     if (is_numeric($valueField)) {
                         $arrayAppend[$keyIdentification] = isset($arrayAppend[$keyIdentification]) ? $arrayAppend[$keyIdentification] + $valueField : $valueField;
                     }

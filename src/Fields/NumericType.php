@@ -37,11 +37,11 @@ abstract class NumericType extends FieldType
             $value = trim($value);
             if (empty($value)) {
                 return null;
-            } elseif (is_numeric($value)) {
+            } else {
                 return $this->toNumeric($value);
             }
         }
-        if (is_integer($value) || is_long($value) || is_double($value) || is_float($value) || is_real($value)) {
+        if (is_integer($value) || is_long($value) || is_double($value) || is_float($value) || is_real($value) || is_numeric($value)) {
             return $this->toNumeric($value);
         }
         throw new Exception("Invalid {$this->typeprefix}.");
