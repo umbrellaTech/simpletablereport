@@ -25,18 +25,4 @@ namespace Umbrella\SimpleReport\Fields;
 class DecimalType extends FloatType
 {
     protected $typeprefix = 'decimaltype';
-    protected $precision;
-    protected $separator;
-
-    function __construct($options)
-    {
-        parent::__construct($options);
-        $this->precision = intval($this->getOption("precision")) ? : 2;
-        $this->separator = $this->getOption("separator") ? : '.';
-    }
-
-    public function format($value)
-    {
-        return is_null($value) ? '' : str_replace('.', $this->separator, sprintf("%.{$this->precision}F", $value));
-    }
 }

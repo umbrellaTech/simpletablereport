@@ -118,6 +118,7 @@ class ArrayDatasource extends ArrayIterator implements DatasourceInterface
 
         $columns = $this->getColumnFieldCounts();
         $arrayAppend = array();
+        $float = new Fields\FloatType();
         for ($this->rewind(); $this->valid(); $this->next()) {
             foreach ($this->current() as $keyIdentification => $valueField) {
                 if (isset($columns[$keyIdentification]) || in_array($keyIdentification, $columns)) {
@@ -132,6 +133,9 @@ class ArrayDatasource extends ArrayIterator implements DatasourceInterface
                     }
                     if (is_numeric($valueField)) {
                         $arrayAppend[$keyIdentification] = isset($arrayAppend[$keyIdentification]) ? $arrayAppend[$keyIdentification] + $valueField : $valueField;
+                        if (is_float($valueField)) {
+                            $arrayAppend[$keyIdentification] = $float->format($arrayAppend[$keyIdentification]);
+                        }
                     }
                 }
             }
