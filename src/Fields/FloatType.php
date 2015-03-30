@@ -25,14 +25,35 @@ namespace Umbrella\SimpleReport\Fields;
 class FloatType extends NumericType
 {
     protected $typeprefix = 'floattype';
+    protected $precision;
+    protected $separator;
 
+    function __construct($options = null)
+    {
+        parent::__construct($options);
+        $this->precision = intval($this->getOption("precision")) ? : 2;
+        $this->separator = $this->getOption("separator") ? : '.';
+    }
+   /**
+     * 
+     * @param string $value
+     * @return string
+     */
     public function format($value)
     {
-        return is_null($value) ? '' : number_format($value,2, ',','.');
+        return is_null($value) ? '' : number_format($this->toNumeric($value), $this->precision, ',', '.');
     }
 
+    /**
+     * 
+     * @param string $value
+     * @return string
+     */
     public function toNumeric($value)
     {
-        return floatval($value);
+        if (!preg_match('#(\,|\.)[\d]{2}$#', $value)) {
+            $value = preg_match('#(\,|\.)[\d]{1}$#', $value) ? "{$value}0": "{$value}00";
+        }
+        return number_format(preg_replace('#[^\d]#', '', $value)/100, $this->precision, '.','');
     }
 }
