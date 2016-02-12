@@ -53,8 +53,7 @@ class CsvRenderer extends BaseRenderer
     {
         $row = array();
         foreach ($this->fieldset as $fieldDescription) {
-            $value = $this->getValue($this->datasource, $fieldDescription);
-            $row[] = $value;
+            $row[] = $this->getValue($this->datasource, $fieldDescription);
         }
         $this->write(implode(',', $row) . "\n");
     }
