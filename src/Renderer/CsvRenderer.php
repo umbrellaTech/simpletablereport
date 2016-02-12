@@ -16,15 +16,6 @@ class CsvRenderer extends BaseRenderer
      * @author Ayrton Ricardo<ayrton@voxtecnologia.com.br>
      * @return mixed
      */
-    public function getStringBuffer()
-    {
-        return $this->stringBuffer;
-    }
-
-    /**
-     * @author Ayrton Ricardo<ayrton@voxtecnologia.com.br>
-     * @return mixed
-     */
     public function render()
     {
         $this->stringBuffer = '';
