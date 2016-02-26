@@ -46,7 +46,7 @@ class CsvRenderer extends BaseRenderer
         foreach ($this->fieldset as $fieldDescription) {
             $row[] = $this->getValue($this->datasource, $fieldDescription);
         }
-        $this->write(implode(',', $row) . "\n");
+        $this->write(implode(';', $row) . "\n");
     }
 
     /**
@@ -55,7 +55,7 @@ class CsvRenderer extends BaseRenderer
     protected function renderHeader()
     {
         foreach ($this->fieldset as $value) {
-            $this->write($value->getFieldCaption() . ',');
+            $this->write($value->getFieldCaption() . ';');
         }
         $this->write("\n");
     }
